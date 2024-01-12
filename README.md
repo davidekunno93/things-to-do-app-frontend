@@ -23,6 +23,7 @@ Currently, two official plugins are available:
 *User sign in and out with Firebase
 <!-- *Create your own category -->
 *Delete a category
+*Create Backend
 <!-- *Add participants to create/edit task modals - between Notes and date/time! OR next to cancel button in the bott-right -->
 <!-- *make + Add steps button fade out if 5 steps already added -->
 AFTER MVP UPDATES
@@ -39,6 +40,7 @@ AFTER MVP UPDATES
 *Theme settings
 *allow making words bold in task title
 *glow when category is first made
+*0 tasks in this category when you first create it and haven't added anything yet
 
 Feedback
 *Make AM/PM drop down separate selection (meet user expectations)

@@ -322,9 +322,9 @@ const Dashboard = () => {
 
     const printTasks = () => {
         // let test = Object.keys(tasks).slice(-1)
-
+        console.log(categories)
         // console.log(test[0])
-        console.log(tasks)
+        // console.log(tasks)
     }
 
     // quick date change code

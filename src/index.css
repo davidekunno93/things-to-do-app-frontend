@@ -212,6 +212,7 @@ button:focus-visible {
   object-fit: contain;
 }
 
+
 /* text shorthands */
 .dark-text {
   color: #242424;
@@ -2160,7 +2161,7 @@ button:focus-visible {
 }
 .create-category-modal {
   width: 500px;
-  height: 500px;
+  height: 520px;
   background-color: white;
   margin: auto;
   border-radius: 12px;
@@ -2242,6 +2243,8 @@ button:focus-visible {
   display: flex;
 }
 .catIcon {
+  width: 50px;
+  height: 50px;
   margin: 10px;
   transition: 0.2s;
   cursor: pointer;
@@ -2257,4 +2260,8 @@ button:focus-visible {
 .selectedImg-div {
   width: 50px;
   height: 50px;
+}
+.navBar-categoryIcon {
+  width: 24px;
+  margin: 0 10px;
 }

@@ -7,7 +7,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
     const [newCategory, setNewCategory] = useState({
         categoryName: "",
-        color: "",
+        color: null,
         iconUrl: "",
         uid: "testUser",
     })
@@ -23,113 +23,236 @@ const CreateCategoryModal = ({ open, onClose }) => {
     // update color code
     const updateCategoryColor = (color) => {
         let newCategoryCopy = { ...newCategory }
-        newCategoryCopy.color = color
+        if (color === 'none') {
+            newCategoryCopy.color = null
+        } else {
+            newCategoryCopy.color = color
+        }
         setNewCategory(newCategoryCopy)
     }
 
     // update icon code 
     const updateCategoryIcon = (icon) => {
         let newCategoryCopy = { ...newCategory }
-        newCategoryCopy.iconUrl = icon.iconUrl
+        newCategoryCopy.iconUrl = icon
         setNewCategory(newCategoryCopy)
     }
 
     const addCategory = () => {
-        let userCategoriesCopy = {...userCategories}
-        userCategoriesCopy.categories[newCategory.categoryName] = (newCategory)
-        userCategoriesCopy.categoryOrder.push(newCategory.categoryName)
-        setUserCategories(userCategoriesCopy)
-        onClose()
+        if (newCategory.categoryName) {
+            let userCategoriesCopy = {...userCategories}
+            userCategoriesCopy.categories[newCategory.categoryName] = (newCategory)
+            userCategoriesCopy.categoryOrder.push(newCategory.categoryName)
+            setUserCategories(userCategoriesCopy)
+            onClose()
+        } else {
+
+        }
     }
 
 
     const [selectedIcon, setSelectedIcon] = useState(null)
     const icons = [
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "shopping bags",
+            iconUrl: "https://i.imgur.com/NLmGzrG.png",
+            iconTags: ['shopping', 'bags', 'spend', 'mall']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "inbox",
+            iconUrl: "https://i.imgur.com/V0P8X5E.png",
+            iconTags: ['inbox', 'mail', 'papers', 'file']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "groceries",
+            iconUrl: "https://i.imgur.com/ccL7bih.png",
+            iconTags: ['groceries', 'basket', 'market', 'yellow']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "tags",
+            iconUrl: "https://i.imgur.com/P6RBdSr.png",
+            iconTags: ['tags', 'shop', 'blue']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "camera",
+            iconUrl: "https://i.imgur.com/b9H0BDA.png",
+            iconTags: ['camera', 'picture', 'image', 'photo', 'photography']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "apple",
+            iconUrl: "https://i.imgur.com/dIiXUrK.png",
+            iconTags: ['apple', 'technology', 'phones', 'iphone']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "artificial intelligence",
+            iconUrl: "https://i.imgur.com/3vKeC0A.png",
+            iconTags: ['artifical', 'intelligence', 'technology', 'programming']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "veggie bowl",
+            iconUrl: "https://i.imgur.com/Q3uCN6H.png",
+            iconTags: ['veggie', 'vegetarian', 'bowl', 'food']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "trophy",
+            iconUrl: "https://i.imgur.com/0W3hS9H.png",
+            iconTags: ['trophy', 'winning', 'competition', 'champion', 'yellow', 'victory']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "money bag",
+            iconUrl: "https://i.imgur.com/McQRcDJ.png",
+            iconTags: ['money', 'bags', 'bank', 'green', 'rich']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "map",
+            iconUrl: "https://i.imgur.com/Hh5K6aF.png",
+            iconTags: ['map', 'location', 'pin', 'travel']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "christmas tree",
+            iconUrl: "https://i.imgur.com/r1inSNZ.png",
+            iconTags: ['christmas', 'tree', 'xmas', 'holiday']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "compact disk",
+            iconUrl: "https://i.imgur.com/Uw6RZOQ.png",
+            iconTags: ['compact', 'disk', 'music', 'playlist', 'blue']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "bookmark",
+            iconUrl: "https://i.imgur.com/2aBr45Z.png",
+            iconTags: ['bookmark', 'star', 'favorite']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "presentation",
+            iconUrl: "https://i.imgur.com/I0UjmF6.png",
+            iconTags: ['presentation', 'work', 'office']
         },
         {
-            iconName: "pigeon",
-            iconUrl: "https://i.imgur.com/DQ1Otmw.png",
-            iconTags: ['pigeon', 'fly', 'pet', 'cute', 'bird', 'purple']
+            iconName: "location pin",
+            iconUrl: "https://i.imgur.com/t2EAesy.png",
+            iconTags: ['location', 'pin', 'map', 'travel', 'destination']
         },
         {
-            iconName: "pikachu",
-            iconUrl: "https://i.imgur.com/LWbEQps.jpg",
-            iconTags: ['pokemon', 'pikachu', 'pet', 'cute', 'yellow']
+            iconName: "shopping cart",
+            iconUrl: "https://i.imgur.com/LkO5iAj.png",
+            iconTags: ['shopping', 'cart', 'groceries', 'market']
         },
+        {
+            iconName: "bank",
+            iconUrl: "https://i.imgur.com/eoftxDS.png",
+            iconTags: ['bank', 'money', 'building']
+        },
+        {
+            iconName: "chart",
+            iconUrl: "https://i.imgur.com/w4u4PTo.png",
+            iconTags: ['pie', 'chart', 'portions']
+        },
+        {
+            iconName: "smartphone",
+            iconUrl: "https://i.imgur.com/xralCEf.png",
+            iconTags: ['smart', 'phone', 'smartphone', 'telephone']
+        },
+        {
+            iconName: "user",
+            iconUrl: "https://i.imgur.com/aNjWuCO.png",
+            iconTags: ['user', 'person', 'individual']
+        },
+        {
+            iconName: "car key",
+            iconUrl: "https://i.imgur.com/EBiy6DH.png",
+            iconTags: ['car', 'key']
+        },
+        {
+            iconName: "email",
+            iconUrl: "https://i.imgur.com/G8dJ8h1.png",
+            iconTags: ['email', 'inbox', 'internet', 'message']
+        },
+        {
+            iconName: "coffee cup",
+            iconUrl: "https://i.imgur.com/zxN3pyr.png",
+            iconTags: ['coffee', 'cup', 'hot', 'drink']
+        },
+        {
+            iconName: "taxi",
+            iconUrl: "https://i.imgur.com/Nm1N0cy.png",
+            iconTags: ['taxi', 'car', 'drive', 'road']
+        },
+        {
+            iconName: "team",
+            iconUrl: "https://i.imgur.com/mzPrzwq.png",
+            iconTags: ['team', 'people', 'group']
+        },
+        {
+            iconName: "gift box",
+            iconUrl: "https://i.imgur.com/q5pMJuZ.png",
+            iconTags: ['gifts', 'box', 'wrapped', 'present']
+        },
+        {
+            iconName: "health report",
+            iconUrl: "https://i.imgur.com/3Do4ea2.png",
+            iconTags: ['health', 'report', 'doctors', 'heart', 'hospital']
+        },
+        {
+            iconName: "soccer",
+            iconUrl: "https://i.imgur.com/XdnUluo.png",
+            iconTags: ['soccer', 'football', 'sports', 'ball']
+        },
+        {
+            iconName: "money dollar",
+            iconUrl: "https://i.imgur.com/LPdB0G1.png",
+            iconTags: ['money', 'dollar', 'green', 'rich']
+        },
+        {
+            iconName: "android",
+            iconUrl: "https://i.imgur.com/IAsDuMh.png",
+            iconTags: ['android', 'phone', 'technology', 'smartphone']
+        },
+        {
+            iconName: "star",
+            iconUrl: "https://i.imgur.com/DHUWspC.png",
+            iconTags: ['star', 'golden', 'bookmark', 'favorite']
+        },
+        {
+            iconName: "gift card",
+            iconUrl: "https://i.imgur.com/LhsAM8q.png",
+            iconTags: ['gifts', 'cards', 'present', 'holiday']
+        },
+        {
+            iconName: "vintage car",
+            iconUrl: "https://i.imgur.com/YZoBLjt.png",
+            iconTags: ['vintage', 'car', 'blue', 'drive', 'vehicle', 'road']
+        },
+        {
+            iconName: "basket",
+            iconUrl: "https://i.imgur.com/HZ3tQW9.png",
+            iconTags: ['baskets', 'shopping', 'groceries', 'market']
+        },
+        {
+            iconName: "email document",
+            iconUrl: "https://i.imgur.com/fvo66vH.png",
+            iconTags: ['email', 'document', 'inbox', 'mail']
+        },
+        {
+            iconName: "pie chart",
+            iconUrl: "https://i.imgur.com/gkS0AEZ.png",
+            iconTags: ['pie', 'charts', 'math', 'portions', 'thirds']
+        },
+        {
+            iconName: "office",
+            iconUrl: "https://i.imgur.com/b7Hacuv.png",
+            iconTags: ['office', 'buildings', 'blue', 'work']
+        },
+        {
+            iconName: "basketball",
+            iconUrl: "https://i.imgur.com/gIYKArk.png",
+            iconTags: ['basketball', 'sports', 'ball', 'blue']
+        },
+        {
+            iconName: "two users",
+            iconUrl: "https://i.imgur.com/sqPWKA3.png",
+            iconTags: ['two', 'users', 'people']
+        }
     ]
 
 
@@ -210,7 +333,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
                     </div>
                 </div>
 
-                <div className="flx-r mt-4 align-r">
+                <div className="flx-r mt-4 align-r mb-2">
                     <p className="m-0">Choose Icon:</p>
                     <div className="selectedImg-div ml-3 flx">
                         {selectedIcon &&
@@ -233,9 +356,9 @@ const CreateCategoryModal = ({ open, onClose }) => {
                     </div>
                 </div>
                 <div className="flx-r flx-wrap">
-                    <Scrollbars style={{ width: "100%", height: "150px" }}>
+                    <Scrollbars style={{ width: "100%", height: "140px" }}>
                         {icons.map((icon, index) => {
-                            return <img key={index} onClick={() => setSelectedIcon(icon.iconUrl)} src={icon.iconUrl} alt="" className="catIcon img-small" />
+                            return <img key={index} onClick={() => {updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl)}} src={icon.iconUrl} alt="" className="catIcon img-small" />
                         })}
 
                     </Scrollbars>

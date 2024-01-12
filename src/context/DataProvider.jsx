@@ -114,22 +114,22 @@ const DataProvider = (props) => {
         completed: []
     })
     const [userCategories, setUserCategories] = useState({
-        categories : {
+        categories: {
             "Home": {
                 categoryName: "Home",
-                iconUrl: "",
+                iconUrl: "https://i.imgur.com/sqPWKA3.png",
                 color: "",
                 uid: "testUser"
             },
             "Car": {
                 categoryName: "Car",
-                iconUrl: "",
+                iconUrl: "https://i.imgur.com/sqPWKA3.png",
                 color: "",
                 uid: "testUser"
             },
             "Health": {
                 categoryName: "Health",
-                iconUrl: "",
+                iconUrl: "https://i.imgur.com/sqPWKA3.png",
                 color: "",
                 uid: "testUser"
             },
@@ -167,7 +167,7 @@ const DataProvider = (props) => {
                 }
                 if (tasksArr[i].endDate) {
                     // at 11:32PM a task w/ end date on the same day was put in over due, I'm comparing end date to yesterday in order to get around that
-                    if (new Date(tasksArr[i].endDate) > new Date((new Date()).valueOf() - 1000*60*60*24)) {
+                    if (new Date(tasksArr[i].endDate) > new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24)) {
                         upcomingCompletedArr.push(tasksArr[i].id)
                     }
                 }
@@ -180,7 +180,7 @@ const DataProvider = (props) => {
                 }
                 if (tasksArr[i].endDate) {
                     // at 11:32PM a task w/ end date on the same day was put in over due, I'm comparing end date to yesterday in order to get around that
-                    if (new Date(tasksArr[i].endDate) < new Date((new Date()).valueOf() - 1000*60*60*24)) {
+                    if (new Date(tasksArr[i].endDate) < new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24)) {
                         overdueArr.push(tasksArr[i].id)
                     } else {
                         // create arr of upcoming tasks
@@ -196,7 +196,7 @@ const DataProvider = (props) => {
             //     upcomingTaskIds.push(upcomingTasksSorted.id)
             // }
         }
-        setCategories({
+        let finalCategories = {
             allTasks: allTasksArr,
             allTasksCompleted: [],
             myDay: myDayArr,
@@ -207,8 +207,31 @@ const DataProvider = (props) => {
             priorityCompleted: priorityCompletedArr,
             overdue: overdueArr,
             completed: completedArr,
-        })
-    }, [tasks])
+        }
+        if (userCategories) {
+            // loop thru u cats
+            // let tasksArr = Object.values(tasks)
+            for (let i = 0; i < userCategories.categoryOrder.length; i++) {
+                let category = userCategories.categories[userCategories.categoryOrder[i]]
+                let categoryArr = []
+                let categoryCompletedArr = []
+                for (let i = 0; i < tasksArr.length; i++) {
+                    if (tasksArr[i].completed) {
+                        if (tasksArr[i].category === category.categoryName) {
+                            categoryCompletedArr.push(tasksArr[i].id)
+                        }
+                    } else {
+                        if (tasksArr[i].category === category.categoryName) {
+                            categoryArr.push(tasksArr[i].id)
+                        }
+                    }
+                }
+                finalCategories[category.categoryName] = categoryArr
+                finalCategories[category.categoryName+"Completed"] = categoryCompletedArr
+            }
+        }
+        setCategories(finalCategories)
+    }, [tasks, userCategories])
 
     const users = [
         {

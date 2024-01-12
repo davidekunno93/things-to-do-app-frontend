@@ -102,7 +102,8 @@ const Navbar = () => {
                 {userCategories ?
                     userCategories.categoryOrder.map((categoryName, index) => {
                         let userCategory = userCategories.categories[categoryName]
-                        return <div key={index} className="nav-option">
+                        return <div onClick={() => { setSelectedCategory(userCategory.categoryName); goToDashboard() }} key={index} className="nav-option">
+                            <img src={userCategory.iconUrl} alt="" className="navBar-categoryIcon" />
                             <p className="inline ml-1">{userCategory.categoryName}</p>
                         </div>
                     })

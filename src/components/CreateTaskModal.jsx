@@ -12,6 +12,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         categorySelect.value = category ? category : "No Category"
     }, [])
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
+    const { userCategories, setUserCategories } = useContext(DataContext);
     let taskLastInArr = Object.keys(tasks).slice(-1)
     const [newTask, setNewTask] = useState({
         id: parseInt(taskLastInArr[0]) + 1,
@@ -419,9 +420,10 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                         <div className="flx-r">
                                             <select onChange={(e) => updateTaskCategory(e)} name="categories" className='categorySelection' id="categorySelect">
                                                 <option value="No Category">No Category</option>
-                                                <option value="Home">Home</option>
-                                                <option value="Car">Car</option>
-                                                <option value="Health">Health</option>
+                                                {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
+                                                    let category = userCategories.categories[categoryName]
+                                                    return <option key={index} value={category.categoryName}>{category.categoryName}</option>                              
+                                                }): null}
                                                 <option value="CreateNew">-- Create New Category --</option>
                                             </select>
                                             <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
