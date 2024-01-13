@@ -20,10 +20,10 @@ const Navbar = () => {
     const openCreateCategoryModal = () => {
         setCreateCategoryModalOpen(true)
     }
-    
+
     return (
         <>
-        <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} />
+            <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} />
             <div className='navbar-black'>
                 <div className="nav-option-cold">
                     <p className="inline ml-1">THINGS TO-DO</p>
@@ -99,12 +99,17 @@ const Navbar = () => {
                         {categories.allTasks.length}
                     </div>
                 </div>
-                {userCategories ?
+                {userCategories.categoryOrder.length > 0 && categories ?
                     userCategories.categoryOrder.map((categoryName, index) => {
                         let userCategory = userCategories.categories[categoryName]
                         return <div onClick={() => { setSelectedCategory(userCategory.categoryName); goToDashboard() }} key={index} className="nav-option">
                             <img src={userCategory.iconUrl} alt="" className="navBar-categoryIcon" />
                             <p className="inline ml-1">{userCategory.categoryName}</p>
+                            {categories[categoryName] ? categories[categoryName].length > 0 &&
+                                <div className={`number-display-${userCategory.color}`}>
+                                    {categories[categoryName].length}
+                                </div> : null
+                            }
                         </div>
                     })
                     : null

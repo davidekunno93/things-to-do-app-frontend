@@ -7,7 +7,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
     const [newCategory, setNewCategory] = useState({
         categoryName: "",
-        color: null,
+        color: "none",
         iconUrl: "",
         uid: "testUser",
     })
@@ -24,7 +24,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
     const updateCategoryColor = (color) => {
         let newCategoryCopy = { ...newCategory }
         if (color === 'none') {
-            newCategoryCopy.color = null
+            newCategoryCopy.color = "none"
         } else {
             newCategoryCopy.color = color
         }
@@ -313,18 +313,18 @@ const CreateCategoryModal = ({ open, onClose }) => {
                     <div id='yellow' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('yellow'); updateColor('yellow')}} className="color-circle cc-yellow position-absolute abs-center"></div>
                     </div>
-                    <div id='purple' className="color-circle-container">
+                    {/* <div id='purple' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('purple'); updateColor('purple')}} className="color-circle cc-purple position-absolute abs-center"></div>
-                    </div>
+                    </div> */}
                     <div id='pink' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('pink'); updateColor('pink')}} className="color-circle cc-pink position-absolute abs-center"></div>
                     </div>
                     <div id='white' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('white'); updateColor('white')}} className="color-circle cc-white position-absolute abs-center"></div>
                     </div>
-                    <div id='black' className="color-circle-container">
+                    {/* <div id='black' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('black'); updateColor('black')}} className="color-circle cc-black position-absolute abs-center"></div>
-                    </div>
+                    </div> */}
                     <div id='navy' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('navy'); updateColor('navy')}} className="color-circle cc-navy position-absolute abs-center"></div>
                     </div>
@@ -333,7 +333,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
                     </div>
                 </div>
 
-                <div className="flx-r mt-4 align-r mb-2">
+                <div className="flx-r mt-3 align-r mb-2">
                     <p className="m-0">Choose Icon:</p>
                     <div className="selectedImg-div ml-3 flx">
                         {selectedIcon &&

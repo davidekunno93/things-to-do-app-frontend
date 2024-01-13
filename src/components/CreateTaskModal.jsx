@@ -9,6 +9,9 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     if (!open) return null
     useEffect(() => {
         let categorySelect = document.getElementById('categorySelect')
+        if (category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed") {
+            category = null
+        }
         categorySelect.value = category ? category : "No Category"
     }, [])
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);

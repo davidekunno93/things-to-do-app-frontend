@@ -117,20 +117,20 @@ const DataProvider = (props) => {
         categories: {
             "Home": {
                 categoryName: "Home",
-                iconUrl: "https://i.imgur.com/sqPWKA3.png",
-                color: "",
+                iconUrl: "https://i.imgur.com/t2EAesy.png",
+                color: "yellow",
                 uid: "testUser"
             },
             "Car": {
                 categoryName: "Car",
-                iconUrl: "https://i.imgur.com/sqPWKA3.png",
-                color: "",
+                iconUrl: "https://i.imgur.com/Nm1N0cy.png",
+                color: "orange",
                 uid: "testUser"
             },
             "Health": {
                 categoryName: "Health",
-                iconUrl: "https://i.imgur.com/sqPWKA3.png",
-                color: "",
+                iconUrl: "https://i.imgur.com/3Do4ea2.png",
+                color: "none",
                 uid: "testUser"
             },
         },

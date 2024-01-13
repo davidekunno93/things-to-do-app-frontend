@@ -8,10 +8,11 @@ import EditTaskModal from '../components/EditTaskModal';
 import DatePickerModal from '../components/DatePickerModal';
 import { format } from 'date-fns';
 import CreateCategoryModal from '../components/CreateCategoryModal';
+import TimePickerModal from '../components/TimePickerModal';
 
 
 const Dashboard = () => {
-    const { tasks, setTasks, users, categories, selectedCategory, setSelectedCategory } = useContext(DataContext);
+    const { tasks, setTasks, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
     const taskObj = {
         taskName: "",
@@ -46,6 +47,12 @@ const Dashboard = () => {
     const datifunc = (date) => {
         let formattedDate = format(date, "MM/dd/yyyy")
         return datify(formattedDate)
+    }
+    const timify = (time) => {
+        if (time[0] === "0") {
+            time = time.slice(1)
+        }
+        return time
     }
 
     // create new task modal
@@ -201,6 +208,20 @@ const Dashboard = () => {
             }
             setTasks(tasksCopy)
         },
+        updateCategory: function (taskId, newCategory) {
+            let tasksCopy = { ...tasks }
+            tasksCopy[taskId].category = newCategory
+            setTasks(tasksCopy)
+        },
+        updateDuration: function (taskId, option) {
+            let tasksCopy = { ...tasks }
+            if (option) {
+                tasksCopy[taskId].duration = option
+            } else {
+                tasksCopy[taskId].duration = null
+            }
+            setTasks(tasksCopy)
+        },
         updateEndDate: function (taskId, date) {
             let tasksCopy = { ...tasks }
             // console.log(datifunc(date))
@@ -213,12 +234,12 @@ const Dashboard = () => {
             }
             setTasks(tasksCopy)
         },
-        updateDuration: function (taskId, option) {
+        updateEndTime: function (taskId, time, timeOfDay) {
             let tasksCopy = { ...tasks }
-            if (option) {
-                tasksCopy[taskId].duration = option
+            if (time) {
+                tasksCopy[taskId].endTime = timify(time) + " " + timeOfDay
             } else {
-                tasksCopy[taskId].duration = null
+                tasksCopy[taskId].endTime = null
             }
             setTasks(tasksCopy)
         },
@@ -330,22 +351,53 @@ const Dashboard = () => {
     // quick date change code
     const [changeDate, setChangeDate] = useState(null)
     const [datePickerModalOpen, setDatePickerModalOpen] = useState(false);
-    const openDatePickerModal = (taskId, endDate) => {
+    const openDatePickerModal = (taskId) => {
         setChangeDate({
             taskId: taskId,
-            endDate: endDate
+            endDate: tasks[taskId].endDate
         })
-        console.log(datePickerModalOpen)
         setDatePickerModalOpen(true);
     }
+    const closeDatePickerModal = () => {
+        setDatePickerModalOpen(false)
+        if (changeTime) {
+            setTimePickerModalOpen(true)
+        }
+    }
+    // quick date and time change code
+    const [changeTime, setChangeTime] = useState(null);
+    const [timePickerModalOpen, setTimePickerModalOpen] = useState(false);
+    const openDateAndTimePickerModal = (taskId) => {
+        setChangeDate({
+            taskId: taskId,
+            endDate: tasks[taskId].endDate
+        })
+        setChangeTime({
+            taskId: taskId,
+            endTime: tasks[taskId].endTime
+        })
+        setDatePickerModalOpen(true)
+    }
+    const openTimePickerModal = () => {
+        setTimePickerModalOpen(true)
+    }
+    const closeTimePickerModal = () => {
+        setTimePickerModalOpen(false)
+        setChangeTime(null)
+    }
+    const goBack = (taskId) => {
+        setTimePickerModalOpen(false)
+        openDateAndTimePickerModal(taskId)
+    }
 
-    
+
     return (
         <>
-            <CreateTaskModal open={newTaskModalOpen} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
+            <CreateTaskModal open={newTaskModalOpen} category={selectedCategory} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
             <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} />
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
-            <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={() => setDatePickerModalOpen(false)} />
+            <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
+            <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Page Rendered to the right to make space for navbar */}
             <div className="page-container-right">
@@ -368,33 +420,33 @@ const Dashboard = () => {
                 {/* Page sub-title section */}
                 <div className="sub-title-section sticky-top page-container96-byPadding">
                     {selectedCategory === "allTasks" &&
-                    <div className="tab-container mb-4">
-                        <div className="align-all-items gap-2">
-                            <span className="material-symbols-outlined xx-large">
-                                list
-                            </span>
-                            <p className="m-0 xx-large">All Tasks</p>
-                        </div>
+                        <div className="tab-container mb-4">
+                            <div className="align-all-items gap-2">
+                                <span className="material-symbols-outlined xx-large">
+                                    list
+                                </span>
+                                <p className="m-0 xx-large">All Tasks</p>
+                            </div>
                         </div>
                     }
                     {selectedCategory === "myDay" &&
-                    <div className="tab-container mb-4">
-                        <div className="align-all-items gap-2">
-                            <span className="material-symbols-outlined xx-large">
-                                sunny
-                            </span>
-                            <p className="m-0 xx-large"><strong>My Day</strong></p>
-                        </div>
+                        <div className="tab-container mb-4">
+                            <div className="align-all-items gap-2">
+                                <span className="material-symbols-outlined xx-large">
+                                    sunny
+                                </span>
+                                <p className="m-0 xx-large"><strong>My Day</strong></p>
+                            </div>
                         </div>
                     }
                     {selectedCategory === "upcoming" &&
-                    <div className="tab-container mb-4">
-                        <div className="align-all-items gap-2">
-                            <span className="material-symbols-outlined xx-large">
-                                event_upcoming
-                            </span>
-                            <p className="m-0 xx-large">Upcoming Tasks</p>
-                        </div>
+                        <div className="tab-container mb-4">
+                            <div className="align-all-items gap-2">
+                                <span className="material-symbols-outlined xx-large">
+                                    event_upcoming
+                                </span>
+                                <p className="m-0 xx-large">Upcoming Tasks</p>
+                            </div>
                         </div>
                     }
                     {selectedCategory === "priority" &&
@@ -408,24 +460,32 @@ const Dashboard = () => {
                         </div>
                     }
                     {selectedCategory === "overdue" &&
-                    <div className="tab-container tb-overdue mb-4">
-                        <div className="align-all-items gap-2">
-                            <span className="material-symbols-outlined xx-large darkyellow-text">
-                                calendar_clock
-                            </span>
-                            <p className="m-0 xx-large darkyellow-text">Overdue Tasks</p>
-                        </div>
+                        <div className="tab-container tb-overdue mb-4">
+                            <div className="align-all-items gap-2">
+                                <span className="material-symbols-outlined xx-large darkyellow-text">
+                                    calendar_clock
+                                </span>
+                                <p className="m-0 xx-large darkyellow-text">Overdue Tasks</p>
+                            </div>
                         </div>
                     }
                     {selectedCategory === "completed" &&
-                    <div className="tab-container tb-completed mb-4">
+                        <div className="tab-container tb-completed mb-4">
+                            <div className="align-all-items gap-2">
+                                <span className="material-symbols-outlined xx-large green-text">
+                                    done
+                                </span>
+                                <p className="m-0 xx-large green-text">Completed Tasks</p>
+                            </div>
+                        </div>
+                    }
+                    {selectedCategory !== 'myDay' && selectedCategory !== 'upcoming' && selectedCategory !== 'priority' && selectedCategory !== 'overdue' && selectedCategory !== 'completed' && selectedCategory !== 'allTasks' &&
+                        <div className="tab-container mb-4">
                         <div className="align-all-items gap-2">
-                            <span className="material-symbols-outlined xx-large green-text">
-                                done
-                            </span>
-                            <p className="m-0 xx-large green-text">Completed Tasks</p>
+                            <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className="img-smallh mr-2" />
+                            <p className="m-0 xx-large">{userCategories.categories[selectedCategory].categoryName}</p>
                         </div>
-                        </div>
+                    </div>
                     }
 
                     {/* Add New Task Button */}
@@ -469,25 +529,25 @@ const Dashboard = () => {
                     {/* Task Box(es) */}
                     {Object.values(tasks).map((task, index) => {
                         if (categories[selectedCategory].includes(task.id)) {
-                            return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} />
+                            return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} openDateAndTimePickerModal={openDateAndTimePickerModal} />
                         }
                     })}
                     {Object.values(tasks).map((task, index) => {
                         if (categories[selectedCategory + "Completed"]) {
                             if (categories[selectedCategory + "Completed"].includes(task.id)) {
-                                return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} />
+                                return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} openDateAndTimePickerModal={openDateAndTimePickerModal} />
                             }
                         }
                     })}
 
                     {/* Add New Task Box */}
                     {selectedCategory !== "completed" &&
-                    <div onClick={() => openCreateNewTask()} className="addNewTask-box">
-                        <p className="m-0"><span className="material-symbols-outlined v-bott mr-2">
-                            add
-                        </span>
-                            Add New Task</p>
-                    </div>
+                        <div onClick={() => openCreateNewTask()} className="addNewTask-box">
+                            <p className="m-0"><span className="material-symbols-outlined v-bott mr-2">
+                                add
+                            </span>
+                                Add New Task</p>
+                        </div>
                     }
 
 
