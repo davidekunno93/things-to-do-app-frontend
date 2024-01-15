@@ -199,6 +199,10 @@ button:focus-visible {
   height: 50px;
   object-fit: contain;
 }
+.img-iconh {
+  height: 48px;
+  object-fit: contain;
+}
 .img-medium {
   width: 100px;
   object-fit: contain;
@@ -214,6 +218,15 @@ button:focus-visible {
 .img-fitHeight {
   height: 100%;
   object-fit: contain;
+}
+.grayscale {
+  filter: grayscale(100%);
+}
+.unchosen {
+  filter: grayscale(85%) brightness(50%);
+}
+.unchosen:hover {
+  filter: grayscale(75%) brightness(75%);
 }
 
 
@@ -936,6 +949,24 @@ button:focus-visible {
   opacity: 1;
   transition: 0.2s;
 }
+.hoverGraylight {
+  color: gray;
+  transition: 0.2s;
+}
+.hoverGraylight:hover {
+  color: whitesmoke;
+  transform: translateX(2px);
+  transition: 0.2s;
+}
+.hoverLightGraylight {
+  color: gainsboro;
+  transition: 0.2s;
+}
+.hoverLightGraylight:hover {
+  color: whitesmoke;
+  transform: translateX(2px);
+  transition: 0.2s;
+}
 
 
 
@@ -1041,8 +1072,28 @@ button:focus-visible {
   margin: auto;
 }
 .page-container-right {
-  /* width: 85%; */
+  /* width: calc(100vw - 230px); */
   margin-left: 230px;
+  transition: 0.5s;
+}
+.auth-container {
+  width: 100vw;
+  margin-left: 0px;
+  background-color: black;
+  transition: 0.4s ease;
+}
+.auth-container-anim {
+  width: 0px;
+  /* margin-left: 230px; */
+  transition: 0.5s ease;
+}
+
+.pagebody-bg-black {
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  transition: 0.4s ease;
 }
 
 /* display shorthands */
@@ -1054,6 +1105,17 @@ button:focus-visible {
 }
 .d-none {
   display: none;
+}
+.hidden {
+  visibility: hidden;
+}
+.hidden-o {
+  visibility: hidden;
+  opacity: 0;
+}
+.shown {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* opacity shorthands */
@@ -1308,12 +1370,13 @@ button:focus-visible {
 .input-style3 {
   border: none;
   height: 20px;
-  border-bottom: 2px solid gray;
-  background-color: rgb(235, 235, 235);
+  color: white;
+  border-bottom: 2px solid rgb(34, 34, 34);
+  background-color: rgba(255, 255, 255, 0.07);
   transition: 0.2s;
 }
 .input-style3:hover {
-  background-color: gainsboro;
+  background-color: rgba(255, 255, 255, 0.1);
   transition: 0.2s;
 }
 .inputBox {
@@ -1323,6 +1386,22 @@ button:focus-visible {
 
 
 /* navbar */
+.navbar-holder {
+  background-color: black;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  height: 100%;
+  width: 230px;
+  transition: 0.4s ease;
+}
+.native-nav {
+  /* border: 1px solid red; */
+  /* transform: translateX(-101%); */
+  transition: 0.4s ease;
+}
+
 .navbar {
   background-color: gainsboro;
   position: fixed;
@@ -1915,6 +1994,15 @@ selection:hover .sub-selection {
   transform: translateY(-45%);
   border-radius: 24px;
 }
+.showPasswordIcon {
+  font-size: large;
+  color: gray;
+  margin: auto;
+  cursor: pointer;
+}
+
+
+
 .noPriority {
   color: rgba(0, 0, 0, 0.2);
 }
@@ -2266,6 +2354,33 @@ selection:hover .sub-selection {
   padding: 12px 18px 12px 12px;
   border-radius: 16px;
 }
+.tab-container .popUp {
+  width: 240px;
+  /* height: 40px; */
+  position: absolute;
+  border: 1px solid gainsboro;
+  border-radius: 12px;
+  background-color: white;
+  left: calc(100% - 32px);
+  top: 40px;
+  z-index: 1;
+  overflow: hidden;
+  transition: 0.1s;
+}
+.tab-container .popUp .option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  height: 32px;
+  /* background-color: #007ACC; */
+  transition: 0.2s;
+  cursor: pointer;
+}
+.tab-container .popUp .option:hover {
+  background-color: rgb(240, 240, 240);
+  transition: 0.2s;
+}
 .tb-myDay {
   background-color: rgba(234, 206, 28, 0.15);
 }
@@ -2397,4 +2512,62 @@ selection:hover .sub-selection {
 .box-top {
   width: 100%;
   margin: 0 0 auto 0;
+}
+.sign-up-box {
+  width: 400px;
+  height: 420px;
+  margin: auto;
+  margin-left: 50%;
+}
+.sign-in-box {
+  width: 400px;
+  height: 300px;
+  margin: auto;
+  margin-left: 50%;
+}
+.carousel-window {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  /* flex-direction: column; */
+}
+.inner {
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+  transition: 0.5s ease;
+  /* transform: translateX(-100%); */
+  /* transform: translateY(-100%); */
+}
+.carousel-item {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  /* background-color: #007ACC; */
+}
+.carousel-item2 {
+  display: flex;
+  width: 100%;
+  /* height: 100%; */
+  /* background-color: #29cc00; */
+}
+.website-tips {
+  /* border: 1px solid red; */
+  box-sizing: border-box;
+  padding: 12px 24px;
+  width: 400px;
+  height: 524px;
+  left: 50%;
+  top: 50%;
+  /* transform: translateX(-120%); */
+  transform: translate(-120%, -50%);
+
+}
+.img-tip {
+  width: 350px;
+  /* height: 300px;
+  object-fit: contain; */
+}
+#tipBox {
+  transition: 0.8s;
 }

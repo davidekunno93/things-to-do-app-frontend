@@ -1,0 +1,281 @@
+import React, { useContext, useEffect, useState } from 'react'
+import { DataContext } from '../context/DataProvider'
+import { useNavigate } from 'react-router-dom'
+import { Fade } from 'react-awesome-reveal'
+
+const Authentication = () => {
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [tipIndex, setTipIndex] = useState(0);
+    const [tipSliderOn, setTipSliderOn] = useState(false)
+    const [timer, setTimer] = useState(0);
+    const { showNavbar, setShowNavbar } = useContext(DataContext);
+
+    // other functions
+    function wait(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
+    }
+    const navigate = useNavigate()
+    useEffect(() => {
+        setShowNavbar(false)
+    }, [])
+
+    // tips code
+    const updateTimer = () => {
+        wait(15000).then(() => {
+            setTimer(timer + 1)
+        })
+    }
+    const nextTip = () => {
+        let tip = document.getElementById('tipBox')
+        tip.classList.add('hidden-o')
+        wait(500).then(() => {
+            if (tipIndex === 3) {
+                setTipIndex(0)
+            } else {
+                setTipIndex(tipIndex + 1)
+            }
+            tip.classList.remove('hidden-o')
+        })
+        updateTimer()
+    }
+    const showTips = () => {
+        let tip = document.getElementById('tipBox')
+        tip.classList.remove('hidden-o')
+    }
+    useEffect(() => {
+        wait(800).then(() => {
+            showTips()
+        })
+        wait(2000).then(() => {
+            setTipSliderOn(true)
+            updateTimer()
+        })
+    }, [])
+    useEffect(() => {
+        if (tipSliderOn) {
+            nextTip()
+        }
+    }, [timer])
+    const tips = [
+        {
+            title: "Create Tasks",
+            imgUrl: "https://i.imgur.com/7WceuWx.png",
+            text: "Set the priority, add notes, record the deadline time and add so much more customization to your tasks."
+        },
+        {
+            title: "Advanced Settings",
+            imgUrl: "https://i.imgur.com/oAKTC3X.png",
+            text: "Toggle on advanced settings to set the frequency, duration, outdoors, and add steps to your task."
+        },
+        {
+            title: "Update Tasks on the fly",
+            imgUrl: "https://i.imgur.com/tm064EZ.png",
+            text: "Expand tasks from the dashboard and update tasks on the fly directly from the task bar."
+        },
+        {
+            title: "Create Categories",
+            imgUrl: "https://i.imgur.com/c4bdKF5.png",
+            text: "Create new categories to group your tasks in personalized lists."
+        },
+    ]
+
+    // toggle show password code
+    // sign in toggle
+    const [showSignInPassword, setShowSignInPassword] = useState(false);
+    const toggleSignInPasswordVisibility = () => {
+        let password = document.getElementById('signInPassword')
+        if (showSignInPassword) {
+            setShowSignInPassword(false)
+            password.setAttribute('type', 'password')
+        } else {
+            setShowSignInPassword(true)
+            password.setAttribute('type', 'text')
+        }
+    }
+    // sign up toggle
+    const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+    const toggleSignUpPasswordVisibility = () => {
+        let password = document.getElementById('signUpPassword')
+        if (showSignUpPassword) {
+            setShowSignUpPassword(false)
+            password.setAttribute('type', 'password')
+        } else {
+            setShowSignUpPassword(true)
+            password.setAttribute('type', 'text')
+        }
+    }
+
+    // slide to and from sign in/sign up - vertical carousel
+    const goToSignIn = () => {
+        setActiveIndex(1)
+    }
+    const goToSignUp = () => {
+        setActiveIndex(0)
+    }
+
+
+    // avatar selection code
+    const [selectedAvatar, setSelectedAvatar] = useState(null)
+    const avatars = [
+        {
+            avatarName: "Frederick the Frog",
+            imgUrl: "https://i.imgur.com/KN1lQAg.png"
+        },
+        {
+            avatarName: "Golden guy",
+            imgUrl: "https://i.imgur.com/TsCbO41.png"
+        },
+        {
+            avatarName: "Moody Bird",
+            imgUrl: "https://i.imgur.com/eoftNcm.png"
+        },
+        {
+            avatarName: "Hearty Heather",
+            imgUrl: "https://i.imgur.com/wYUUYrd.png"
+        },
+        {
+            avatarName: "Timothy Edison",
+            imgUrl: "https://i.imgur.com/Ag7qwwY.png"
+        },
+        {
+            avatarName: "yoda, The",
+            imgUrl: "https://i.imgur.com/2kdku4H.png"
+        }
+    ]
+
+
+    const navigateToDashboard = () => {
+        let page = document.getElementById('pageBody')
+        let tips = document.getElementById('tipBox')
+        let authC = document.getElementById('authContainer')
+        page.classList.add('hidden-o')
+        tips.classList.add('hidden-o')
+
+        wait(600).then(() => {
+            tips.classList.add('d-none')
+            authC.classList.add('auth-container-anim')
+            wait(600).then(() => {
+                setShowNavbar(true)
+                navigate('/')
+            })
+        })
+    }
+
+    return (
+        <>
+            <div id='authContainer' className="auth-container">
+                {/* <Fade fraction={0} triggerOnce> */}
+                    <div id='tipBox' className="website-tips z-1 flx position-absolute white-text hidden-o">
+                        <div className="m-auto">
+                            <p className="m-0 xx-large">{tips[tipIndex].title}</p>
+
+                            <img src={tips[tipIndex].imgUrl} alt="" className="img-tip my-2" />
+                            <p className="m-0">{tips[tipIndex].text}</p>
+                        </div>
+                    </div>
+                {/* </Fade> */}
+                <Fade fraction={0} triggerOnce>
+                    <div id='pageBody' className="pagebody-bg-black flx">
+                        <div className="carousel-window">
+                            <div className="inner" style={{ transform: `translateY(-${activeIndex * 100}%)` }}>
+                                <div className="carousel-item">
+
+
+
+                                    <div className="sign-up-box flx-c just-se">
+
+                                        <div onClick={() => nextTip()} className="xx-large">Sign Up</div>
+
+                                        <div className="name flx-c">
+                                            <label htmlFor='name' className="m-0">Name:</label>
+                                            <input id='name' type="text" className='input-style3' />
+                                        </div>
+
+                                        <div className="email flx-c">
+                                            <label htmlFor='email' className="m-0">Email:</label>
+                                            <input id='email' type="text" className='input-style3' />
+                                        </div>
+
+                                        <div className="avatarsTitle flx-r align-r">
+                                            <p className="m-0">Avatar:</p>
+                                            <p onClick={() => setSelectedAvatar(null)} className="m-0 position-right gray-text small hoverFade pointer">Clear</p>
+                                        </div>
+                                        <div className="avatarIcons mb-4 flx-r just-sb">
+                                            {avatars.map((avatar, index) => {
+                                                let selected = avatar.avatarName === selectedAvatar ? true : false
+                                                return <img key={index} onClick={() => setSelectedAvatar(avatar.avatarName)} src={avatar.imgUrl} alt={avatar.avatarName} className={`img-small pointer ${selected ? " chosen" : "unchosen"}`} />
+                                            })}
+                                        </div>
+
+                                        <div className="password flx-c">
+                                            <label htmlFor='signUpPassword' className="m-0">Password:</label>
+                                            <div className="inputBox flx-c">
+                                                <div className="overlay-icon-right flx">
+                                                    <span onClick={() => toggleSignUpPasswordVisibility()} className="showPasswordIcon material-symbols-outlined">
+                                                        {showSignUpPassword ? "visibility" : "visibility_off"}
+                                                    </span>
+                                                </div>
+                                                <input id='signUpPassword' type="password" className='input-style3' />
+                                            </div>
+                                        </div>
+
+                                        <div className="registerBtn flx-c">
+                                            <div className="flx">
+                                                <div className="align-all-items hoverLightGraylight pointer">
+                                                    <p className="m-0 x-large">Register</p>
+                                                    <span className="material-symbols-outlined ml-2">
+                                                        arrow_forward
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p className="m-0 gray-text">Already have an account? <span onClick={() => goToSignIn()} className="hoverGraylight pointer"><u>Sign In</u></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div className="carousel-item">
+                                    <div className="sign-in-box flx-c just-se">
+                                        <div className="xx-large">Sign In</div>
+                                        <div className="email flx-c">
+                                            <label htmlFor='email' className="m-0">Email:</label>
+                                            <input id='email' type="text" className='input-style3' />
+                                        </div>
+                                        <div className="password flx-c">
+                                            <label htmlFor='signInPassword' className="m-0">Password:</label>
+                                            <div className="inputBox flx-c">
+                                                <div className="overlay-icon-right flx">
+                                                    <span onClick={() => toggleSignInPasswordVisibility()} className="showPasswordIcon material-symbols-outlined">
+                                                        {showSignInPassword ? "visibility" : "visibility_off"}
+                                                    </span>
+                                                </div>
+                                                <input id='signInPassword' type="password" className='input-style3' />
+                                            </div>
+                                        </div>
+
+                                        <div className="registerBtn flx-c">
+                                            <div className="flx">
+                                                <div className="align-all-items hoverLightGraylight pointer">
+                                                    <p className="m-0 x-large">Login</p>
+                                                    <span className="material-symbols-outlined ml-2">
+                                                        arrow_forward
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => navigateToDashboard()} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </Fade>
+            </div>
+        </>
+    )
+}
+export default Authentication

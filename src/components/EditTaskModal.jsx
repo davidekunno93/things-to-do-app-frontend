@@ -74,15 +74,23 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         setUpdatedTask(updatedTaskCopy);
     }
     const [selectedDate, setSelectedDate] = useState(task.endDate ? new Date(task.endDate) : null);
+    const clearEndDate = () => {
+        setSelectedDate(null)
+        updateTaskEndDate(null)
+    }
     const updateTaskEndDate = (date) => {
-        let taskCopy = {...updatedTask}
-        taskCopy.endDate = format(date, "MM/dd/yyyy")
+        let taskCopy = { ...updatedTask }
+        if (date) {
+            taskCopy.endDate = format(date, "MM/dd/yyyy")
+        } else {
+            taskCopy.endDate = null
+        }
         setUpdatedTask(taskCopy)
     }
     const updateTaskEndTime = () => {
-        let taskCopy = {...updatedTask}
+        let taskCopy = { ...updatedTask }
         if (selectedTime) {
-            taskCopy.endTime = timify(selectedTime)+" "+timeOfDay
+            taskCopy.endTime = timify(selectedTime) + " " + timeOfDay
         } else {
             taskCopy.endTime = null
         }
@@ -319,11 +327,11 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         // goes from 3:00 PM to 03:00
         let time = timeWithPM.slice(0, -3).trim()
         if (time.length === 4) {
-            time = "0"+time
+            time = "0" + time
         }
         return time
     }
-    
+
 
     // advanced settings code
     useEffect(() => {
@@ -512,8 +520,8 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                 <option value="No Category">No Category</option>
                                                 {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
                                                     let category = userCategories.categories[categoryName]
-                                                    return <option key={index} value={category.categoryName}>{category.categoryName}</option>                              
-                                                }): null}
+                                                    return <option key={index} value={category.categoryName}>{category.categoryName}</option>
+                                                }) : null}
 
                                                 <option value="CreateNew">-- Create New Category --</option>
                                             </select>
@@ -536,12 +544,15 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                     <div className="task-setting">
                                         <div className="flx-r">
                                             <div className="task-date mr-5 flx-c">
-                                                <label className="m-0 ml-1">Date or Deadline</label>
+                                                <div className="flx-r just-sb align-c">
+                                                    <label className="m-0 ml-1">Date or Deadline</label>
+                                                    <p onClick={() => clearEndDate()} className="m-0 small gray-text pointer hoverFade">Clear</p>
+                                                </div>
                                                 <div className="date-input-div position-relative">
                                                     <span className="material-symbols-outlined overlay-icon2">
                                                         event
                                                     </span>
-                                                    <ReactDatePicker onChange={(date) => {setSelectedDate(date); updateTaskEndDate(date)}} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className="date-input-box" />
+                                                    <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className="date-input-box" />
                                                 </div>
                                             </div>
                                             <div className="task-time flx-c">

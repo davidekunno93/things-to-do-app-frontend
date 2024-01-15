@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Dashboard from './views/Dashboard'
 import Scratch from './views/Scratch'
+import Authentication from './views/Authentication'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
 
       <Routes>
         <Route children path='/' element={<Dashboard />} />
+        <Route children path='/auth' element={<Authentication />} />
         <Route children path='/scratch' element={<Scratch />} />
       </Routes>
 

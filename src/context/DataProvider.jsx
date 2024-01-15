@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 
 const DataProvider = (props) => {
     const [advancedSettingsOn, setAdvancedSettingsOn] = useState(false);
+    const [showNavbar, setShowNavbar] = useState(false)
     // demo library
     const [tasks, setTasks] = useState({
         1: {
@@ -96,6 +97,51 @@ const DataProvider = (props) => {
             steps: [
                 { number: 1, desc: "Gas bill", completed: false },
                 { number: 2, desc: "Mum's December bill", completed: false }
+            ], // [{number: "", desc: "", completed: ""}]
+            progress: 0,
+            completed: false
+        },
+        6: {
+            id: 6,
+            myDay: false,
+            taskName: "Find the infinity stones",
+            category: null,
+            notes: "6 infinity stones away from World Domination!",
+            highPriority: true,
+            endDate: null,
+            endTime: null,
+            frequency: "Once",
+            duration: "Long",
+            outdoors: true,
+            participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+            steps: [
+                { number: 1, desc: "Find one infinity stone", completed: false },
+                { number: 2, desc: "Find the rest of the inifinity stones", completed: false }
+            ], // [{number: "", desc: "", completed: ""}]
+            progress: 0,
+            completed: false
+        },
+        7: {
+            id: 7,
+            myDay: true,
+            taskName: "Catch a new Pokemon",
+            category: null,
+            notes: "Gotta catch 'em all",
+            highPriority: true,
+            endDate: "01/26/2024",
+            endTime: null,
+            frequency: "Once",
+            duration: "Medium",
+            outdoors: true,
+            participants: [
+
+            ], // [{uid: "", displayName: "", photoURL: ""}]
+            steps: [
+                { number: 1, desc: "Buy pokeballs", completed: true },
+                { number: 2, desc: "Walk through tall grass", completed: false },
+                { number: 3, desc: "Battle a pokemon", completed: false },
+                { number: 4, desc: "Weaken the pokemon", completed: false },
+                { number: 5, desc: "Catch the pokemon", completed: false }
             ], // [{number: "", desc: "", completed: ""}]
             progress: 0,
             completed: false
@@ -272,7 +318,7 @@ const DataProvider = (props) => {
     ]
 
     return (
-        <DataContext.Provider value={{ 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn }}>
+        <DataContext.Provider value={{ 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn }}>
             {props.children}
         </DataContext.Provider>
     )

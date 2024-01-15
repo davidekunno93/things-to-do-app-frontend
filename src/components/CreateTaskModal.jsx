@@ -64,9 +64,17 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         setNewTask(newTaskCopy);
     }
     const [selectedDate, setSelectedDate] = useState(null)
+    const clearEndDate = () => {
+        setSelectedDate(null)
+        updateTaskEndDate(null)
+    }
     const updateTaskEndDate = (date) => {
         let taskCopy = { ...newTask }
-        taskCopy.endDate = format(date, "MM/dd/yyyy")
+        if (date) {
+            taskCopy.endDate = format(date, "MM/dd/yyyy")
+        } else {
+            taskCopy.endDate = null
+        }
         setNewTask(taskCopy)
     }
     const updateTaskEndTime = () => {
@@ -76,7 +84,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         } else {
             taskCopy.endTime = null
         }
-        console.log(taskCopy.endTime)
+        // console.log(taskCopy.endTime)
         setNewTask(taskCopy)
     }
     const updateTaskFrequency = (option) => {
@@ -448,7 +456,10 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                     <div className="task-setting">
                                         <div className="flx-r">
                                             <div className="task-date z-100 mr-5 flx-c">
+                                                <div className="flx-r just-sb align-c">
                                                 <label className="m-0 ml-1">Date or Deadline</label>
+                                                <p onClick={() => clearEndDate()} className="m-0 small gray-text pointer hoverFade">Clear</p>
+                                                </div>
                                                 <div className="date-input-div position-relative">
                                                     <span className="material-symbols-outlined overlay-icon2">
                                                         event

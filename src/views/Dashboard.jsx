@@ -9,11 +9,15 @@ import DatePickerModal from '../components/DatePickerModal';
 import { format } from 'date-fns';
 import CreateCategoryModal from '../components/CreateCategoryModal';
 import TimePickerModal from '../components/TimePickerModal';
+import { Fade } from 'react-awesome-reveal';
 
 
 const Dashboard = () => {
-    const { tasks, setTasks, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, tasks, setTasks, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
+    useEffect(() => {
+        setShowNavbar(true)
+    }, [])
     const taskObj = {
         taskName: "",
         category: "",
@@ -138,6 +142,8 @@ const Dashboard = () => {
     const hideOnClickOutsideMenu = (e) => {
         if (refMenu.current && !refMenu.current.contains(e.target)) {
             closeTaskBoxToolTip()
+            hideCategoryPopUp()
+            hideCompletedPopUp()
         }
     }
     const closeTaskBoxToolTip = () => {
@@ -283,10 +289,57 @@ const Dashboard = () => {
             for (let i = taskId - 1; i < tasksArr.length; i++) {
                 tasksArr[i].id = i + 1
                 tasksCopy[i + 1] = tasksArr[i]
-                console.log(i)
+                // console.log(i)
             }
             delete tasksCopy[tasksArr.length + 1]
             setTasks(tasksCopy)
+        },
+        removeAll: function (taskIds) {
+            let newTasksObj = {}
+            let tasksCopy = {...tasks}
+            for (let i=0;i<taskIds.length;i++) {
+                delete tasksCopy[taskIds[i]]
+            }
+            let tasksArr = Object.values(tasksCopy)
+            for (let i=0;i<tasksArr.length;i++) {
+                tasksArr[i].id = i+1
+                newTasksObj[i+1] = tasksArr[i]
+            }
+            // console.log(newTasksObj)
+            setTasks(newTasksObj)
+
+            // deep clone of tasks ** attempt at deleting tasks and only re-serializing tasks ahead of the lowest taskId deleted. Still not working 100% of the time
+            // let tasksCopy = {}
+            // let tasksList = Object.values(tasks)
+            // for (let i=0;i<tasksList.length;i++){
+            //     tasksCopy[i+1] = {...tasks[i+1]}
+            // }
+
+            // // only need to update taskIds from the lowest position of deletion
+            // let lowestTaskId = Math.min(...taskIds)
+            // // delete all tasks of the taskIds for deletion
+            // for (let i=0;i<taskIds.length;i++) {
+            //     delete tasksCopy[taskIds[i]]
+            // }
+            // // 
+            // let tasksArr = Object.values(tasksCopy)
+            // // start at the index of the lowest taskId that was removed
+            // for (let i = lowestTaskId - 1;i<tasksArr.length;i++) {
+            //     tasksArr[i].id = i+1
+            //     tasksCopy[i + 1] = tasksArr[i]
+            // }
+            // let lengthOfTasksCopy = Object.values(tasksCopy).length
+            // console.log(tasksArr.length, lengthOfTasksCopy)
+            // for (let i = tasksArr.length;i<lengthOfTasksCopy;i++) {
+            //     delete tasksCopy[i+1]
+            // }
+
+            // // console.log(lowestTaskId)
+            // let tasksKeys = Object.keys(tasksCopy)
+            // // console.log(Math.max(...tasksKeys))
+            // // delete tasksCopy[Math.max(...tasksKeys)]
+            // console.log(tasksCopy)
+            // // console.log(tasks)
         }
     }
 
@@ -345,7 +398,7 @@ const Dashboard = () => {
         // let test = Object.keys(tasks).slice(-1)
         console.log(categories)
         // console.log(test[0])
-        // console.log(tasks)
+        console.log(tasks)
     }
 
     // quick date change code
@@ -390,6 +443,77 @@ const Dashboard = () => {
         openDateAndTimePickerModal(taskId)
     }
 
+    const showCategoryPopUp = () => {
+        let popUp = document.getElementById('categoryPopUp')
+        popUp.classList.remove('hidden-o')
+    }
+    const hideCategoryPopUp = () => {
+        let popUp = document.getElementById('categoryPopUp')
+        popUp.classList.add('hidden-o')
+    }
+    const toggleCategoryPopUp = () => {
+        let popUp = document.getElementById('categoryPopUp')
+        popUp.classList.toggle('hidden-o')
+    }
+    const showCompletedPopUp = () => {
+        let popUp = document.getElementById('completedPopUp')
+        popUp.classList.remove('hidden-o')
+    }
+    const hideCompletedPopUp = () => {
+        let popUp = document.getElementById('completedPopUp')
+        popUp.classList.add('hidden-o')
+    }
+    const toggleCompletedPopUp = () => {
+        let popUp = document.getElementById('completedPopUp')
+        popUp.classList.toggle('hidden-o')
+    }
+    const clearCategory = (categoryName) => {
+        // remove category from all tasks currently assigned to this category
+        let tasksArr = Object.values(tasks)
+        let newTasksObj = {}
+        for (let i = 0; i < tasksArr.length; i++) {
+            if (tasksArr[i].category === categoryName) {
+                tasksArr[i].category = "No Category"
+            }
+            newTasksObj[i + 1] = tasksArr[i]
+        }
+        setTasks(newTasksObj)
+    }
+    const deleteCategory = (categoryName) => {
+        // remove category from all tasks currently assigned to this category
+        let tasksArr = Object.values(tasks)
+        let newTasksObj = {}
+        for (let i = 0; i < tasksArr.length; i++) {
+            if (tasksArr[i].category === categoryName) {
+                tasksArr[i].category = "No Category"
+            }
+            newTasksObj[i + 1] = tasksArr[i]
+        }
+        setTasks(newTasksObj)
+
+        // delete user Category from both categories nad categoryOrder
+        let userCategoriesCopy = { ...userCategories }
+        delete userCategoriesCopy.categories[categoryName]
+        userCategoriesCopy.categoryOrder.splice(userCategories.categoryOrder.indexOf(categoryName), 1)
+        setUserCategories(userCategoriesCopy)
+
+        // go back to All Tasks
+        setSelectedCategory('allTasks')
+    }
+
+    const deleteCompletedTasks = () => {
+        let newTasksObj = {}
+        let forDeleteTaskIds = []
+        let tasksArr = Object.values(tasks)
+        for (let i = 0; i < tasksArr.length; i++) {
+            if (tasksArr[i].completed) {
+                forDeleteTaskIds.push(tasksArr[i].id)
+            }
+        }
+        console.log(forDeleteTaskIds)
+        quickTaskUpdates.removeAll(forDeleteTaskIds)
+        // setTasks(newTasksObj)
+    }
 
     return (
         <>
@@ -400,6 +524,7 @@ const Dashboard = () => {
             <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Page Rendered to the right to make space for navbar */}
+            <Fade fraction={0} triggerOnce>
             <div className="page-container-right">
                 {/* Title section */}
                 <div className="title-section flx-r w-100">
@@ -470,22 +595,50 @@ const Dashboard = () => {
                         </div>
                     }
                     {selectedCategory === "completed" &&
-                        <div className="tab-container tb-completed mb-4">
+                        <div className="tab-container position-relative tb-completed mb-4">
+                            <div id='completedPopUp' className="popUp hidden-o">
+                                <div onClick={() => deleteCompletedTasks()} className="option">
+                                    <span className="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                    <p className="m-0">Delete Completed Tasks</p>
+                                </div>
+                            </div>
                             <div className="align-all-items gap-2">
                                 <span className="material-symbols-outlined xx-large green-text">
                                     done
                                 </span>
                                 <p className="m-0 xx-large green-text">Completed Tasks</p>
+                                <span onClick={() => toggleCompletedPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 pointer">
+                                    more_vert
+                                </span>
                             </div>
                         </div>
                     }
                     {selectedCategory !== 'myDay' && selectedCategory !== 'upcoming' && selectedCategory !== 'priority' && selectedCategory !== 'overdue' && selectedCategory !== 'completed' && selectedCategory !== 'allTasks' &&
-                        <div className="tab-container mb-4">
-                        <div className="align-all-items gap-2">
-                            <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className="img-smallh mr-2" />
-                            <p className="m-0 xx-large">{userCategories.categories[selectedCategory].categoryName}</p>
+                        <div className="tab-container position-relative mb-4">
+                            <div ref={refMenu} id='categoryPopUp' className="popUp hidden-o">
+                                <div onClick={() => clearCategory(selectedCategory)} className="option">
+                                    <span className="material-symbols-outlined">
+                                        clear_all
+                                    </span>
+                                    <p className="m-0">Clear Category Tasks</p>
+                                </div>
+                                <div onClick={() => deleteCategory(selectedCategory)} className="option">
+                                    <span className="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                    <p className="m-0">Delete Category</p>
+                                </div>
+                            </div>
+                            <div className="align-all-items gap-2">
+                                <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className="img-iconh mr-2" />
+                                <p className="m-0 xx-large">{userCategories.categories[selectedCategory].categoryName}</p>
+                                <span onClick={() => toggleCategoryPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 pointer">
+                                    more_vert
+                                </span>
+                            </div>
                         </div>
-                    </div>
                     }
 
                     {/* Add New Task Button */}
@@ -556,6 +709,7 @@ const Dashboard = () => {
                     <div className="empty-6"></div>
                 </div>
             </div>
+            </Fade>
         </>
     )
 }
