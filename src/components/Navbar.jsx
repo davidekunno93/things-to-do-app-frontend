@@ -22,6 +22,8 @@ const Navbar = () => {
         setCreateCategoryModalOpen(true)
     }
 
+    const [selectedNavOption, setSelectedNavOption] = useState("allTasks")
+
     return (
         <>
             <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} />
@@ -40,7 +42,7 @@ const Navbar = () => {
                         </span>
                         <p className="inline ml-1">*Username*</p>
                     </div>
-                    <div onClick={() => { setSelectedCategory("myDay"); goToDashboard() }} className="nav-option">
+                    <div onClick={() => { setSelectedCategory("myDay"); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             sunny
                         </span>
@@ -49,7 +51,7 @@ const Navbar = () => {
                             {categories.myDay.length}
                         </div>
                     </div>
-                    <div onClick={() => { setSelectedCategory("upcoming"); goToDashboard() }} className="nav-option">
+                    <div onClick={() => { setSelectedCategory("upcoming"); setSelectedNavOption('upcoming'); goToDashboard() }} className={`${selectedNavOption === 'upcoming' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             event_upcoming
                         </span>
@@ -60,7 +62,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
-                    <div onClick={() => { setSelectedCategory("priority"); goToDashboard() }} className="nav-option">
+                    <div onClick={() => { setSelectedCategory("priority"); setSelectedNavOption('priority'); goToDashboard() }} className={`${selectedNavOption === 'priority' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             priority_high
                         </span>
@@ -71,7 +73,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
-                    <div onClick={() => { setSelectedCategory("overdue"); goToDashboard() }} className="nav-option">
+                    <div onClick={() => { setSelectedCategory("overdue"); setSelectedNavOption('overdue'); goToDashboard() }} className={`${selectedNavOption === 'overdue' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             calendar_clock
                             {/* assignment_late */}
@@ -83,7 +85,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
-                    <div onClick={() => { setSelectedCategory("completed"); goToDashboard() }} className="nav-option">
+                    <div onClick={() => { setSelectedCategory("completed"); setSelectedNavOption('completed'); goToDashboard() }} className={`${selectedNavOption === 'completed' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             done
                             {/* assignment_late */}
@@ -96,7 +98,7 @@ const Navbar = () => {
                         }
                     </div>
                     <hr className='w-80 my-2 border-darkgray' />
-                    <div onClick={() => { setSelectedCategory("allTasks"); goToDashboard() }} className="nav-option">
+                    <div onClick={() => { setSelectedCategory("allTasks"); setSelectedNavOption('allTasks'); goToDashboard() }} className={`${selectedNavOption === 'allTasks' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             list
                         </span>
@@ -109,7 +111,7 @@ const Navbar = () => {
                         userCategories.categoryOrder.map((categoryName, index) => {
                             let userCategory = userCategories.categories[categoryName]
                             if (userCategory) {
-                                return <div onClick={() => { setSelectedCategory(userCategory.categoryName); goToDashboard() }} key={index} className="nav-option">
+                                return <div onClick={() => { setSelectedCategory(userCategory.categoryName); setSelectedNavOption(userCategory.categoryName); goToDashboard() }} key={index} className={`${selectedNavOption === userCategory.categoryName ? "nav-option-selected" : "nav-option"}`}>
                                     <img src={userCategory.iconUrl} alt="" className="navBar-categoryIcon" />
                                     <p className="inline ml-1">{userCategory.categoryName}</p>
                                     {categories[categoryName] ? categories[categoryName].length > 0 &&
