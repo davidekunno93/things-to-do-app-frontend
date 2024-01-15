@@ -161,6 +161,54 @@ const Authentication = () => {
         })
     }
 
+
+    // sign up authentication code
+    const [signUpName, setSignUpName] = useState("")
+    const [signUpEmail, setSignUpEmail] = useState("")
+    const [signUpPassword, setSignUpPassword] = useState("")
+    
+    const signUp = () => {
+        let nameError = document.getElementById('signUpNameError')
+        let emailError = document.getElementById('signUpEmailError')
+        let passwordError = document.getElementById('signUpPasswordError')
+        if (!signUpName) {
+            nameError.classList.remove('d-none')
+        } else {
+            nameError.classList.add('d-none')
+        }
+        if (!signUpEmail || !signUpEmail.includes('@')) {
+            emailError.classList.remove('d-none')
+        } else {
+            emailError.classList.add('d-none')
+        }
+        if (signUpPassword.length < 4) {
+            passwordError.classList.remove('d-none')
+        } else {
+            passwordError.classList.add('d-none')
+        }
+    }
+    
+    // sign in authentication code
+    const [signInEmail, setSignInEmail] = useState("")
+    const [signInPassword, setSignInPassword] = useState("")
+    
+    const signIn = () => {
+        let emailError = document.getElementById('signInEmailError')
+        let passwordError = document.getElementById('signInPasswordError')
+        
+        if (!signInEmail || !signInEmail.includes('@')) {
+            emailError.classList.remove('d-none')
+        } else {
+            emailError.classList.add('d-none')
+        }
+        if (signInPassword.length < 4) {
+            passwordError.classList.remove('d-none')
+        } else {
+            passwordError.classList.add('d-none')
+        }
+    }
+    
+
     return (
         <>
             <div id='authContainer' className="auth-container">
@@ -187,13 +235,13 @@ const Authentication = () => {
                                         <div onClick={() => nextTip()} className="xx-large">Sign Up</div>
 
                                         <div className="name flx-c">
-                                            <label htmlFor='name' className="m-0">Name:</label>
-                                            <input id='name' type="text" className='input-style3' />
+                                            <label htmlFor='name' className="m-0">Name: <span id='signUpNameError' className="red-text d-none">*Please enter your name*</span></label>
+                                            <input onChange={(e) => setSignUpName(e.target.value)} id='name' type="text" className='input-style3' />
                                         </div>
 
                                         <div className="email flx-c">
-                                            <label htmlFor='email' className="m-0">Email:</label>
-                                            <input id='email' type="text" className='input-style3' />
+                                            <label htmlFor='email' className="m-0">Email: <span id='signUpEmailError' className="red-text d-none">*Please enter a valid email*</span></label>
+                                            <input onChange={(e) => setSignUpEmail(e.target.value)} id='email' type="text" className='input-style3' />
                                         </div>
 
                                         <div className="avatarsTitle flx-r align-r">
@@ -208,21 +256,21 @@ const Authentication = () => {
                                         </div>
 
                                         <div className="password flx-c">
-                                            <label htmlFor='signUpPassword' className="m-0">Password:</label>
+                                            <label htmlFor='signUpPassword' className="m-0">Password: <span id='signUpPasswordError' className="red-text d-none">*Password must be min. 4 characters*</span></label>
                                             <div className="inputBox flx-c">
                                                 <div className="overlay-icon-right flx">
                                                     <span onClick={() => toggleSignUpPasswordVisibility()} className="showPasswordIcon material-symbols-outlined">
                                                         {showSignUpPassword ? "visibility" : "visibility_off"}
                                                     </span>
                                                 </div>
-                                                <input id='signUpPassword' type="password" className='input-style3' />
+                                                <input onChange={(e) => setSignUpPassword(e.target.value)} id='signUpPassword' type="password" className='input-style3' />
                                             </div>
                                         </div>
 
                                         <div className="registerBtn flx-c">
                                             <div className="flx">
                                                 <div className="align-all-items hoverLightGraylight pointer">
-                                                    <p className="m-0 x-large">Register</p>
+                                                    <p onClick={() => signUp()} className="m-0 x-large">Register</p>
                                                     <span className="material-symbols-outlined ml-2">
                                                         arrow_forward
                                                     </span>
@@ -238,24 +286,24 @@ const Authentication = () => {
                                     <div className="sign-in-box flx-c just-se">
                                         <div className="xx-large">Sign In</div>
                                         <div className="email flx-c">
-                                            <label htmlFor='email' className="m-0">Email:</label>
-                                            <input id='email' type="text" className='input-style3' />
+                                            <label htmlFor='signInEmail' className="m-0">Email: <span id='signInEmailError' className="red-text d-none">*Please enter a valid email*</span></label>
+                                            <input onChange={(e) => setSignInEmail(e.target.value)} id='signInEmail' type="text" className='input-style3' />
                                         </div>
                                         <div className="password flx-c">
-                                            <label htmlFor='signInPassword' className="m-0">Password:</label>
+                                            <label htmlFor='signInPassword' className="m-0">Password: <span id='signInPasswordError' className="red-text d-none">*Password must be min. 4 characters*</span></label>
                                             <div className="inputBox flx-c">
                                                 <div className="overlay-icon-right flx">
                                                     <span onClick={() => toggleSignInPasswordVisibility()} className="showPasswordIcon material-symbols-outlined">
                                                         {showSignInPassword ? "visibility" : "visibility_off"}
                                                     </span>
                                                 </div>
-                                                <input id='signInPassword' type="password" className='input-style3' />
+                                                <input onChange={(e) => setSignInPassword(e.target.value)} id='signInPassword' type="password" className='input-style3' />
                                             </div>
                                         </div>
 
                                         <div className="registerBtn flx-c">
                                             <div className="flx">
-                                                <div className="align-all-items hoverLightGraylight pointer">
+                                                <div onClick={() => signIn()} className="align-all-items hoverLightGraylight pointer">
                                                     <p className="m-0 x-large">Login</p>
                                                     <span className="material-symbols-outlined ml-2">
                                                         arrow_forward

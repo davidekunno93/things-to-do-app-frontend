@@ -270,6 +270,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
 
     }
 
+    const [searchQuery, setSearchQuery] = useState("")
 
 
     // other functions
@@ -285,7 +286,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
 
                 <p className="m-0 ml-1">Category Name</p>
                 <div className="name-and-color flx-r">
-                    <input onChange={(e) => updateCategoryName(e)} type="text" className="input-box flx-1" />
+                    <input onChange={(e) => updateCategoryName(e)} type="text" className="input-box flx-1" placeholder='Enter category name' />
                     {/* <select name="color" id="colorSelect">
                         <option></option>
                     </select> */}
@@ -352,13 +353,16 @@ const CreateCategoryModal = ({ open, onClose }) => {
                                 search
                             </span>
                         </div>
-                        <input type="text" className="input-box padr" placeholder='Search' />
+                        <input onChange={(e) => setSearchQuery(e.target.value)} type="text" className="input-box padr" placeholder='Search' />
                     </div>
                 </div>
                 <div className="flx-r flx-wrap">
                     <Scrollbars style={{ width: "100%", height: "140px" }}>
                         {icons.map((icon, index) => {
-                            return <img key={index} onClick={() => {updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl)}} src={icon.iconUrl} alt="" className="catIcon img-small" />
+                            let tagString = icon.iconTags.join("")
+                            let filteredIn = searchQuery ? tagString.includes(searchQuery) : true
+                            return filteredIn ? <img key={index} onClick={() => {updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl)}} src={icon.iconUrl} alt="" className="catIcon img-small" />
+                            : null
                         })}
 
                     </Scrollbars>
