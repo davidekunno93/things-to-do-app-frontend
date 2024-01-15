@@ -40,10 +40,10 @@ const Navbar = () => {
                         <span className="material-symbols-outlined">
                             account_circle
                         </span>
-                        <p className="inline ml-1">*Username*</p>
+                        <p className="inline ml-1">Guest</p>
                     </div>
                     <div onClick={() => { setSelectedCategory("myDay"); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
-                        <span className="material-symbols-outlined">
+                        <span className="material-symbols-outlined yellow-text">
                             sunny
                         </span>
                         <p className="inline ml-1">My Day</p>
@@ -52,7 +52,7 @@ const Navbar = () => {
                         </div>
                     </div>
                     <div onClick={() => { setSelectedCategory("upcoming"); setSelectedNavOption('upcoming'); goToDashboard() }} className={`${selectedNavOption === 'upcoming' ? "nav-option-selected" : "nav-option"}`}>
-                        <span className="material-symbols-outlined">
+                        <span className="material-symbols-outlined blue-text">
                             event_upcoming
                         </span>
                         <p className="inline ml-1">Upcoming</p>
@@ -63,7 +63,7 @@ const Navbar = () => {
                         }
                     </div>
                     <div onClick={() => { setSelectedCategory("priority"); setSelectedNavOption('priority'); goToDashboard() }} className={`${selectedNavOption === 'priority' ? "nav-option-selected" : "nav-option"}`}>
-                        <span className="material-symbols-outlined">
+                        <span className="material-symbols-outlined red-text">
                             priority_high
                         </span>
                         <p className="inline ml-1">Priority</p>
@@ -74,7 +74,7 @@ const Navbar = () => {
                         }
                     </div>
                     <div onClick={() => { setSelectedCategory("overdue"); setSelectedNavOption('overdue'); goToDashboard() }} className={`${selectedNavOption === 'overdue' ? "nav-option-selected" : "nav-option"}`}>
-                        <span className="material-symbols-outlined">
+                        <span className="material-symbols-outlined orange-text">
                             calendar_clock
                             {/* assignment_late */}
                         </span>
@@ -86,7 +86,7 @@ const Navbar = () => {
                         }
                     </div>
                     <div onClick={() => { setSelectedCategory("completed"); setSelectedNavOption('completed'); goToDashboard() }} className={`${selectedNavOption === 'completed' ? "nav-option-selected" : "nav-option"}`}>
-                        <span className="material-symbols-outlined">
+                        <span className="material-symbols-outlined green-text">
                             done
                             {/* assignment_late */}
                         </span>

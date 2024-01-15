@@ -240,6 +240,9 @@ button:focus-visible {
 .gray-text {
   color: gray;
 }
+.darkgray-text {
+  color: rgb(85, 85, 85);
+}
 .red-text {
   color: red;
 }
@@ -249,6 +252,9 @@ button:focus-visible {
 .purple-text {
   color: rgb(170, 0, 170);
 }
+.blue-text {
+  color: rgb(27, 99, 216);
+}
 .green-text {
   color: #55d400;
 }
@@ -257,6 +263,9 @@ button:focus-visible {
 }
 .darkyellow-text {
   color: #eab700;
+}
+.orange-text {
+  color: #ff7700;
 }
 .white-text {
   color: rgb(255, 255, 255);
@@ -2192,7 +2201,80 @@ selection:hover .sub-selection {
 }
 .title-section {
   padding: 12px 0;
-  background-color: gainsboro;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/q55B0FZ.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section11 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/VE5BaHP.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section10 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/3S7k3pY.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section9 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/BRN73VI.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section8 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/8GPUZ4P.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section7 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/F6fkD7O.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section6 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/TPeboMl.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section5 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/8sJTism.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section2 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/QjbhWyR.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section3 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/idjR6V5.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.title-section4 {
+  padding: 12px 0;
+  /* background-color: gainsboro; */
+  background: url(https://i.imgur.com/hu7bPUa.jpg);
+  background-position: center;
+  background-size: cover;
 }
 .sub-title-section {
   /* margin-top: 24px; */
@@ -2333,6 +2415,17 @@ selection:hover .sub-selection {
   font-size: 12px;
 }
 .number-display-pink {
+  margin: 0 0 0 auto;
+  background-color: rgba(255, 120, 253, 0.22);
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+.number-display-purple {
   margin: 0 0 0 auto;
   background-color: rgba(255, 120, 253, 0.22);
   width: 24px;

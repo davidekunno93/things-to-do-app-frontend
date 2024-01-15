@@ -527,17 +527,17 @@ const Dashboard = () => {
             <Fade fraction={0} triggerOnce>
             <div className="page-container-right">
                 {/* Title section */}
-                <div className="title-section flx-r w-100">
+                <div className="title-section11 flx-r w-100 black-text">
                     <div className="title-date mx2 flx-1 flx-c just-ce">
                         <p className="m-0 center-text x-large"><strong>{month} {day}</strong></p>
                         <p className="m-0 center-text large"><strong>{twoYear}</strong></p>
                     </div>
-                    <div className="title-greeting flx-9">
+                    <div className="title-greeting flx-9 black-text">
                         <div className="flx-r">
                             <img src="https://i.imgur.com/4i6xYjB.png" alt="" className="img-xsmall mr-2" />
-                            <p onClick={() => printTasks()} className="m-0 x-large">Good Afternoon *Name*,</p>
+                            <p onClick={() => printTasks()} className="m-0 x-large">Good Afternoon,</p>
                         </div>
-                        <p className="m-0 x-large gray-text">Let's plan your day...</p>
+                        <p className="m-0 x-large darkgray-text">Tour the site and plan your day...</p>
                     </div>
                 </div>
 

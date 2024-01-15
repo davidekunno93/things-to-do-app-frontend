@@ -316,8 +316,8 @@ const CreateCategoryModal = ({ open, onClose }) => {
                     {/* <div id='purple' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('purple'); updateColor('purple')}} className="color-circle cc-purple position-absolute abs-center"></div>
                     </div> */}
-                    <div id='pink' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('pink'); updateColor('pink')}} className="color-circle cc-pink position-absolute abs-center"></div>
+                    <div id='purple' className="color-circle-container">
+                        <div onClick={() => {updateCategoryColor('purple'); updateColor('purple')}} className="color-circle cc-purple position-absolute abs-center"></div>
                     </div>
                     <div id='white' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('white'); updateColor('white')}} className="color-circle cc-white position-absolute abs-center"></div>

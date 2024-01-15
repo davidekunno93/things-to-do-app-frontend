@@ -14,7 +14,7 @@ Currently, two official plugins are available:
 <!-- *Advanced settings toggle stays simple/advanced until you change it again -->
 <!-- *Are you sure before deleting a task -->
 <!-- *Make TaskBox component -->
-**Quick update task functions - need time and category**
+<!-- **Quick update task functions - need time and category** -->
 <!-- **Edit task modal if you want to change everything at once - need to complete update function** -->
 <!-- **Create pages for each category that holds tasks of that category - may have to create running counts for each category and tasktype (priority/completed etc.) as you update tasks** -->
 <!-- **Task completion strikes out task - struck out task stays at the bottom of the list but not indicated in # tasks to complete in that category - second map after primary one listing completed tasks in the category** -->
@@ -22,7 +22,7 @@ Currently, two official plugins are available:
 <!-- **id in task objects must rearrange when deleting a task!** -->
 *User sign in and out with Firebase
 <!-- *Create your own category -->
-*Delete a category
+<!-- *Delete a category -->
 *Create Backend
 <!-- *Add participants to create/edit task modals - between Notes and date/time! OR next to cancel button in the bott-right -->
 <!-- *make + Add steps button fade out if 5 steps already added -->
