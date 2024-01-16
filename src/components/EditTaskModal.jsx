@@ -495,7 +495,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                             </div>
 
 
-                            <p className="m-0 x-large">Edit Task</p>
+                            <p className="box-title m-0">Edit Task</p>
                             <hr className='w-100' />
 
                             <div className="flx-r">
@@ -523,7 +523,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                     return <option key={index} value={category.categoryName}>{category.categoryName}</option>
                                                 }) : null}
 
-                                                <option value="CreateNew">-- Create New Category --</option>
+                                                {/* <option value="CreateNew">-- Create New Category --</option> */}
                                             </select>
                                             <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
                                                 <div className="align-all-items gap-2">

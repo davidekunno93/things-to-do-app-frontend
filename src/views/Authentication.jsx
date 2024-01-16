@@ -232,7 +232,7 @@ const Authentication = () => {
 
                                     <div className="sign-up-box flx-c just-se">
 
-                                        <div onClick={() => nextTip()} className="xx-large">Sign Up</div>
+                                        <div className="xx-large">Sign Up</div>
 
                                         <div className="name flx-c">
                                             <label htmlFor='name' className="m-0">Name: <span id='signUpNameError' className="red-text d-none">*Please enter your name*</span></label>

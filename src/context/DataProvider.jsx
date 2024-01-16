@@ -5,6 +5,13 @@ const DataProvider = (props) => {
     const [advancedSettingsOn, setAdvancedSettingsOn] = useState(false);
     const [showNavbar, setShowNavbar] = useState(false)
     // demo library
+    const [user, setUser] = useState({
+        uid: "",
+        displayName: "Guest",
+        email: "guest@abc.com",
+        level: 1,
+        points: 5
+    })
     const [tasks, setTasks] = useState({
         1: {
             id: 1,
@@ -24,69 +31,79 @@ const DataProvider = (props) => {
                 { number: 2, desc: "Go to grocery store to purchase updated registration", completed: false }
             ], // [{number: #, desc: "", completed: false}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
         2: {
             id: 2,
             myDay: true,
             taskName: "Wash the dishes!",
             category: "Home",
-            notes: null,
+            notes: "Clear the sink when I get home",
             highPriority: true,
             endDate: null,
             endTime: null,
             frequency: "Once",
-            duration: null,
+            duration: "Medium",
             outdoors: false,
             participants: [], // [{uid: "", displayName: "", photoURL: ""}]
-            steps: [], // [{number: "", desc: "", completed: ""}]
+            steps: [
+                {number: 1, desc: "Wash the dishes", completed: false},
+                {number: 2, desc: "Set them on the drying rack", completed: false},
+                {number: 3, desc: "Put the dishes away", completed: false}
+            ], // [{number: 1, desc: "", completed: false}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
         3: {
             id: 3,
             myDay: false,
-            taskName: "Send work colleagues the lunch bills",
-            category: "Home",
-            notes: null,
-            highPriority: true,
+            taskName: "Find the best fast food in Houston",
+            category: null,
+            notes: "Eat at different fast food spots and decide which is the best fast food in houston. Chick fil a = 8/10, Briother's pizza = 7.5/10",
+            highPriority: false,
             endDate: null,
             endTime: null,
             frequency: "Once",
-            duration: null,
+            duration: "Long",
             outdoors: false,
             participants: [], // [{uid: "", displayName: "", photoURL: ""}]
             steps: [
-                { number: 1, desc: "Chick fil a", completed: false },
+                { number: 1, desc: "Chick fil a", completed: true },
                 { number: 2, desc: "Potbelly", completed: false },
-                { number: 3, desc: "Pizza from Brother's", completed: false },
+                { number: 3, desc: "Pizza from Brother's", completed: true },
+                { number: 4, desc: "Whataburger", completed: false },
+                { number: 5, desc: "Chili's", completed: false }
             ], // [{number: "", desc: "", completed: ""}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
         4: {
             id: 4,
             myDay: false,
-            taskName: "Check what's going on with Firebase (on email)",
-            category: "Home",
-            notes: null,
-            highPriority: true,
+            taskName: "Go to the Park",
+            category: null,
+            notes: "Go get some fresh air and exercise at the local park",
+            highPriority: false,
             endDate: null,
             endTime: null,
             frequency: "Once",
-            duration: null,
-            outdoors: false,
+            duration: "Medium",
+            outdoors: true,
             participants: [], // [{uid: "", displayName: "", photoURL: ""}]
-            steps: [], // [{number: "", desc: "", completed: ""}]
+            steps: [], // [{number: 1, desc: "", completed: false}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
         5: {
             id: 5,
             myDay: false,
-            taskName: "Pay bill",
-            category: "Home",
-            notes: null,
+            taskName: "Sell my company for $1 million",
+            category: null,
+            notes: "Sell my company to the highest bidder and become a millionaire",
             highPriority: true,
             endDate: null,
             endTime: null,
@@ -95,11 +112,12 @@ const DataProvider = (props) => {
             outdoors: false,
             participants: [], // [{uid: "", displayName: "", photoURL: ""}]
             steps: [
-                { number: 1, desc: "Gas bill", completed: false },
-                { number: 2, desc: "Mum's December bill", completed: false }
+                { number: 1, desc: "Own a company", completed: false },
+                { number: 2, desc: "Sell it for a million bucks!", completed: false }
             ], // [{number: "", desc: "", completed: ""}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
         6: {
             id: 6,
@@ -119,7 +137,8 @@ const DataProvider = (props) => {
                 { number: 2, desc: "Find the rest of the inifinity stones", completed: false }
             ], // [{number: "", desc: "", completed: ""}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
         7: {
             id: 7,
@@ -144,7 +163,8 @@ const DataProvider = (props) => {
                 { number: 5, desc: "Catch the pokemon", completed: false }
             ], // [{number: "", desc: "", completed: ""}]
             progress: 0,
-            completed: false
+            completed: false,
+            completionDate : null
         },
     })
     const [categories, setCategories] = useState({
@@ -318,7 +338,7 @@ const DataProvider = (props) => {
     ]
 
     return (
-        <DataContext.Provider value={{ 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn }}>
+        <DataContext.Provider value={{ 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn }}>
             {props.children}
         </DataContext.Provider>
     )

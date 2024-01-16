@@ -2,9 +2,10 @@ import React, { useContext, useState } from 'react'
 import { DataContext } from '../context/DataProvider';
 import { useNavigate } from 'react-router-dom';
 import CreateCategoryModal from './CreateCategoryModal';
+import ProgressBar from './ProgressBar';
 
 const Navbar = () => {
-    const { tasks, showNavbar, setShowNavbar } = useContext(DataContext);
+    const { tasks, showNavbar, setShowNavbar, user, setUser } = useContext(DataContext);
     const { categories, setCategories, selectedCategory, setSelectedCategory, userCategories } = useContext(DataContext);
 
     // navigations
@@ -34,13 +35,17 @@ const Navbar = () => {
 
 
                     <div className="nav-option-cold">
-                        <p className="inline ml-1">THINGS TO-DO</p>
+                        <img src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
                     </div>
                     <div className="nav-option-cold">
                         <span className="material-symbols-outlined">
                             account_circle
                         </span>
-                        <p className="inline ml-1">Guest</p>
+                        <p className="inline ml-1">{user.displayName}</p>
+                        <p className="m-0 position-right x-small pr-2 pt-2 gray-text">Level {user.level}</p>
+                    </div>
+                    <div className="flx-r just-ce">
+                    <ProgressBar height={15} progress={user.points} total={35} />
                     </div>
                     <div onClick={() => { setSelectedCategory("myDay"); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined yellow-text">

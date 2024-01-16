@@ -278,9 +278,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 exclamation
                             </span>
                             {edit.taskName ?
-                                <input ref={refTaskName} id={`taskNameInput-${index}`} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style' required></input>
+                                <input ref={refTaskName} id={`taskNameInput-${index}`} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
                                 :
-                                <p className={`task-name m-0 ${task.completed ? "line-out faint-text" : null}`}>{task.taskName}
+                                <p className={`task-name font-jakarta-strong m-0 ${task.completed ? "line-out faint-text" : null}`}>{task.taskName}
                                     <span onClick={(e) => { e.stopPropagation(e); editTaskName() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
                                 </p>
                             }
@@ -353,7 +353,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                     </div>
                                 })}
                             {task.notes &&
-                                <div className="task-notes mt-2">
+                                <div className="task-notes pt-2">
                                     <p className="m-0 small"><strong>Notes:</strong>
                                         <span onClick={(e) => { e.stopPropagation(e); editNotes() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
                                     </p>

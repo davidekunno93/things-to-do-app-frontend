@@ -21,6 +21,9 @@ Currently, two official plugins are available:
 <!-- *Put tasks list into DataContext to access app wide -->
 <!-- **id in task objects must rearrange when deleting a task!** -->
 *User sign in and out with Firebase
+*Earn pts for completing and deleting tasks (will need tooltip explaining)
+*Friends - send friend requests, add friends to participate in your tasks
+*change background - click bg pic to cycle over
 <!-- *Create your own category -->
 <!-- *Delete a category -->
 *Create Backend

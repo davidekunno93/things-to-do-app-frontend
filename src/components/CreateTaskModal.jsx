@@ -18,7 +18,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
     let taskLastInArr = Object.keys(tasks).slice(-1)
     const [newTask, setNewTask] = useState({
-        id: parseInt(taskLastInArr[0]) + 1,
+        id: taskLastInArr[0] ? parseInt(taskLastInArr[0]) + 1 : 1,
         myDay: false,
         taskName: "",
         category: category ? category : "No Category",
@@ -408,7 +408,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                             </div>
 
 
-                            <p onClick={() => printTime()} className="m-0 x-large">Create New Task</p>
+                            <p onClick={() => printTime()} className="box-title m-0">Create New Task</p>
                             <hr className='w-100' />
 
                             <div className="flx-r">
@@ -421,7 +421,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                             <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right pointer noPriority">
                                                 priority_high
                                             </span>
-                                            <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" />
+                                            <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" placeholder='What do you need to do?' />
                                         </div>
                                     </div>
 
@@ -435,7 +435,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                     let category = userCategories.categories[categoryName]
                                                     return <option key={index} value={category.categoryName}>{category.categoryName}</option>                              
                                                 }): null}
-                                                <option value="CreateNew">-- Create New Category --</option>
+                                                {/* <option value="CreateNew">-- Create New Category --</option> */}
                                             </select>
                                             <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
                                                 <div className="align-all-items gap-2">
@@ -450,7 +450,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
 
                                     <div className="task-setting">
                                         <label htmlFor='notesInput' className="m-0 ml-1">Notes</label>
-                                        <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className="textarea-box2" />
+                                        <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className="textarea-box2" placeholder='Any extra details, notes or reminders about the task' />
                                     </div>
 
                                     <div className="task-setting">

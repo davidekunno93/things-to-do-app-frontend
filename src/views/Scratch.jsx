@@ -244,7 +244,15 @@ const Scratch = () => {
 
                 <ReactDatePicker onChange={(date) => setSelectedDate(date)} selected={selectedDate} className='date-input-box' placeholderText='mm/dd/yyyy' value={selectedDate} />
 
-
+                <div className="progressBar-box five">
+                    <div className="progressBar-empty">
+                        <div className="progressBar-full">
+                        </div>
+                    </div>
+                    <div className="progressBar-reading">
+                        87/100
+                    </div>
+                </div>
 
             </div>
         </>

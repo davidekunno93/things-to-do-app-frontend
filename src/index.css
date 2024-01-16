@@ -237,6 +237,9 @@ button:focus-visible {
 .black-text {
   color: black;
 }
+.lightgray-text {
+  color: gainsboro;
+}
 .gray-text {
   color: gray;
 }
@@ -254,6 +257,9 @@ button:focus-visible {
 }
 .blue-text {
   color: rgb(27, 99, 216);
+}
+.darkblue-text {
+  color: rgb(0, 60, 156);
 }
 .green-text {
   color: #55d400;
@@ -315,8 +321,14 @@ button:focus-visible {
 .font-jakarta {
   font-family: 'Plus Jakarta Sans';
 }
+.font-jakarta-strong {
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 500;
+}
 .box-title {
   font-size: x-large;
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 500;
 }
 
 
@@ -1406,9 +1418,10 @@ button:focus-visible {
   transition: 0.4s ease;
 }
 .native-nav {
-  /* border: 1px solid red; */
   /* transform: translateX(-101%); */
   transition: 0.4s ease;
+  /* dark mode */
+  /* border-right: 1px solid gainsboro; */
 }
 
 .navbar {
@@ -1559,24 +1572,30 @@ button:focus-visible {
   flex-direction: column;
   /* height: 48px; */
   background-color: white;
-  border: 1px solid gainsboro;
   border-radius: 12px;
   margin: 10px 0px;
+  /* border: 1px solid gainsboro; */
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.07);
   transition: 0.3s;
   position: relative;
+  /* dark mode */
+  /* background-color: rgb(36, 36, 36);
+  color: white; */
 }
 .taskBox-overFlowLimit {
   overflow: hidden;
 }
 .task-box-container:hover {
-  background-color: rgb(247, 247, 247);
+  background-color: rgb(248, 248, 248);
   /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.07); */
   transition: 0.3s;
+  /* dark mode */
+  /* background-color: rgb(40, 40, 40); */
 }
 .task-box-container:hover .progress-wrapper {
   background-color: rgb(247, 247, 247);
   transition: 0.3s;
+  /* dark mode setting needed */
 }
 .task-box-content {
   display: flex;
@@ -1859,7 +1878,7 @@ selection:hover .sub-selection {
   display: flex;
   height: 24px;
   color: gainsboro;
-  background-color: white;
+  /* background-color: white; */
   padding: 12px;
   border: 1px dashed gainsboro;
   border-radius: 12px;
@@ -1868,6 +1887,7 @@ selection:hover .sub-selection {
   transition: 0.3s;
 }
 .addNewTask-box:hover {
+  background-color: rgba(255, 255, 255, 0.35);
   color: rgb(200, 200, 200);
   padding-left: 15px;
   transition: 0.3s;
@@ -2163,6 +2183,7 @@ selection:hover .sub-selection {
   border-radius: 50%;
   background-color: white;
   transition: 0.3s;
+  /* dark mode setting needed */
 }
 
 .quick-update-modal {
@@ -2199,77 +2220,77 @@ selection:hover .sub-selection {
 .line-out {
   text-decoration: line-through;
 }
-.title-section {
+.title-section-1 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/q55B0FZ.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section11 {
+.title-section-0 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/VE5BaHP.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section10 {
+.title-section-10 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/3S7k3pY.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section9 {
+.title-section-9 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/BRN73VI.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section8 {
+.title-section-8 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/8GPUZ4P.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section7 {
+.title-section-7 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/F6fkD7O.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section6 {
+.title-section-6 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/TPeboMl.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section5 {
+.title-section-5 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/8sJTism.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section2 {
+.title-section-2 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/QjbhWyR.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section3 {
+.title-section-3 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/idjR6V5.jpg);
   background-position: center;
   background-size: cover;
 }
-.title-section4 {
+.title-section-4 {
   padding: 12px 0;
   /* background-color: gainsboro; */
   background: url(https://i.imgur.com/hu7bPUa.jpg);
@@ -2281,6 +2302,9 @@ selection:hover .sub-selection {
   padding-top: 24px;
   background-color: white;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.07);
+  /* dark mode */
+  /* background-color: black;
+  color: white; */
 }
 .title-column {
   margin-top: 18px;
@@ -2460,8 +2484,9 @@ selection:hover .sub-selection {
 }
 .tab-container {
   display: inline-block;
-  padding: 12px 18px 12px 12px;
-  border-radius: 16px;
+  padding: 8px;
+  /* border-radius: 16px; */
+  font-family: 'Plus Jakarta Sans';
 }
 .tab-container .popUp {
   width: 240px;
@@ -2482,28 +2507,71 @@ selection:hover .sub-selection {
   gap: 10px;
   padding: 4px 12px;
   height: 32px;
+  color: black;
   /* background-color: #007ACC; */
   transition: 0.2s;
   cursor: pointer;
+}
+.tab-container .popUp .option-disabled {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  height: 32px;
+  color: rgb(200, 200, 200);
+  /* background-color: #007ACC; */
+  transition: 0.2s;
 }
 .tab-container .popUp .option:hover {
   background-color: rgb(240, 240, 240);
   transition: 0.2s;
 }
 .tb-myDay {
-  background-color: rgba(234, 206, 28, 0.15);
+  /* background-color: rgba(234, 206, 28, 0.15); */
+  border-bottom: 4px solid rgba(234, 206, 28, 0.4);
 }
 .tb-upcoming {
-  background-color: rgba(100, 100, 100, 0.1);
+  /* background-color: rgba(100, 100, 100, 0.1); */
+  border-bottom: 4px solid rgba(0, 63, 236, 0.4);
 }
 .tb-priority {
-  background-color: rgba(255, 0, 0, 0.1);
+  /* background-color: rgba(255, 0, 0, 0.1); */
+  border-bottom: 4px solid rgba(255, 0, 0, 0.4);
 }
 .tb-overdue {
-  background-color: rgba(210, 186, 0, 0.1);
+  /* background-color: rgba(210, 186, 0, 0.1); */
+  border-bottom: 4px solid rgba(210, 186, 0, 0.4);
 }
 .tb-completed {
-  background-color: rgba(0, 150, 0, 0.1);
+  /* background-color: rgba(0, 150, 0, 0.1); */
+  border-bottom: 4px solid rgba(0, 150, 0, 0.4);
+}
+.tb-none {
+  border-bottom: 4px solid transparent;
+}
+.tb-red {
+  border-bottom: 4px solid rgba(255, 0, 0, 0.4);
+}
+.tb-blue {
+  border-bottom: 4px solid rgba(0, 0, 255, 0.4);
+}
+.tb-green {
+  border-bottom: 4px solid rgba(0, 255, 0, 0.4);
+}
+.tb-yellow {
+  border-bottom: 4px solid rgba(239, 232, 40, 0.4);
+}
+.tb-purple {
+  border-bottom: 4px solid rgba(154, 7, 253, 0.4);
+}
+.tb-white {
+  border-bottom: 4px solid rgba(180, 180, 180, 0.4);
+}
+.tb-navy {
+  border-bottom: 4px solid rgba(0, 17, 65, 0.4);
+}
+.tb-orange {
+  border-bottom: 4px solid rgba(255, 140, 0, 0.4);
 }
 .create-category-modal {
   width: 500px;
@@ -2679,4 +2747,50 @@ selection:hover .sub-selection {
 }
 #tipBox {
   transition: 0.8s;
+}
+.font-jakarta {
+  font-family: 'Plus Jakarta Sans';
+}
+.bold700 {
+  font-weight: 700;
+}
+/* p {
+  font-family: 'Plus Jakarta Sans'
+} */
+.nav-logo {
+  height: 40px;
+  width: 132px;
+  object-fit: contain;
+}
+.blue-caress {
+  background-color: #F6FAFD;
+  /* dark mode */
+  /* background-color: rgb(0, 0, 0); */
+}
+.progressBar-box {
+  width: 200px;
+  height: 30px;
+  /* background-color: white; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.progressBar-empty {
+  height: 6px;
+  width: 100%;
+  background-color: rgba(230, 230, 230, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 1;
+}
+.progressBar-full {
+  height: 100%;
+  width: 97%;
+  background-color: #55d400;
+  border-radius: 0 12px 12px 0;
+  transition: 0.5s ease;
+}
+.progressBar-reading {
+  font-size: x-small;
+  margin-left: 8px;
 }
