@@ -531,7 +531,7 @@ const Dashboard = () => {
             if (tasksArr[i].completed) {
                 forDeleteTaskIds.push(tasksArr[i].id)
                 if (tasksArr[i].endDate) {
-                    if (new Date(tasksArr[i].completedDate) < new Date((new Date(tasksArr[i].endDate)).valueOf() - 1000 * 60 * 60 * 24)) {
+                    if (new Date(tasksArr[i].completedDate) > new Date((new Date(tasksArr[i].endDate)).valueOf() - 1000 * 60 * 60 * 24)) {
                         completionPts.push(3)
                     } else {
                         if (tasksArr[i].highPriority) {

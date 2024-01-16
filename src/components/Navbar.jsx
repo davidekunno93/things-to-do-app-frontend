@@ -45,7 +45,7 @@ const Navbar = () => {
                         <p className="m-0 position-right x-small pr-2 pt-2 gray-text">Level {user.level}</p>
                     </div>
                     <div className="flx-r just-ce">
-                    <ProgressBar height={15} progress={user.points} total={35} />
+                    <ProgressBar height={15} progress={user.points} total={45} />
                     </div>
                     <div onClick={() => { setSelectedCategory("myDay"); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined yellow-text">
