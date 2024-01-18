@@ -2,13 +2,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DataContext } from '../context/DataProvider'
 import { useNavigate } from 'react-router-dom'
 import { Fade } from 'react-awesome-reveal'
+import { auth, firestore } from '../firebase'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import CompleteSignUpModal from '../components/CompleteSignUpModal'
+import { doc, getDoc } from 'firebase/firestore'
 
 const Authentication = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [tipIndex, setTipIndex] = useState(0);
     const [tipSliderOn, setTipSliderOn] = useState(false)
     const [timer, setTimer] = useState(0);
-    const { showNavbar, setShowNavbar } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, user, setUser } = useContext(DataContext);
 
     // other functions
     function wait(ms) {
@@ -116,6 +120,7 @@ const Authentication = () => {
 
     // avatar selection code
     const [selectedAvatar, setSelectedAvatar] = useState(null)
+    const [selectedAvatarUrl, setSelectedAvatarUrl] = useState(null)
     const avatars = [
         {
             avatarName: "Frederick the Frog",
@@ -171,20 +176,35 @@ const Authentication = () => {
         let nameError = document.getElementById('signUpNameError')
         let emailError = document.getElementById('signUpEmailError')
         let passwordError = document.getElementById('signUpPasswordError')
+        let error = false
         if (!signUpName) {
             nameError.classList.remove('d-none')
+            error = true
         } else {
             nameError.classList.add('d-none')
         }
         if (!signUpEmail || !signUpEmail.includes('@')) {
             emailError.classList.remove('d-none')
+            error = true
         } else {
             emailError.classList.add('d-none')
         }
         if (signUpPassword.length < 4) {
             passwordError.classList.remove('d-none')
+            error = true
         } else {
             passwordError.classList.add('d-none')
+        }
+        if (!error) {
+            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+            .then(() => {
+                // after user has been signed up go to CompleteSignUpModal to handle dname/dp/initiate level on firestore and get tasks/userCategories environment ready
+                setCompleteSignUpModalOpen(true)
+            })
+            .catch((error) => {
+                console.log(error)
+                alert("Something went wrong. Please try again later.")
+            })
         }
     }
     
@@ -196,21 +216,60 @@ const Authentication = () => {
         let emailError = document.getElementById('signInEmailError')
         let passwordError = document.getElementById('signInPasswordError')
         
+        let error = false
         if (!signInEmail || !signInEmail.includes('@')) {
             emailError.classList.remove('d-none')
+            error = true
         } else {
             emailError.classList.add('d-none')
         }
         if (signInPassword.length < 4) {
             passwordError.classList.remove('d-none')
+            error = true
         } else {
             passwordError.classList.add('d-none')
         }
+        if (!error) {
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword).then((userCredential) => {
+                handleLogin(userCredential)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    }
+
+    const handleLogin = async (cred) => {
+        let userLevelDoc = await getDoc(doc(firestore, `userLevel/${auth.currentUser.uid}`))
+        let userLevelData = userLevelDoc.data()
+        console.log(userLevelData)
+        let userCopy = {...user}
+        // using login cred response from firebase
+        userCopy.uid = cred.user.uid
+        userCopy.displayName = cred.user.displayName
+        userCopy.photoURL = cred.user.photoURL
+        // using firestore document saved userLevel data
+        userCopy.level = userLevelData.level
+        userCopy.points = userLevelData.points
+        userCopy.pointsForLevelUp = userLevelData.pointsForLevelUp
+        setUser(userCopy)
+        // set tasks environment
+        navigateToDashboard()
     }
     
+    const [completeSignUpModalOpen, setCompleteSignUpModalOpen] = useState(false);
+    const openCompleteSignUpModal = () => {
+        setCompleteSignUpModalOpen(true)
+    }
+    const completeSignUp = () => {
+        setCompleteSignUpModalOpen(false)
+        wait(300).then(() => {
+            navigateToDashboard()
+        })
+    }
 
     return (
         <>
+        <CompleteSignUpModal open={completeSignUpModalOpen} displayName={signUpName} photoURL={selectedAvatarUrl} onClose={completeSignUp} />
             <div id='authContainer' className="auth-container">
                 {/* <Fade fraction={0} triggerOnce> */}
                     <div id='tipBox' className="website-tips z-1 flx position-absolute white-text hidden-o">
@@ -246,12 +305,12 @@ const Authentication = () => {
 
                                         <div className="avatarsTitle flx-r align-r">
                                             <p className="m-0">Avatar:</p>
-                                            <p onClick={() => setSelectedAvatar(null)} className="m-0 position-right gray-text small hoverFade pointer">Clear</p>
+                                            <p onClick={() => {setSelectedAvatar(null); setSelectedAvatarUrl(null)}} className="m-0 position-right gray-text small hoverFade pointer">Clear</p>
                                         </div>
                                         <div className="avatarIcons mb-4 flx-r just-sb">
                                             {avatars.map((avatar, index) => {
                                                 let selected = avatar.avatarName === selectedAvatar ? true : false
-                                                return <img key={index} onClick={() => setSelectedAvatar(avatar.avatarName)} src={avatar.imgUrl} alt={avatar.avatarName} className={`img-small pointer ${selected ? " chosen" : "unchosen"}`} />
+                                                return <img key={index} onClick={() => {setSelectedAvatar(avatar.avatarName); setSelectedAvatarUrl(avatar.imgUrl)}} src={avatar.imgUrl} alt={avatar.avatarName} className={`img-small pointer ${selected ? " chosen" : "unchosen"}`} />
                                             })}
                                         </div>
 

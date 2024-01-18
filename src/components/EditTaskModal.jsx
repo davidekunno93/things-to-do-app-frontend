@@ -505,7 +505,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                     <div className="task-setting">
                                         <label htmlFor='taskTitleInput' className="m-0 ml-1">Task title<span className="red-text">*</span></label>
                                         <div className="input-div">
-                                            <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right pointer noPriority">
+                                            <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right3 pointer noPriority">
                                                 priority_high
                                             </span>
                                             <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" />
@@ -562,12 +562,12 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                         schedule
                                                     </span>
                                                     <div className="time-picker-box">
-                                                        {selectedTime && timeOfDay === "AM" &&
+                                                        {/* {selectedTime && timeOfDay === "AM" &&
                                                             <div onClick={() => setTimeOfDay("PM")} className="overlay-am">AM</div>
                                                         }
                                                         {selectedTime && timeOfDay === "PM" &&
                                                             <div onClick={() => setTimeOfDay("AM")} className="overlay-pm">PM</div>
-                                                        }
+                                                        } */}
                                                         <select onChange={(e) => updateSelectedTime(e.target.value)} name="time-picker" id="timeInput" className='time-input-box' required>
                                                             <option value="" disabled selected hidden>hh:mm</option>
                                                             <option value="Clear">Clear</option>
@@ -622,6 +622,12 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
 
                                                         </select>
                                                     </div>
+                                                    {selectedTime && timeOfDay === "AM" &&
+                                                        <div onClick={() => setTimeOfDay("PM")} className="ml-2 hoverFade pointer">AM</div>
+                                                    }
+                                                    {selectedTime && timeOfDay === "PM" &&
+                                                        <div onClick={() => setTimeOfDay("AM")} className="ml-2 hoverFade pointer">PM</div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

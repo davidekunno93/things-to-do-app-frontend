@@ -78,9 +78,9 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         setNewTask(taskCopy)
     }
     const updateTaskEndTime = () => {
-        let taskCopy = {...newTask}
+        let taskCopy = { ...newTask }
         if (selectedTime) {
-            taskCopy.endTime = timify(selectedTime)+" "+timeOfDay
+            taskCopy.endTime = timify(selectedTime) + " " + timeOfDay
         } else {
             taskCopy.endTime = null
         }
@@ -381,7 +381,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         }
     }
 
-    
+
     const printTime = () => {
         console.log(selectedTime)
     }
@@ -418,7 +418,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                     <div className="task-setting">
                                         <label htmlFor='taskTitleInput' className="m-0 ml-1">Task title<span className="red-text">*</span></label>
                                         <div className="input-div">
-                                            <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right pointer noPriority">
+                                            <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right3 pointer noPriority">
                                                 priority_high
                                             </span>
                                             <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" placeholder='What do you need to do?' />
@@ -433,8 +433,8 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 <option value="No Category">No Category</option>
                                                 {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
                                                     let category = userCategories.categories[categoryName]
-                                                    return <option key={index} value={category.categoryName}>{category.categoryName}</option>                              
-                                                }): null}
+                                                    return <option key={index} value={category.categoryName}>{category.categoryName}</option>
+                                                }) : null}
                                                 {/* <option value="CreateNew">-- Create New Category --</option> */}
                                             </select>
                                             <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
@@ -457,8 +457,8 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                         <div className="flx-r">
                                             <div className="task-date z-100 mr-5 flx-c">
                                                 <div className="flx-r just-sb align-c">
-                                                <label className="m-0 ml-1">Date or Deadline</label>
-                                                <p onClick={() => clearEndDate()} className="m-0 small gray-text pointer hoverFade">Clear</p>
+                                                    <label className="m-0 ml-1">Date or Deadline</label>
+                                                    <p onClick={() => clearEndDate()} className="m-0 small gray-text pointer hoverFade">Clear</p>
                                                 </div>
                                                 <div className="date-input-div position-relative">
                                                     <span className="material-symbols-outlined overlay-icon2">
@@ -476,12 +476,12 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                     </span>
                                                     {/* <input type="input" placeholder='hh:mm' className="date-input-box" /> */}
                                                     <div className="time-picker-box">
-                                                        {selectedTime && timeOfDay === "AM" &&
+                                                        {/* {selectedTime && timeOfDay === "AM" &&
                                                             <div onClick={() => setTimeOfDay("PM")} className="overlay-am">AM</div>
                                                         }
                                                         {selectedTime && timeOfDay === "PM" &&
                                                             <div onClick={() => setTimeOfDay("AM")} className="overlay-pm">PM</div>
-                                                        }
+                                                        } */}
                                                         <select onChange={(e) => updateSelectedTime(e.target.value)} name="time-picker" id="timeInput" className='time-input-box' required>
                                                             <option value="" disabled selected hidden>hh:mm</option>
                                                             <option value="Clear">Clear</option>
@@ -535,7 +535,13 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                             <option value="11:45">11:45</option>
 
                                                         </select>
-                                                    </div>
+                                                        </div>
+                                                    {selectedTime && timeOfDay === "AM" &&
+                                                        <div onClick={() => setTimeOfDay("PM")} className="ml-2 hoverFade pointer">AM</div>
+                                                    }
+                                                    {selectedTime && timeOfDay === "PM" &&
+                                                        <div onClick={() => setTimeOfDay("AM")} className="ml-2 hoverFade pointer">PM</div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

@@ -9,7 +9,9 @@ import DatePickerModal from '../components/DatePickerModal';
 import { format } from 'date-fns';
 import CreateCategoryModal from '../components/CreateCategoryModal';
 import TimePickerModal from '../components/TimePickerModal';
-import { Fade } from 'react-awesome-reveal';
+import { Fade, Slide } from 'react-awesome-reveal';
+import FeedbackModal from '../components/FeedbackModal';
+
 
 
 const Dashboard = () => {
@@ -60,6 +62,8 @@ const Dashboard = () => {
     }
     const [bgIndex, setBgIndex] = useState(0)
     const cycleBackground = () => {
+        let headerOverlay = document.getElementById('headerOverlay')
+        headerOverlay.classList.add('hidden-o')
         if (bgIndex === 10) {
             setBgIndex(0)
         } else {
@@ -400,14 +404,14 @@ const Dashboard = () => {
     const fullYear = dateToday.getFullYear()
     const twoYear = fullYear.toString().slice(2)
     const datinormal = (systemDate) => {
-        let day = systemDate.getDate().toString().length === 1 ? "0"+systemDate.getDate() : systemDate.getDate()
-        let month = systemDate.getMonth().toString().length === 1 ? "0"+(systemDate.getMonth() + 1) : systemData.getMonth()
+        let day = systemDate.getDate().toString().length === 1 ? "0" + systemDate.getDate() : systemDate.getDate()
+        let month = systemDate.getMonth().toString().length === 1 ? "0" + (systemDate.getMonth() + 1) : systemData.getMonth()
         if (month.length === 1) {
-            month = "0"+month
+            month = "0" + month
         }
         let fullYear = systemDate.getFullYear()
         // console.log(month+"/"+day+"/"+fullYear)
-        return month+"/"+day+"/"+fullYear
+        return month + "/" + day + "/" + fullYear
     }
     useEffect(() => {
         // console.log(month, day, twoYear)
@@ -550,18 +554,22 @@ const Dashboard = () => {
             }
         }
         // console.log(forDeleteTaskIds)
-        console.log("Completion "+completionPts)
+        console.log("Completion " + completionPts)
         if (forDeleteTaskIds.length > 0) {
             quickTaskUpdates.removeAll(forDeleteTaskIds)
         }
         let addedPts = completionPts.reduce((a, b) => a + b, 0)
-        console.log("Added: "+addedPts)
-        let userCopy = {...user}
+        console.log("Added: " + addedPts)
+        let userCopy = { ...user }
         userCopy.points = userCopy.points + parseInt(addedPts)
         setUser(userCopy)
         // setTasks(newTasksObj)
     }
 
+    const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+    const openFeedbackModal = () => {
+        setFeedbackModalOpen(true);
+    }
 
 
     return (
@@ -571,6 +579,7 @@ const Dashboard = () => {
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
             <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
             <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
+            <FeedbackModal open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)} />
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Page Rendered to the right to make space for navbar */}
             <Fade fraction={0} triggerOnce>
@@ -581,12 +590,23 @@ const Dashboard = () => {
                             <p className="m-0 center-text x-large"><strong>{month} {day}</strong></p>
                             <p className="m-0 center-text large"><strong>{twoYear}</strong></p>
                         </div>
-                        <div className="title-greeting flx-9">
-                            <div className="flx-r">
-                                <img src="https://i.imgur.com/4i6xYjB.png" alt="" className="img-xsmall mr-2" />
-                                <p onClick={(e) => {e.stopPropagation(); printTasks()}} className="m-0 x-large">Good Afternoon,</p>
-                            </div>
-                            <p className="m-0 x-large darkgray-text">Tour the site and plan your day...</p>
+                        <div className="title-greeting position-relative flx-9">
+                            <div id='headerOverlay' className="header-overlay flx-r small">
+                                <p className="m-0">Click to change background</p> 
+                                <span className="material-symbols-outlined">web_traffic</span>
+                                </div>
+                            <Fade delay={500} triggerOnce>
+                                <Slide direction='up' cascade triggerOnce>
+                                    <div className="flx-r">
+                                        <img src="https://i.imgur.com/4i6xYjB.png" alt="" className="img-xsmall mr-2" />
+                                        <p onClick={(e) => { e.stopPropagation(); printTasks() }} className="m-0 x-large">Good Afternoon,</p>
+                                    </div>
+                                    <Fade delay={1000} triggerOnce>
+                                        <p className="m-0 x-large darkgray-text">Let's plan your day...</p>
+                                    </Fade>
+                                </Slide>
+                            </Fade>
+                            <button onClick={(e) => {e.stopPropagation(); openFeedbackModal()}} className="btn-tertiary mt-1">Feedback</button>
                         </div>
                     </div>
 
@@ -595,62 +615,62 @@ const Dashboard = () => {
                     <div className="sub-title-section sticky-top page-container96-byPadding">
 
                         {selectedCategory === "myDay" &&
-                        <>
-                            <div className="tab-container tb-myDay mb-2">
-                                <div className="align-all-items gap-2">
-                                    <span className="material-symbols-outlined xx-large bold700">
-                                        sunny
-                                    </span>
-                                    <p className="m-0 xx-large"><strong>My Day</strong></p>
+                            <>
+                                <div className="tab-container tb-myDay mb-2">
+                                    <div className="align-all-items gap-2">
+                                        <span className="material-symbols-outlined xx-large bold700">
+                                            sunny
+                                        </span>
+                                        <p className="m-0 xx-large"><strong>My Day</strong></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
-                        </>
+                                <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
+                            </>
                         }
                         {selectedCategory === "upcoming" &&
-                        <>
-                            <div className="tab-container tb-upcoming darkblue-text mb-2">
-                                <div className="align-all-items gap-2">
-                                    <span className="material-symbols-outlined xx-large">
-                                        event_upcoming
-                                    </span>
-                                    <p className="m-0 xx-large">Upcoming Tasks</p>
+                            <>
+                                <div className="tab-container tb-upcoming darkblue-text mb-2">
+                                    <div className="align-all-items gap-2">
+                                        <span className="material-symbols-outlined xx-large">
+                                            event_upcoming
+                                        </span>
+                                        <p className="m-0 xx-large">Upcoming Tasks</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> In order to incentive users to add an end date/deadline to their tasks, you'll get an extra offering point for completing and dumping these!</p>
-                        </>
+                                <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> In order to incentive users to add an end date/deadline to their tasks, you'll get an extra offering point for completing and dumping these!</p>
+                            </>
                         }
                         {selectedCategory === "priority" &&
-                        <>
-                            <div className="tab-container tb-priority darkred-text mb-2">
-                                <div className="align-all-items gap-2">
-                                    <span className="material-symbols-outlined xx-large">
-                                        priority_high
-                                    </span>
-                                    <p className="m-0 xx-large">Priority Tasks</p>
+                            <>
+                                <div className="tab-container tb-priority darkred-text mb-2">
+                                    <div className="align-all-items gap-2">
+                                        <span className="material-symbols-outlined xx-large">
+                                            priority_high
+                                        </span>
+                                        <p className="m-0 xx-large">Priority Tasks</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> Priority tasks will earn you 1 extra offering point when you dump them. Unless of course they're overdue then they're worth even less than a non-priority task.</p>
-                        </>
+                                <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> Priority tasks will earn you 1 extra offering point when you dump them. Unless of course they're overdue then they're worth even less than a non-priority task.</p>
+                            </>
                         }
                         {selectedCategory === "overdue" &&
-                        <>
-                            <div className="tab-container tb-overdue darkyellow-text mb-2">
-                                <div className="align-all-items gap-2">
-                                    <span className="material-symbols-outlined xx-large">
-                                        calendar_clock
-                                    </span>
-                                    <p className="m-0 xx-large">Overdue Tasks</p>
+                            <>
+                                <div className="tab-container tb-overdue darkyellow-text mb-2">
+                                    <div className="align-all-items gap-2">
+                                        <span className="material-symbols-outlined xx-large">
+                                            calendar_clock
+                                        </span>
+                                        <p className="m-0 xx-large">Overdue Tasks</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> We don't have to tell you to try and complete tasks before they're overdue because you know that already. But did you know overdue tasks earn you less points when you dump them?</p>
+                                <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> We don't have to tell you to try and complete tasks before they're overdue because you know that already. But did you know overdue tasks earn you less points when you dump them?</p>
                             </>
                         }
                         {selectedCategory === "completed" &&
                             <>
                                 <div className="tab-container position-relative tb-completed green-text mb-2">
                                     <div id='completedPopUp' className="popUp hidden-o">
-                                        <div onClick={() => {dumpCompletedTasks(); hideCompletedPopUp()}} className={`${categories.completed.length > 0 ? "option" : "option-disabled"}`}>
+                                        <div onClick={() => { dumpCompletedTasks(); hideCompletedPopUp() }} className={`${categories.completed.length > 0 ? "option" : "option-disabled"}`}>
                                             <span className="material-symbols-outlined">
                                                 delete
                                             </span>

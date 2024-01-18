@@ -6,11 +6,13 @@ const DataProvider = (props) => {
     const [showNavbar, setShowNavbar] = useState(false)
     // demo library
     const [user, setUser] = useState({
-        uid: "",
+        uid: "testUser",
         displayName: "Guest",
+        photoURL: "https://i.imgur.com/MacUxKa.png",
         email: "guest@abc.com",
         level: 1,
-        points: 5
+        points: 5,
+        pointsForLevelUp: 45
     })
     const [tasks, setTasks] = useState({
         1: {

@@ -3,6 +3,8 @@ import { DataContext } from '../context/DataProvider';
 import { useNavigate } from 'react-router-dom';
 import CreateCategoryModal from './CreateCategoryModal';
 import ProgressBar from './ProgressBar';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const Navbar = () => {
     const { tasks, showNavbar, setShowNavbar, user, setUser } = useContext(DataContext);
@@ -24,6 +26,10 @@ const Navbar = () => {
     }
 
     const [selectedNavOption, setSelectedNavOption] = useState("allTasks")
+    const printCred = () => {
+        // console.log(auth.currentUser)
+        console.log(user)
+    }
 
     return (
         <>
@@ -35,17 +41,19 @@ const Navbar = () => {
 
 
                     <div className="nav-option-cold">
-                        <img src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
+                        <img onClick={() => printCred()} src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
                     </div>
                     <div className="nav-option-cold">
-                        <span className="material-symbols-outlined">
+                        {/* <span className="material-symbols-outlined">
                             account_circle
-                        </span>
+                        </span> */}
+                        <img src={user.photoURL} alt="" className="img-dp mx-2" />
                         <p className="inline ml-1">{user.displayName}</p>
                         <p className="m-0 position-right x-small pr-2 pt-2 gray-text">Level {user.level}</p>
                     </div>
                     <div className="flx-r just-ce">
-                    <ProgressBar height={15} progress={user.points} total={45} />
+                    
+                    <ProgressBar height={15} progress={user.points} total={user.pointsForLevelUp} />
                     </div>
                     <div onClick={() => { setSelectedCategory("myDay"); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined yellow-text">
@@ -139,7 +147,7 @@ const Navbar = () => {
                     </div>
 
 
-                    <div onClick={() => goToAuth()} className="nav-option-bottom">
+                    <div onClick={() => {goToAuth(); signOut()}} className="nav-option-bottom">
                         <span className="material-symbols-outlined">
                             logout
                         </span>

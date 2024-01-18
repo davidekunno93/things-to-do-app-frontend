@@ -10,12 +10,12 @@ const ProgressBar = ({ percent, progress, total, width, height }) => {
     return (
         <div className="progressBar-box" style={{ width: width? width : 180, height: height ? height : 30 }}>
             <div className="progressBar-empty">
-                <div className="progressBar-full" style={{ width: percent ? percent+"%" : "87%" }}>
+                <div className="progressBar-full" style={{ width: percent === 0 ? "1%" : percent+"%" }}>
                     
                 </div>
             </div>
             <div className="progressBar-reading">
-                <p className="m-0">{progress ? progress : "87" } / {total ? total : "100" }</p>
+                <p className="m-0">{progress} / {total ? total : "100" }</p>
             </div>
         </div>
     )
