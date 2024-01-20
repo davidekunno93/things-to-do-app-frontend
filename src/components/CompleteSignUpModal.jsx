@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateProfile } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Fade } from 'react-awesome-reveal';
+import axios from 'axios';
 
 const CompleteSignUpModal = ({ open, displayName, photoURL, onClose }) => {
     if (!open) return null
@@ -39,13 +40,30 @@ const CompleteSignUpModal = ({ open, displayName, photoURL, onClose }) => {
         })
     }
 
-    // triggeref on open to handle dname/dp/photoURL/level & pts/tasks environment in DataProvider
-    useEffect(() => {
+    const sendData = async () => {
+        let url = "http://localhost:5000/auth/create_user"
+        let data = {
+            uid: auth.currentUser.uid,
+            displayName: displayName,
+            photoURL: photoURL ? photoURL : null,
+            email: auth.currentUser.email
+        }
+        const response = await axios.post(url, JSON.stringify(data), {
+            headers: { "Content-Type" : "application/json" }
+        }).then((response) => {
+            console.log(response.data)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    const handleSignUp = async () => {
         // update firebase user with display name and photoUrl once user created
-        wait(4000).then(() => {
+        wait(4000).then( async () => {
+            // await sendData()
             updateProfile(auth.currentUser, {
                 displayName: displayName,
-                photoURL: photoURL ? photoURL : "https://i.imgur.com/MacUxKa.png"
+                photoURL: photoURL ? photoURL : null
             }).then(() => {
                 // initiate user at level 1 on firestore
                 initiateUserLevel()
@@ -53,7 +71,7 @@ const CompleteSignUpModal = ({ open, displayName, photoURL, onClose }) => {
                 setUser({
                     uid: auth.currentUser.uid,
                     displayName: displayName,
-                    photoURL: photoURL ? photoURL : "https://i.imgur.com/MacUxKa.png",
+                    photoURL: photoURL ? photoURL : null,
                     email: auth.currentUser.email,
                     level: 1,
                     points: 0,
@@ -72,7 +90,44 @@ const CompleteSignUpModal = ({ open, displayName, photoURL, onClose }) => {
                 console.log(error)
             })
         })
+    }
+
+    // triggered on open to handle dname/dp/photoURL/level & pts/tasks environment in DataProvider
+    useEffect(() => {
+        // // update firebase user with display name and photoUrl once user created
+        // wait(4000).then(() => {
+        //     updateProfile(auth.currentUser, {
+        //         displayName: displayName,
+        //         photoURL: photoURL ? photoURL : null
+        //     }).then(() => {
+        //         // initiate user at level 1 on firestore
+        //         initiateUserLevel()
+        //         // set user in DataProvider
+        //         setUser({
+        //             uid: auth.currentUser.uid,
+        //             displayName: displayName,
+        //             photoURL: photoURL ? photoURL : "https://i.imgur.com/MacUxKa.png",
+        //             email: auth.currentUser.email,
+        //             level: 1,
+        //             points: 0,
+        //             pointsForLevelUp: 45
+        //         })
+        //         // set user tasks
+        //         setTasks({})
+        //         // empty userCategories
+        //         setUserCategories({
+        //             categories: {},
+        //             categoryOrder: []
+        //         })
+        //         // confirm user set up is complete before loading modal text and completion button
+        //         setUserSetUpComplete(true)
+        //     }).catch((error) => {
+        //         console.log(error)
+        //     })
+        // })
+        handleSignUp()
     }, [])
+    
     return (
         <div className="overlay-placeholder">
             <Fade className='z-1' fraction={0} triggerOnce>

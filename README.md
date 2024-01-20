@@ -26,6 +26,9 @@ Currently, two official plugins are available:
 <!-- *Delete a category -->
 **feedback modal send message to my database**
 *Create Backend
+*create category gives new category next order index/del category reshuffles order indexes
+*photoURL nullable, backup render if no photoURL
+*add time created key to tasks
 <!-- *Add participants to create/edit task modals - between Notes and date/time! OR next to cancel button in the bott-right -->
 <!-- *make + Add steps button fade out if 5 steps already added -->
 AFTER MVP UPDATES
@@ -47,7 +50,13 @@ AFTER MVP UPDATES
 *0 tasks in this category when you first create it and haven't added anything yet
 *make time picker w/o 0 in front of time
 
+
 Feedback
 *Make AM/PM drop down separate selection (meet user expectations)
 *Make priority btn bolder when inactive
 *create tooltips to help users understand how to... use advanced settings/set priority/add to my day/edit name and steps of tasks from task box
+
+**axios caused 1 high severity vulnerability**
+
+**Backend connection points**
+CompleteSignUpModal.jsx - when signing up the user info is sent to the backend for saving to database (local)

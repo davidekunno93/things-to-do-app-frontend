@@ -187,18 +187,21 @@ const DataProvider = (props) => {
                 categoryName: "Home",
                 iconUrl: "https://i.imgur.com/t2EAesy.png",
                 color: "yellow",
+                orderIndex: 0,
                 uid: "testUser"
             },
             "Car": {
                 categoryName: "Car",
                 iconUrl: "https://i.imgur.com/Nm1N0cy.png",
                 color: "orange",
+                orderIndex: 1,
                 uid: "testUser"
             },
             "Health": {
                 categoryName: "Health",
                 iconUrl: "https://i.imgur.com/3Do4ea2.png",
                 color: "none",
+                orderIndex: 2,
                 uid: "testUser"
             },
         },

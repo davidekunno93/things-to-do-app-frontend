@@ -6,6 +6,7 @@ import { auth, firestore } from '../firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import CompleteSignUpModal from '../components/CompleteSignUpModal'
 import { doc, getDoc } from 'firebase/firestore'
+import axios from 'axios'
 
 const Authentication = () => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -189,7 +190,7 @@ const Authentication = () => {
         } else {
             emailError.classList.add('d-none')
         }
-        if (signUpPassword.length < 4) {
+        if (signUpPassword.length < 6) {
             passwordError.classList.remove('d-none')
             error = true
         } else {
@@ -223,7 +224,7 @@ const Authentication = () => {
         } else {
             emailError.classList.add('d-none')
         }
-        if (signInPassword.length < 4) {
+        if (signInPassword.length < 6) {
             passwordError.classList.remove('d-none')
             error = true
         } else {
@@ -267,6 +268,18 @@ const Authentication = () => {
         })
     }
 
+    const sendData = async () => {
+        let url = "http://localhost:5000/auth/create_user"
+        let data = "testing"
+        const response = await axios.post(url, JSON.stringify(data), {
+            headers: { "Content-Type" : "application/json" }
+        }).then((response) => {
+            console.log(response.data)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return (
         <>
         <CompleteSignUpModal open={completeSignUpModalOpen} displayName={signUpName} photoURL={selectedAvatarUrl} onClose={completeSignUp} />
@@ -274,7 +287,7 @@ const Authentication = () => {
                 {/* <Fade fraction={0} triggerOnce> */}
                     <div id='tipBox' className="website-tips z-1 flx position-absolute white-text hidden-o">
                         <div className="m-auto">
-                            <p className="m-0 xx-large">{tips[tipIndex].title}</p>
+                            <p className="m-0 xx-large font-jakarta">{tips[tipIndex].title}</p>
 
                             <img src={tips[tipIndex].imgUrl} alt="" className="img-tip my-2" />
                             <p className="m-0">{tips[tipIndex].text}</p>
@@ -291,7 +304,7 @@ const Authentication = () => {
 
                                     <div className="sign-up-box flx-c just-se">
 
-                                        <div className="xx-large">Sign Up</div>
+                                        <div onClick={() => sendData()} className="xx-large font-jakarta">Sign Up</div>
 
                                         <div className="name flx-c">
                                             <label htmlFor='name' className="m-0">Name: <span id='signUpNameError' className="red-text d-none">*Please enter your name*</span></label>
@@ -315,7 +328,7 @@ const Authentication = () => {
                                         </div>
 
                                         <div className="password flx-c">
-                                            <label htmlFor='signUpPassword' className="m-0">Password: <span id='signUpPasswordError' className="red-text d-none">*Password must be min. 4 characters*</span></label>
+                                            <label htmlFor='signUpPassword' className="m-0">Password: <span id='signUpPasswordError' className="red-text d-none">*Password must be min. 6 characters*</span></label>
                                             <div className="inputBox flx-c">
                                                 <div className="overlay-icon-right flx">
                                                     <span onClick={() => toggleSignUpPasswordVisibility()} className="showPasswordIcon material-symbols-outlined">
@@ -343,13 +356,13 @@ const Authentication = () => {
 
                                 <div className="carousel-item">
                                     <div className="sign-in-box flx-c just-se">
-                                        <div className="xx-large">Sign In</div>
+                                        <div className="xx-large font-jakarta">Sign In</div>
                                         <div className="email flx-c">
                                             <label htmlFor='signInEmail' className="m-0">Email: <span id='signInEmailError' className="red-text d-none">*Please enter a valid email*</span></label>
                                             <input onChange={(e) => setSignInEmail(e.target.value)} id='signInEmail' type="text" className='input-style3' />
                                         </div>
                                         <div className="password flx-c">
-                                            <label htmlFor='signInPassword' className="m-0">Password: <span id='signInPasswordError' className="red-text d-none">*Password must be min. 4 characters*</span></label>
+                                            <label htmlFor='signInPassword' className="m-0">Password: <span id='signInPasswordError' className="red-text d-none">*Password must be min. 6 characters*</span></label>
                                             <div className="inputBox flx-c">
                                                 <div className="overlay-icon-right flx">
                                                     <span onClick={() => toggleSignInPasswordVisibility()} className="showPasswordIcon material-symbols-outlined">

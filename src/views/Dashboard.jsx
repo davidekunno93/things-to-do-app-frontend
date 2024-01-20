@@ -3,7 +3,7 @@ import CreateTaskModal from '../components/CreateTaskModal'
 import CircularProgressBar from '../components/CircularProgressBar';
 import { DataContext } from '../context/DataProvider';
 import TaskBox from '../components/TaskBox';
-import QuickUpdateModal from '../components/quickUpdateModal';
+import QuickUpdateModal from '../components/QuickUpdateModal';
 import EditTaskModal from '../components/EditTaskModal';
 import DatePickerModal from '../components/DatePickerModal';
 import { format } from 'date-fns';

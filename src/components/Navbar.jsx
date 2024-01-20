@@ -47,7 +47,7 @@ const Navbar = () => {
                         {/* <span className="material-symbols-outlined">
                             account_circle
                         </span> */}
-                        <img src={user.photoURL} alt="" className="img-dp mx-2" />
+                        <img src={user.photoURL ? user.photoURL : "https://i.imgur.com/MacUxKa.png"} alt="" className="img-dp mx-2" />
                         <p className="inline ml-1">{user.displayName}</p>
                         <p className="m-0 position-right x-small pr-2 pt-2 gray-text">Level {user.level}</p>
                     </div>
