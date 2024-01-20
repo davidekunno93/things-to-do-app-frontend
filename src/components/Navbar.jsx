@@ -7,7 +7,7 @@ import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 
 const Navbar = () => {
-    const { tasks, showNavbar, setShowNavbar, user, setUser } = useContext(DataContext);
+    const { tasks, showNavbar, setShowNavbar, user, setUser, setTasks } = useContext(DataContext);
     const { categories, setCategories, selectedCategory, setSelectedCategory, userCategories } = useContext(DataContext);
 
     // navigations
@@ -30,6 +30,8 @@ const Navbar = () => {
         // console.log(auth.currentUser)
         console.log(user)
     }
+
+    // sign off functions
     const clearUser = () => {
         setUser({
             uid: "testUser",
@@ -40,6 +42,176 @@ const Navbar = () => {
             points: 5,
             pointsForLevelUp: 45
         })
+    }
+    const clearTasks = () => {
+        setTasks({
+            1: {
+                id: 1,
+                myDay: false,
+                taskName: "Update my car's registration",
+                category: "Car",
+                notes: "Get car inspection done and update registration!",
+                highPriority: false,
+                endDate: "01/06/2024",
+                endTime: "11:30 AM",
+                frequency: "Once",
+                duration: "Long",
+                outdoors: true,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Complete car inspection", completed: false },
+                    { number: 2, desc: "Go to grocery store to purchase updated registration", completed: false }
+                ], // [{number: #, desc: "", completed: false}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            },
+            2: {
+                id: 2,
+                myDay: true,
+                taskName: "Wash the dishes!",
+                category: "Home",
+                notes: "Clear the sink when I get home",
+                highPriority: true,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Medium",
+                outdoors: false,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    {number: 1, desc: "Wash the dishes", completed: false},
+                    {number: 2, desc: "Set them on the drying rack", completed: false},
+                    {number: 3, desc: "Put the dishes away", completed: false}
+                ], // [{number: 1, desc: "", completed: false}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            },
+            3: {
+                id: 3,
+                myDay: false,
+                taskName: "Find the best fast food in Houston",
+                category: null,
+                notes: "Eat at different fast food spots and decide which is the best fast food in houston. Chick fil a = 8/10, Briother's pizza = 7.5/10",
+                highPriority: false,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Long",
+                outdoors: false,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Chick fil a", completed: true },
+                    { number: 2, desc: "Potbelly", completed: false },
+                    { number: 3, desc: "Pizza from Brother's", completed: true },
+                    { number: 4, desc: "Whataburger", completed: false },
+                    { number: 5, desc: "Chili's", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            },
+            4: {
+                id: 4,
+                myDay: false,
+                taskName: "Go to the Park",
+                category: null,
+                notes: "Go get some fresh air and exercise at the local park",
+                highPriority: false,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Medium",
+                outdoors: true,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [], // [{number: 1, desc: "", completed: false}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            },
+            5: {
+                id: 5,
+                myDay: false,
+                taskName: "Sell my company for $1 million",
+                category: null,
+                notes: "Sell my company to the highest bidder and become a millionaire",
+                highPriority: true,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: null,
+                outdoors: false,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Own a company", completed: false },
+                    { number: 2, desc: "Sell it for a million bucks!", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            },
+            6: {
+                id: 6,
+                myDay: false,
+                taskName: "Find the infinity stones",
+                category: null,
+                notes: "6 infinity stones away from World Domination!",
+                highPriority: true,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Long",
+                outdoors: true,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Find one infinity stone", completed: false },
+                    { number: 2, desc: "Find the rest of the inifinity stones", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            },
+            7: {
+                id: 7,
+                myDay: true,
+                taskName: "Catch a new Pokemon",
+                category: null,
+                notes: "Gotta catch 'em all",
+                highPriority: true,
+                endDate: "01/26/2024",
+                endTime: null,
+                frequency: "Once",
+                duration: "Medium",
+                outdoors: true,
+                participants: [
+    
+                ], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Buy pokeballs", completed: true },
+                    { number: 2, desc: "Walk through tall grass", completed: false },
+                    { number: 3, desc: "Battle a pokemon", completed: false },
+                    { number: 4, desc: "Weaken the pokemon", completed: false },
+                    { number: 5, desc: "Catch the pokemon", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null
+            }
+        })
+    }
+    const logOut = () => {
+        clearUser()
+        clearTasks()
+        if (auth.currentUser) {
+            // console.log(auth.currentUser)
+            signOut(auth).then(() => {
+                console.log('signed out')
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+        goToAuth()
     }
 
     return (
@@ -158,7 +330,7 @@ const Navbar = () => {
                     </div>
 
 
-                    <div onClick={() => {goToAuth(); signOut(); clearUser()}} className="nav-option-bottom">
+                    <div onClick={() => logOut()} className="nav-option-bottom">
                         <span className="material-symbols-outlined">
                             logout
                         </span>

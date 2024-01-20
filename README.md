@@ -25,10 +25,10 @@ Currently, two official plugins are available:
 <!-- *Create your own category -->
 <!-- *Delete a category -->
 **feedback modal send message to my database**
-*Create Backend
+**Create Backend**
 *create category gives new category next order index/del category reshuffles order indexes
-*photoURL nullable, backup render if no photoURL
-*add time created key to tasks
+<!-- *photoURL nullable, backup render if no photoURL -->
+<!-- *add time created key to tasks - not needed, initial frontend task list is based on chrono -->
 <!-- *Add participants to create/edit task modals - between Notes and date/time! OR next to cancel button in the bott-right -->
 <!-- *make + Add steps button fade out if 5 steps already added -->
 AFTER MVP UPDATES
@@ -42,13 +42,13 @@ AFTER MVP UPDATES
 *character limits on task title, notes, steps
 *Are you sure clear category/delete category modals
 *"..." if task name is longer than available width
-*slide title text in?
-*diff color backgrounds for list headers
+<!-- *slide title text in? -->
+<!-- *diff color backgrounds for list headers -->
 *Theme settings
 *allow making words bold in task title
 *glow when category is first made
-*0 tasks in this category when you first create it and haven't added anything yet
-*make time picker w/o 0 in front of time
+*0 tasks in this category when you first create it and haven't added anything yet card
+<!-- *make time picker w/o 0 in front of time -->
 *dump folder that you can restore tasks from
 *equalize image sizes of tips on auth page
 
