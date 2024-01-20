@@ -49,6 +49,8 @@ AFTER MVP UPDATES
 *glow when category is first made
 *0 tasks in this category when you first create it and haven't added anything yet
 *make time picker w/o 0 in front of time
+*dump folder that you can restore tasks from
+*equalize image sizes of tips on auth page
 
 
 Feedback

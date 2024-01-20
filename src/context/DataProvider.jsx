@@ -8,7 +8,7 @@ const DataProvider = (props) => {
     const [user, setUser] = useState({
         uid: "testUser",
         displayName: "Guest",
-        photoURL: "https://i.imgur.com/MacUxKa.png",
+        photoURL: null,
         email: "guest@abc.com",
         level: 1,
         points: 5,

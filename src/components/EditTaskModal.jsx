@@ -89,8 +89,8 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     }
     const updateTaskEndTime = () => {
         let taskCopy = { ...updatedTask }
-        if (selectedTime) {
-            taskCopy.endTime = timify(selectedTime) + " " + timeOfDay
+        if (selectedHour && selectedMinute) {
+            taskCopy.endTime = timify(selectedHour+":"+selectedMinute) + " " + timeOfDay
         } else {
             taskCopy.endTime = null
         }
@@ -184,20 +184,35 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     }
 
     // time code
-    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedHour, setSelectedHour] = useState(null)
+    const [selectedMinute, setSelectedMinute] = useState(null)
     const [timeOfDay, setTimeOfDay] = useState("PM")
-    const updateSelectedTime = (time) => {
-        if (time === "Clear") {
-            let timeInput = document.getElementById('timeInput')
-            timeInput.value = ""
-            setSelectedTime(null)
-        } else {
-            setSelectedTime(time)
+    const clearSelectedTime = () => {
+        let hour = document.getElementById('hourInput')
+        let minute = document.getElementById('minuteInput')
+        hour.value = ""
+        minute.value = ""
+        setSelectedHour(null)
+        setSelectedMinute(null)
+    }
+    const wakeUpMinutes = () => {
+        let minute = document.getElementById('minuteInput')
+        if (!selectedMinute) {
+            minute.value = "00"
+            setSelectedMinute("00")
+        }
+    }
+    const wakeUpHours = () => {
+        let hour = document.getElementById('hourInput')
+        if (!selectedHour) {
+            hour.value = "12"
+            setSelectedHour("12")
         }
     }
     useEffect(() => {
         updateTaskEndTime()
-    }, [selectedTime, timeOfDay])
+    }, [selectedHour, timeOfDay])
+
 
     // frequency code
     const updateFrequencySelection = (option) => {
@@ -407,10 +422,15 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     }
     // load time
     const loadEndTime = () => {
-        const timeInput = document.getElementById('timeInput')
+        const hourInput = document.getElementById('hourInput')
+        const minuteInput = document.getElementById('minuteInput')
         if (task.endTime) {
-            timeInput.value = timifee(task.endTime)
-            setSelectedTime(timifee(task.endTime))
+            let taskHour = (timifee(task.endTime).slice(0, 2))
+            let taskMinute = (timifee(task.endTime).slice(3, 5))
+            hourInput.value = taskHour
+            minuteInput.value = taskMinute
+            setSelectedHour(taskHour)
+            setSelectedMinute(taskMinute)
             setTimeOfDay(task.endTime.slice(-2))
         }
     }
@@ -556,77 +576,53 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                 </div>
                                             </div>
                                             <div className="task-time flx-c">
-                                                <label className="m-0 ml-1">Time</label>
+                                                <div className="flx-r align-c">
+                                                    <label className="m-0 ml-1">Time</label>
+                                                    <p onClick={() => clearSelectedTime()} className={`m-0 position-right small gray-text hoverFade pointer ${selectedHour ? null : "d-none"}`}>Clear</p>
+                                                </div>
                                                 <div className="time-input-div position-relative">
                                                     <span className="material-symbols-outlined overlay-icon3">
                                                         schedule
                                                     </span>
                                                     <div className="time-picker-box">
-                                                        {/* {selectedTime && timeOfDay === "AM" &&
-                                                            <div onClick={() => setTimeOfDay("PM")} className="overlay-am">AM</div>
-                                                        }
-                                                        {selectedTime && timeOfDay === "PM" &&
-                                                            <div onClick={() => setTimeOfDay("AM")} className="overlay-pm">PM</div>
-                                                        } */}
-                                                        <select onChange={(e) => updateSelectedTime(e.target.value)} name="time-picker" id="timeInput" className='time-input-box' required>
-                                                            <option value="" disabled selected hidden>hh:mm</option>
-                                                            <option value="Clear">Clear</option>
-                                                            <option value="12:00">12:00</option>
-                                                            <option value="12:15">12:15</option>
-                                                            <option value="12:30">12:30</option>
-                                                            <option value="12:45">12:45</option>
-                                                            <option value="01:00">01:00</option>
-                                                            <option value="01:15">01:15</option>
-                                                            <option value="01:30">01:30</option>
-                                                            <option value="01:45">01:45</option>
-                                                            <option value="02:00">02:00</option>
-                                                            <option value="02:15">02:15</option>
-                                                            <option value="02:30">02:30</option>
-                                                            <option value="02:45">02:45</option>
-                                                            <option value="03:00">03:00</option>
-                                                            <option value="03:15">03:15</option>
-                                                            <option value="03:30">03:30</option>
-                                                            <option value="03:45">03:45</option>
-                                                            <option value="04:00">04:00</option>
-                                                            <option value="04:15">04:15</option>
-                                                            <option value="04:30">04:30</option>
-                                                            <option value="04:45">04:45</option>
-                                                            <option value="05:00">05:00</option>
-                                                            <option value="05:15">05:15</option>
-                                                            <option value="05:30">05:30</option>
-                                                            <option value="05:45">05:45</option>
-                                                            <option value="06:00">06:00</option>
-                                                            <option value="06:15">06:15</option>
-                                                            <option value="06:30">06:30</option>
-                                                            <option value="06:45">06:45</option>
-                                                            <option value="07:00">07:00</option>
-                                                            <option value="07:15">07:15</option>
-                                                            <option value="07:30">07:30</option>
-                                                            <option value="07:45">07:45</option>
-                                                            <option value="08:00">08:00</option>
-                                                            <option value="08:15">08:15</option>
-                                                            <option value="08:30">08:30</option>
-                                                            <option value="08:45">08:45</option>
-                                                            <option value="09:00">09:00</option>
-                                                            <option value="09:15">09:15</option>
-                                                            <option value="09:30">09:30</option>
-                                                            <option value="09:45">09:45</option>
-                                                            <option value="10:00">10:00</option>
-                                                            <option value="10:15">10:15</option>
-                                                            <option value="10:30">10:30</option>
-                                                            <option value="10:45">10:45</option>
-                                                            <option value="11:00">11:00</option>
-                                                            <option value="11:15">11:15</option>
-                                                            <option value="11:30">11:30</option>
-                                                            <option value="11:45">11:45</option>
 
+                                                        <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className='hour-input-box' placeholder="hh" required>
+                                                            <option value="" disabled selected hidden>hh</option>
+                                                            <option value="01">1</option>
+                                                            <option value="02">2</option>
+                                                            <option value="03">3</option>
+                                                            <option value="04">4</option>
+                                                            <option value="05">5</option>
+                                                            <option value="06">6</option>
+                                                            <option value="07">7</option>
+                                                            <option value="08">8</option>
+                                                            <option value="09">9</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                        </select>
+                                                        <div className="">&nbsp;:&nbsp;</div>
+                                                        <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className='minute-input-box' placeholder="mm" required>
+                                                            <option value="" disabled selected hidden>mm</option>
+                                                            <option value="00">00</option>
+                                                            <option value="05">05</option>
+                                                            <option value="10">10</option>
+                                                            <option value="15">15</option>
+                                                            <option value="20">20</option>
+                                                            <option value="25">25</option>
+                                                            <option value="30">30</option>
+                                                            <option value="35">35</option>
+                                                            <option value="40">40</option>
+                                                            <option value="45">45</option>
+                                                            <option value="50">50</option>
+                                                            <option value="55">55</option>
                                                         </select>
                                                     </div>
-                                                    {selectedTime && timeOfDay === "AM" &&
-                                                        <div onClick={() => setTimeOfDay("PM")} className="ml-2 hoverFade pointer">AM</div>
+                                                    {selectedHour && selectedMinute && timeOfDay === "AM" &&
+                                                        <div onClick={() => setTimeOfDay("PM")} className="todPicker ml-2 hoverFade pointer">AM</div>
                                                     }
-                                                    {selectedTime && timeOfDay === "PM" &&
-                                                        <div onClick={() => setTimeOfDay("AM")} className="ml-2 hoverFade pointer">PM</div>
+                                                    {selectedHour && selectedMinute && timeOfDay === "PM" &&
+                                                        <div onClick={() => setTimeOfDay("AM")} className="todPicker ml-2 hoverFade pointer">PM</div>
                                                     }
                                                 </div>
                                             </div>

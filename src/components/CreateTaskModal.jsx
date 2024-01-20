@@ -79,8 +79,8 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     }
     const updateTaskEndTime = () => {
         let taskCopy = { ...newTask }
-        if (selectedTime) {
-            taskCopy.endTime = timify(selectedTime) + " " + timeOfDay
+        if (selectedHour && selectedMinute) {
+            taskCopy.endTime = timify(selectedHour+":"+selectedMinute) + " " + timeOfDay
         } else {
             taskCopy.endTime = null
         }
@@ -152,20 +152,36 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     }
 
     // time code
-    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedHour, setSelectedHour] = useState(null)
+    const [selectedMinute, setSelectedMinute] = useState(null)
     const [timeOfDay, setTimeOfDay] = useState("PM")
-    const updateSelectedTime = (time) => {
-        if (time === "Clear") {
-            let timeInput = document.getElementById('timeInput')
-            timeInput.value = ""
-            setSelectedTime(null)
-        } else {
-            setSelectedTime(time)
+    const clearSelectedTime = () => {
+        let hour = document.getElementById('hourInput')
+        let minute = document.getElementById('minuteInput')
+        hour.value = ""
+        minute.value = ""
+        setSelectedHour(null)
+        setSelectedMinute(null)
+    }
+    const wakeUpMinutes = () => {
+        let minute = document.getElementById('minuteInput')
+        if (!selectedMinute) {
+            minute.value = "00"
+            setSelectedMinute("00")
+        }
+    }
+    const wakeUpHours = () => {
+        let hour = document.getElementById('hourInput')
+        if (!selectedHour) {
+            hour.value = "12"
+            setSelectedHour("12")
         }
     }
     useEffect(() => {
         updateTaskEndTime()
-    }, [selectedTime, timeOfDay])
+    }, [selectedHour, timeOfDay])
+
+
 
     // frequency code
     const updateFrequencySelection = (option) => {
@@ -383,7 +399,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
 
 
     const printTime = () => {
-        console.log(selectedTime)
+        console.log(selectedHour+":"+selectedMinute+" "+timeOfDay)
     }
     const print = (e) => {
         console.log(e.target.value)
@@ -458,18 +474,22 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                             <div className="task-date z-100 mr-5 flx-c">
                                                 <div className="flx-r just-sb align-c">
                                                     <label className="m-0 ml-1">Date or Deadline</label>
-                                                    <p onClick={() => clearEndDate()} className="m-0 small gray-text pointer hoverFade">Clear</p>
+                                                    <p onClick={() => clearEndDate()} className={`m-0 small gray-text pointer hoverFade ${selectedDate ? null : "d-none"}`}>Clear</p>
                                                 </div>
                                                 <div className="date-input-div position-relative">
                                                     <span className="material-symbols-outlined overlay-icon2">
                                                         event
                                                     </span>
 
-                                                    <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} minDate={subDays(new Date(), 0)} placeholderText='mm/dd/yyyy' className="date-input-box" />
+                                                    {/* <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} minDate={subDays(new Date(), 0)} placeholderText='mm/dd/yyyy' className="date-input-box" /> */}
+                                                    <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className="date-input-box" />
                                                 </div>
                                             </div>
                                             <div className="task-time flx-c">
-                                                <label className="m-0 ml-1">Time</label>
+                                                <div className="flx-r align-c">
+                                                    <label className="m-0 ml-1">Time</label>
+                                                    <p onClick={() => clearSelectedTime()} className={`m-0 position-right small gray-text hoverFade pointer ${selectedHour ? null : "d-none"}`}>Clear</p>
+                                                </div>
                                                 <div className="time-input-div position-relative">
                                                     <span className="material-symbols-outlined overlay-icon3">
                                                         schedule
@@ -482,7 +502,38 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                         {selectedTime && timeOfDay === "PM" &&
                                                             <div onClick={() => setTimeOfDay("AM")} className="overlay-pm">PM</div>
                                                         } */}
-                                                        <select onChange={(e) => updateSelectedTime(e.target.value)} name="time-picker" id="timeInput" className='time-input-box' required>
+                                                        <select onChange={(e) => {setSelectedHour(e.target.value); wakeUpMinutes()}} name="time-picker" id="hourInput" className='hour-input-box' placeholder="hh" required>
+                                                            <option value="" disabled selected hidden>hh</option>
+                                                            <option value="01">1</option>
+                                                            <option value="02">2</option>
+                                                            <option value="03">3</option>
+                                                            <option value="04">4</option>
+                                                            <option value="05">5</option>
+                                                            <option value="06">6</option>
+                                                            <option value="07">7</option>
+                                                            <option value="08">8</option>
+                                                            <option value="09">9</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                        </select>
+                                                        <div className="">&nbsp;:&nbsp;</div>
+                                                        <select onChange={(e) => {setSelectedMinute(e.target.value); wakeUpHours()}} name="time-picker" id="minuteInput" className='minute-input-box' placeholder="mm" required>
+                                                            <option value="" disabled selected hidden>mm</option>
+                                                            <option value="00">00</option>
+                                                            <option value="05">05</option>
+                                                            <option value="10">10</option>
+                                                            <option value="15">15</option>
+                                                            <option value="20">20</option>
+                                                            <option value="25">25</option>
+                                                            <option value="30">30</option>
+                                                            <option value="35">35</option>
+                                                            <option value="40">40</option>
+                                                            <option value="45">45</option>
+                                                            <option value="50">50</option>
+                                                            <option value="55">55</option>
+                                                        </select>
+                                                        {/* <select onChange={(e) => updateSelectedTime(e.target.value)} name="time-picker" id="timeInput" className='time-input-box' required>
                                                             <option value="" disabled selected hidden>hh:mm</option>
                                                             <option value="Clear">Clear</option>
                                                             <option value="12:00">12:00</option>
@@ -534,13 +585,13 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                             <option value="11:30">11:30</option>
                                                             <option value="11:45">11:45</option>
 
-                                                        </select>
-                                                        </div>
-                                                    {selectedTime && timeOfDay === "AM" &&
-                                                        <div onClick={() => setTimeOfDay("PM")} className="ml-2 hoverFade pointer">AM</div>
+                                                        </select> */}
+                                                    </div>
+                                                    {selectedHour && selectedMinute && timeOfDay === "AM" &&
+                                                        <div onClick={() => setTimeOfDay("PM")} className="todPicker ml-2 hoverFade pointer">AM</div>
                                                     }
-                                                    {selectedTime && timeOfDay === "PM" &&
-                                                        <div onClick={() => setTimeOfDay("AM")} className="ml-2 hoverFade pointer">PM</div>
+                                                    {selectedHour && selectedMinute && timeOfDay === "PM" &&
+                                                        <div onClick={() => setTimeOfDay("AM")} className="todPicker ml-2 hoverFade pointer">PM</div>
                                                     }
                                                 </div>
                                             </div>

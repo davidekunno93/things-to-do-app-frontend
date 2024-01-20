@@ -30,6 +30,17 @@ const Navbar = () => {
         // console.log(auth.currentUser)
         console.log(user)
     }
+    const clearUser = () => {
+        setUser({
+            uid: "testUser",
+            displayName: "Guest",
+            photoURL: null,
+            email: "guest@abc.com",
+            level: 1,
+            points: 5,
+            pointsForLevelUp: 45
+        })
+    }
 
     return (
         <>
@@ -147,7 +158,7 @@ const Navbar = () => {
                     </div>
 
 
-                    <div onClick={() => {goToAuth(); signOut()}} className="nav-option-bottom">
+                    <div onClick={() => {goToAuth(); signOut(); clearUser()}} className="nav-option-bottom">
                         <span className="material-symbols-outlined">
                             logout
                         </span>

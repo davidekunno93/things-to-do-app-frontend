@@ -13,7 +13,7 @@ const Authentication = () => {
     const [tipIndex, setTipIndex] = useState(0);
     const [tipSliderOn, setTipSliderOn] = useState(false)
     const [timer, setTimer] = useState(0);
-    const { showNavbar, setShowNavbar, user, setUser } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, user, setUser, tasks, setTasks } = useContext(DataContext);
 
     // other functions
     function wait(ms) {
@@ -253,6 +253,7 @@ const Authentication = () => {
         userCopy.points = userLevelData.points
         userCopy.pointsForLevelUp = userLevelData.pointsForLevelUp
         setUser(userCopy)
+        setTasks({})
         // set tasks environment
         navigateToDashboard()
     }

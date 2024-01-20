@@ -621,7 +621,7 @@ const Dashboard = () => {
                                         <span className="material-symbols-outlined xx-large bold700">
                                             sunny
                                         </span>
-                                        <p className="m-0 xx-large"><strong>My Day</strong></p>
+                                        <p className="m-0 xx-large dark-text"><strong>My Day</strong></p>
                                     </div>
                                 </div>
                                 <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
@@ -697,7 +697,7 @@ const Dashboard = () => {
                                         <span className="material-symbols-outlined xx-large">
                                             list
                                         </span>
-                                        <p className="m-0 xx-large">All Tasks</p>
+                                        <p className="m-0 xx-large dark-text">All Tasks</p>
                                     </div>
                                 </div>
                                 <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these deatils on the fly.</p>
@@ -721,7 +721,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className="align-all-items gap-2">
                                     <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className="img-iconh mr-2" />
-                                    <p className="m-0 xx-large">{userCategories.categories[selectedCategory].categoryName}</p>
+                                    <p className="m-0 xx-large dark-text">{userCategories.categories[selectedCategory].categoryName}</p>
                                     <span onClick={() => toggleCategoryPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 pointer">
                                         more_vert
                                     </span>
