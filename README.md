@@ -25,12 +25,23 @@ Currently, two official plugins are available:
 <!-- *Create your own category -->
 <!-- *Delete a category -->
 **feedback modal send message to my database**
-**Create Backend**
-*create category gives new category next order index/del category reshuffles order indexes
+**Create Backend** - add task, delete task, update task, dump task
+<!-- error message not sure if meaningful(SAWarning: Object of type <Task> not in session, add operation along 'Step.task' won't proceed)
+  db.session.commit() -->
+*Welcome to Demo mode - w instructions on what you can do*
+*category of newly created tasks = allTasks??*
+*create category gives new category next order index/del category reshuffles order indexes*
+*attribute <a href="https://www.freepik.com/free-vector/trophy-flat-style_73897148.htm#query=trophy%20png&position=3&from_view=keyword&track=ais&uuid=007cb5db-57b1-420e-a773-9e90c9bd46a0">Image by juicy_fish</a> on Freepik for the trophy img in missionCompleted modal*
+*add my day to full tray icons*
+*create dumped key and arr for dumped tasks*
+*confetti for final mission completed?*
+*remove it would be cool textarea from feedback modal*
+<!-- *not all tasks completed but mission still getting completed ??* -->
 <!-- *photoURL nullable, backup render if no photoURL -->
 <!-- *add time created key to tasks - not needed, initial frontend task list is based on chrono -->
 <!-- *Add participants to create/edit task modals - between Notes and date/time! OR next to cancel button in the bott-right -->
 <!-- *make + Add steps button fade out if 5 steps already added -->
+*equalize image sizes of tips on auth page, make fade out fade in with small delay*
 AFTER MVP UPDATES
 **Earn pts for completing and deleting tasks (will need tooltip explaining)**
 *animation for dumping tasks*
@@ -50,7 +61,6 @@ AFTER MVP UPDATES
 *0 tasks in this category when you first create it and haven't added anything yet card
 <!-- *make time picker w/o 0 in front of time -->
 *dump folder that you can restore tasks from
-*equalize image sizes of tips on auth page
 
 
 Feedback

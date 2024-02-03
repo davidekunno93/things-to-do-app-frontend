@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Fade } from 'react-awesome-reveal'
+import { Link } from 'react-router-dom'
 
-const FeedbackModal = ({ open, onClose }) => {
+const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
     if (!open) return null
     const [text, setText] = useState("")
     const [sentFeedback, setSentFeedback] = useState(false);
@@ -33,6 +34,17 @@ const FeedbackModal = ({ open, onClose }) => {
         }
     }
 
+    const closeFeedbackModal = () => {
+        setSentFeedback(true)
+        wait(3000).then(() => {
+            let screen = document.getElementById('overlayPlaceholder')
+            screen.classList.add('hidden-o')
+            wait(400).then(() => {
+                onClose()
+            })
+        })
+    }
+
     return (
         <>
             <div id='overlayPlaceholder' className="overlay-placeholder">
@@ -41,15 +53,26 @@ const FeedbackModal = ({ open, onClose }) => {
                         <div className="feedback-modal">
                             {!isLoading && !sentFeedback &&
                                 <div className="flx-c h-100">
-                                    <div className="align-all-items">
+                                    <div className="align-all-items just-ce">
                                         <p className="m-0 box-title">Feedback is always appreciated</p>
                                         <img src="https://i.imgur.com/YIcdeNr.png" alt="" className="img-xsmall ml-2" />
                                     </div>
-                                    <p id='noTextError' className="m-0 red-text small hidden-o">*Please enter feedback in text area*</p>
+                                    <hr className='w-100'/>
+                                    <p className="m-0 mt- font-jakarta x-large center-text">Click the link to take the feedback Survey!</p>
+                                    <Link to='https://forms.gle/saSbJJi9hdadS8kq6' target='_blank'>
+                                        <div className="align-all-items gap-1 just-ce my-2">
+                                            <p className="m-0 ml-2 large">Feedback Survey</p>
+                                            <span className="material-symbols-outlined large mt-h">
+                                                open_in_new
+                                            </span>
+                                        </div>
+                                    </Link>
+                                    <img src="https://i.imgur.com/VLhHJFU.png" alt="" className="img-large h-center" />
+                                    {/* <p id='noTextError' className="m-0 mt-3 red-text small hidden-o">*Please enter feedback in text area*</p>
                                     <textarea onChange={(e) => setText(e.target.value)} name="" id="" className='textarea-box' style={{ height: '100px' }} placeholder='It would be cool if...'></textarea>
-                                    <p className="m-0 font-jakarta small">All feedback is <strong>anonymous</strong> and is only viewed by myself, the creator of <i>'Things to-do'</i></p>
-                                    <div className="flx-r gap-3 mt-4 position-bottom">
-                                        <button onClick={() => sendFeedback()} className="btn-primary">Send</button>
+                                    <p className="m-0 font-jakarta small">All feedback is <strong>anonymous</strong> and is only viewed by myself, the creator of <i>'Things to-do'</i></p> */}
+                                    <div className="flx-r gap-3 mt-4 position-bottom just-ce">
+                                        <button onClick={() => {deactivateFeedbackAlert(); closeFeedbackModal()}} className="btn-primary">Done</button>
                                         <button onClick={() => onClose()} className="btn-secondary">Cancel</button>
                                     </div>
                                 </div>

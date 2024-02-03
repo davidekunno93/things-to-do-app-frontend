@@ -11,11 +11,15 @@ import CreateCategoryModal from '../components/CreateCategoryModal';
 import TimePickerModal from '../components/TimePickerModal';
 import { Fade, Slide } from 'react-awesome-reveal';
 import FeedbackModal from '../components/FeedbackModal';
+import axios from 'axios';
+import WelcomeModal from '../components/WelcomeModal';
+import MissionModal from '../components/MissionModal';
+import MissionCompletedModal from '../components/MissionCompletedModal';
 
 
 
 const Dashboard = () => {
-    const { showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories, missionsCompleted, setMissionscompleted, databaseOn } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
     useEffect(() => {
         setShowNavbar(true)
@@ -181,6 +185,17 @@ const Dashboard = () => {
     }
 
     const quickTaskUpdates = {
+        dumpAll: function (taskIds) {
+            let tasksCopy = { ...tasks }
+            // loop thru taskIds
+            for (let i = 0; i < taskIds.length; i++) {
+                // inside the loop target the task in tasks object
+                // update task dumped to true and pts awards to # pts awarded
+                tasksCopy[taskIds[i]].dumped = true
+                tasksCopy[taskIds[i]].pointsAwarded = taskPointsAwarded(taskIds[i])
+            }
+            setTasks(tasksCopy)
+        },
         toggleCompleteStep: function (taskId, stepIndex) {
             let tasksCopy = { ...tasks }
             if (tasksCopy[taskId].steps[stepIndex].completed) {
@@ -284,7 +299,10 @@ const Dashboard = () => {
             tasksCopy[taskId].taskName = e.target.value
             setTasks(tasksCopy)
         },
-        remove: function (taskId) {
+        remove: function (taskId, db_task_id) {
+            if (db_task_id) {
+                deleteTaskFromDB(db_task_id)
+            }
             // reserializes entire tasks object
             // let tasksCopy = { ...tasks }
             // delete tasksCopy[taskId]
@@ -367,9 +385,10 @@ const Dashboard = () => {
         option: null
     })
 
-    const openQuickUpdateModal = (taskId, detail, option) => {
+    const openQuickUpdateModal = (taskId, db_task_id, detail, option) => {
         setQuickUpdateSettings({
             taskId: taskId,
+            db_task_id: db_task_id,
             detail: detail,
             option: option
         })
@@ -405,8 +424,8 @@ const Dashboard = () => {
     const twoYear = fullYear.toString().slice(2)
     const datinormal = (systemDate) => {
         let day = systemDate.getDate().toString().length === 1 ? "0" + systemDate.getDate() : systemDate.getDate()
-        let month = systemDate.getMonth().toString().length === 1 ? "0" + (systemDate.getMonth() + 1) : systemData.getMonth()
-        if (month.length === 1) {
+        let month = systemDate.getMonth().toString().length + 1 === 1 ? "0" + (systemDate.getMonth() + 1) : systemDate.getMonth() + 1
+        if (month.toString().length === 1) {
             month = "0" + month
         }
         let fullYear = systemDate.getFullYear()
@@ -421,7 +440,7 @@ const Dashboard = () => {
 
     const printTasks = () => {
         // let test = Object.keys(tasks).slice(-1)
-        console.log(categories)
+        // console.log(categories)
         // console.log(test[0])
         console.log(tasks)
     }
@@ -526,37 +545,68 @@ const Dashboard = () => {
         setSelectedCategory('allTasks')
     }
 
+    const taskPointsAwarded = (taskId) => {
+        let task = tasks[taskId]
+        if (task.endDate) {
+            if (new Date(task.completedDate) > new Date((new Date(task.endDate)).valueOf() - 1000 * 60 * 60 * 24)) {
+                // if task end date is defined and overdue it is worth 3 points
+                return 3
+            } else {
+                // if task end date is defined and upcoming
+                if (task.highPriority) {
+                    // and is high priority it is worth 7 points
+                    return 7
+                } else {
+                    // and is not high priority it is worth 6 points
+                    return 6
+                }
+            }
+        } else {
+            // if task end date is not defined
+            if (task.highPriority) {
+                // and is high priority it is worth 6 points
+                return 6
+            } else {
+                // and is not high priority it is worth 5 points
+                return 5
+            }
+        }
+    }
+
     const dumpCompletedTasks = () => {
         let newTasksObj = {}
-        let forDeleteTaskIds = []
+        let forDumpTaskIds = []
         let completionPts = []
         let tasksArr = Object.values(tasks)
         for (let i = 0; i < tasksArr.length; i++) {
-            if (tasksArr[i].completed) {
-                forDeleteTaskIds.push(tasksArr[i].id)
-                if (tasksArr[i].endDate) {
-                    if (new Date(tasksArr[i].completedDate) > new Date((new Date(tasksArr[i].endDate)).valueOf() - 1000 * 60 * 60 * 24)) {
-                        completionPts.push(3)
-                    } else {
-                        if (tasksArr[i].highPriority) {
-                            completionPts.push(7)
-                        } else {
-                            completionPts.push(6)
-                        }
-                    }
-                } else {
-                    if (tasksArr[i].highPriority) {
-                        completionPts.push(6)
-                    } else {
-                        completionPts.push(5)
-                    }
-                }
+            if (tasksArr[i].completed && !tasksArr[i].dumped) {
+                forDumpTaskIds.push(tasksArr[i].id)
+                // get completion pts of task using funtion - not checked yet
+                completionPts.push(taskPointsAwarded(tasksArr[i].id))
+                // if (tasksArr[i].endDate) {
+                //     if (new Date(tasksArr[i].completedDate) > new Date((new Date(tasksArr[i].endDate)).valueOf() - 1000 * 60 * 60 * 24)) {
+                //         completionPts.push(3)
+                //     } else {
+                //         if (tasksArr[i].highPriority) {
+                //             completionPts.push(7)
+                //         } else {
+                //             completionPts.push(6)
+                //         }
+                //     }
+                // } else {
+                //     if (tasksArr[i].highPriority) {
+                //         completionPts.push(6)
+                //     } else {
+                //         completionPts.push(5)
+                //     }
+                // }
             }
         }
-        // console.log(forDeleteTaskIds)
-        console.log("Completion " + completionPts)
-        if (forDeleteTaskIds.length > 0) {
-            quickTaskUpdates.removeAll(forDeleteTaskIds)
+        console.log("Dumping tasks..." + forDumpTaskIds)
+        console.log("Completion pts " + completionPts)
+        if (forDumpTaskIds.length > 0) {
+            quickTaskUpdates.dumpAll(forDumpTaskIds)
+            // quickTaskUpdates.removeAll(forDumpTaskIds)
         }
         let addedPts = completionPts.reduce((a, b) => a + b, 0)
         console.log("Added: " + addedPts)
@@ -572,18 +622,319 @@ const Dashboard = () => {
     }
 
 
+    const deleteTaskFromDB = (db_task_id) => {
+        if (databaseOn) {
+            let url = `http://localhost:5000/delete_task/${db_task_id}`
+            const response = axios.post(url)
+                .then((response) => {
+                    console.log(response)
+                }).catch((error) => {
+                    console.log(error)
+                })
+        }
+    }
+    // Welcome and Mission Code - if missions complete
+    const [welcomeModalOpen, setWelcomeModalOpen] = useState(missionsCompleted ? false : true);
+    const [missionModalOpen, setMissionModalOpen] = useState(false)
+    const [currentMission, setCurrentMission] = useState(1)
+    const openMissionModal = () => {
+        setMissionModalOpen(true);
+    }
+    const closeMissionModal = () => {
+        setMissionModalOpen(false);
+        checkMissionCompleted()
+    }
+    const [missionProgress, setMissionProgress] = useState(
+        {
+            "mission-1":
+            {
+                desc: "Your first mission is to create a task that has the following settings:",
+                numberOfTasks: 5,
+                tasksCompleted: 0,
+                missionCompleted: false,
+                tasks: [
+                    {
+                        taskKey: "Deadline",
+                        taskValue: "1st February 2024 at 8:45PM",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Frequency",
+                        taskValue: "Once",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Duration",
+                        taskValue: "Medium",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Outdoors",
+                        taskValue: "Yes",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Steps",
+                        taskValue: "Create 3 steps for your task",
+                        completed: false
+                    },
+                ]
+            },
+            "mission-2":
+            {
+                desc: "On the dashboard use the icons on the Task bar to change the task settings to:",
+                numberOfTasks: 5,
+                tasksCompleted: 0,
+                missionCompleted: false,
+                tasks: [
+                    {
+                        taskKey: "High priority",
+                        taskValue: "True",
+                        completed: false
+                    },
+                    {
+                        taskKey: "My Day",
+                        taskValue: "Add task to 'My Day'",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Deadline",
+                        taskValue: "4th February 2024 at 10:00AM",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Duration",
+                        taskValue: "Long",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Outdoors",
+                        taskValue: "No",
+                        completed: false
+                    },
+                ]
+            },
+            "mission-3":
+            {
+                numberOfTasks: 2,
+                tasksCompleted: 0,
+                missionCompleted: false,
+                tasks: [
+                    {
+                        taskKey: "Complete Task",
+                        taskValue: "Check your task completed.",
+                        completed: false
+                    },
+                    {
+                        taskKey: "Dump Tasks",
+                        taskValue: "Navigate to Completed tasks, click the three vertical dots and select the Dump Completed Tasks option on the pop-up to trade in your task for points",
+                        completed: false
+                    },
+                ]
+            },
+        }
+    )
+
+    const [missionReminderOpen, setMissionReminderOpen] = useState(false)
+    const openMissionReminder = () => {
+        setMissionReminderOpen(true)
+    }
+    const closeMissionReminder = () => {
+        setMissionReminderOpen(false)
+    }
+    const toggleMissionReminder = () => {
+        if (missionReminderOpen) {
+            closeMissionReminder()
+        } else {
+            openMissionReminder()
+        }
+    }
+    // check mission complete code
+    // mission 1 check
+    const checkFirstMissionCompleted = () => {
+        let tasksArr = Object.values(tasks)
+        let missionProgressCopy = { ...missionProgress }
+        let tasksCompleted = 0
+        // console.log(tasksArr)
+        for (let i = 0; i < tasksArr.length; i++) {
+            let task = tasksArr[i]
+            tasksCompleted = 0
+            // console.log(task.endDate)
+            if (task.endDate === "02/01/2024" && task.endTime === "8:45 PM") {
+                missionProgressCopy["mission-1"].tasks[0].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-1"].tasks[0].completed = false
+            }
+            if (task.frequency === "Once") {
+                missionProgressCopy["mission-1"].tasks[1].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-1"].tasks[1].completed = false
+            }
+            if (task.duration === "Medium") {
+                missionProgressCopy["mission-1"].tasks[2].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-1"].tasks[2].completed = false
+            }
+            if (task.outdoors) {
+                missionProgressCopy["mission-1"].tasks[3].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-1"].tasks[3].completed = false
+            }
+            if (task.steps.length === 3) {
+                missionProgressCopy["mission-1"].tasks[4].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-1"].tasks[4].completed = false
+            }
+        }
+        missionProgressCopy["mission-1"].tasksCompleted = tasksCompleted
+        if (tasksCompleted === missionProgressCopy["mission-1"].numberOfTasks) {
+            missionProgressCopy["mission-1"].missionCompleted = true
+            console.log(tasksCompleted)
+            // not all tasks completed but mission still getting completed ??
+        } else {
+            missionProgressCopy["mission-1"].missionCompleted = false
+        }
+        setMissionProgress(missionProgressCopy)
+        console.log("check complete (mission 1)")
+    }
+    // mission 2 check
+    const checkSecondMissionCompleted = () => {
+        let tasksArr = Object.values(tasks)
+        let missionProgressCopy = { ...missionProgress }
+        let tasksCompleted = 0
+        for (let i = 0; i < tasksArr.length; i++) {
+            let task = tasksArr[i]
+            tasksCompleted = 0
+            if (task.highPriority) {
+                missionProgressCopy["mission-2"].tasks[0].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-2"].tasks[0].completed = false
+            }
+            if (task.myDay) {
+                missionProgressCopy["mission-2"].tasks[1].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-2"].tasks[1].completed = false
+            }
+            if (task.endDate === "02/04/2024" && task.endTime === "10:00 AM") {
+                missionProgressCopy["mission-2"].tasks[2].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-2"].tasks[2].completed = false
+            }
+            if (task.duration === "Long") {
+                missionProgressCopy["mission-2"].tasks[3].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-2"].tasks[3].completed = false
+            }
+            if (!task.outdoors) {
+                missionProgressCopy["mission-2"].tasks[4].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-2"].tasks[4].completed = false
+            }
+            missionProgressCopy["mission-2"].tasksCompleted = tasksCompleted
+            if (tasksCompleted === missionProgressCopy["mission-1"].numberOfTasks) {
+                missionProgressCopy["mission-2"].missionCompleted = true
+                console.log(tasksCompleted)
+                // not all tasks completed but mission still getting completed ??
+            } else {
+                missionProgressCopy["mission-2"].missionCompleted = false
+            }
+            setMissionProgress(missionProgressCopy)
+            console.log("check complete (mission 2)")
+        }
+    }
+    // mission 3 check
+    const checkThirdMissionCompleted = () => {
+        let tasksArr = Object.values(tasks)
+        let missionProgressCopy = { ...missionProgress }
+        let tasksCompleted = 0
+        for (let i = 0; i < tasksArr.length; i++) {
+            let task = tasksArr[i]
+            tasksCompleted = 0
+            if (task.completed) {
+                missionProgressCopy["mission-3"].tasks[0].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-3"].tasks[0].completed = false
+            }
+            if (task.dumped) {
+                missionProgressCopy["mission-3"].tasks[1].completed = true
+                tasksCompleted++
+            } else {
+                missionProgressCopy["mission-3"].tasks[1].completed = false
+            }
+
+        }
+        if (tasksCompleted === missionProgressCopy["mission-3"].numberOfTasks) {
+            missionProgressCopy["mission-3"].missionCompleted = true
+            console.log(tasksCompleted)
+        } else {
+            missionProgressCopy["mission-3"].missionCompleted = false
+        }
+        setMissionProgress(missionProgressCopy)
+        console.log("check complete (mission 3)")
+
+    }
+    // mission check conditional function
+    const checkMissionCompleted = () => {
+        if (currentMission === 1) {
+            checkFirstMissionCompleted()
+        } else if (currentMission === 2) {
+            checkSecondMissionCompleted()
+        } else if (currentMission === 3) {
+            checkThirdMissionCompleted()
+        }
+    }
+    useEffect(() => {
+        checkMissionCompleted()
+    }, [tasks])
+    // mission completed modal
+    const [missionCompletedModalOpen, setMissionCompletedModalOpen] = useState(false);
+    const openMissionCompletedModal = () => {
+        setMissionCompletedModalOpen(true)
+    }
+    const closeMissionCompletedModal = () => {
+        setMissionCompletedModalOpen(false)
+        checkMissionCompleted()
+    }
+    // mission completed modal appears when a mission is completed
+    useEffect(() => {
+        if (currentMission > 0) {
+            if (missionProgress[`mission-${currentMission}`].missionCompleted) {
+                openMissionCompletedModal()
+            }
+        }
+    }, [missionProgress])
+
+    const printMissionProgress = () => {
+        console.log(missionProgress)
+    }
+
+    const [feedbackAlert, setFeedbackAlert] = useState(false)
     return (
         <>
+            <MissionCompletedModal open={missionCompletedModalOpen} currentMission={currentMission} setCurrentMission={setCurrentMission} closeMissionReminder={() => setMissionReminderOpen(false)} onClose={closeMissionCompletedModal} />
+            <MissionModal open={missionModalOpen} currentMission={currentMission} missionProgress={missionProgress} checkMissionCompleted={checkMissionCompleted} activateFeedbackAlert={() => setFeedbackAlert(true)} onClose={closeMissionModal} />
+            <WelcomeModal open={welcomeModalOpen} onClose={() => setWelcomeModalOpen(false)} />
             <CreateTaskModal open={newTaskModalOpen} category={selectedCategory} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
-            <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} />
+            <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} db_task_id={quickUpdateSettings.db_task_id} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} />
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
             <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
             <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
-            <FeedbackModal open={feedbackModalOpen} onClose={() => setFeedbackModalOpen(false)} />
+            <FeedbackModal open={feedbackModalOpen} deactivateFeedbackAlert={() => setFeedbackAlert(false)} onClose={() => setFeedbackModalOpen(false)} />
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Page Rendered to the right to make space for navbar */}
-            <Fade fraction={0} triggerOnce>
-                <div className="page-container-right">
+            <div className="page-container-right">
+                <Fade fraction={0} triggerOnce>
                     {/* Title section */}
                     <div onClick={() => cycleBackground()} className={`title-section-${bgIndex} flx-r w-100 black-text font-jakarta`}>
                         <div className="title-date mx2 flx-1 flx-c just-ce">
@@ -592,9 +943,9 @@ const Dashboard = () => {
                         </div>
                         <div className="title-greeting position-relative flx-9">
                             <div id='headerOverlay' className="header-overlay flx-r small">
-                                <p className="m-0">Click to change background</p> 
+                                <p className="m-0">Click to change background</p>
                                 <span className="material-symbols-outlined">web_traffic</span>
-                                </div>
+                            </div>
                             <Fade delay={500} triggerOnce>
                                 <Slide direction='up' cascade triggerOnce>
                                     <div className="flx-r">
@@ -602,11 +953,28 @@ const Dashboard = () => {
                                         <p onClick={(e) => { e.stopPropagation(); printTasks() }} className="m-0 x-large">Good Afternoon,</p>
                                     </div>
                                     <Fade delay={1000} triggerOnce>
-                                        <p className="m-0 x-large darkgray-text">Let's plan your day...</p>
+                                        <p onClick={(e) => { e.stopPropagation(); printMissionProgress() }} className="m-0 x-large darkgray-text">Let's plan your day...</p>
                                     </Fade>
                                 </Slide>
                             </Fade>
-                            <button onClick={(e) => {e.stopPropagation(); openFeedbackModal()}} className="btn-tertiary mt-1">Feedback</button>
+                            <div className="flx-r gap-3">
+                                <button onClick={(e) => { e.stopPropagation(); openMissionModal() }} className="btn-primaryflex mt-1 position-relative">
+                                    <div className="updatesNotification position-absolute liftslow">
+                                        {currentMission === 0 ? "!" : 4 - currentMission}
+                                    </div>
+                                    <span class="material-symbols-outlined lift">
+                                        rocket
+                                    </span>
+                                </button>
+                                <button onClick={(e) => { e.stopPropagation(); openFeedbackModal() }} className="btn-tertiary mt-1 position-relative">
+                                    {feedbackAlert && 
+                                    <div className="updatesNotification position-absolute liftslow">
+                                        !
+                                    </div>
+                                    }
+                                    Feedback
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -769,10 +1137,56 @@ const Dashboard = () => {
                     </div>
 
                     <div className="page-body page-container96">
+                        {currentMission > 0 &&
+                            <>
+                                {/* mission reminder */}
+                                <div id='missionReminderBox' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>
+                                    <div className="align-all-items gap-2">
+                                        <p className="box-title m-0">Current Mission</p>
+                                        {currentMission === 1 &&
+                                            <img src="https://i.imgur.com/PvTpowR.png" alt="" className="img-xsmall" />
+                                        }
+                                        {currentMission === 2 &&
+                                            <img src="https://i.imgur.com/9wsBTFU.png" alt="" className="img-xsmall" />
+                                        }
+                                        {currentMission === 3 &&
+                                            <img src="https://i.imgur.com/GQcgbs7.png" alt="" className="img-xsmall" />
+                                        }
+                                    </div>
+                                    <hr className='w-100' />
+                                    <p className="m-0 mb-2">{missionProgress[`mission-${currentMission}`].desc ? missionProgress[`mission-${currentMission}`].desc : null}</p>
+                                    <div className="flx-c gap-2">
+
+                                        {missionProgress[`mission-${currentMission}`].tasks.map((task, index) => {
+                                            return <div key={index} className="align-all-items gap-2">
+                                                {task.completed ?
+                                                    <span className="material-symbols-outlined green-text large">
+                                                        check_circle
+                                                    </span>
+                                                    :
+                                                    <span className="material-symbols-outlined large">
+                                                        circle
+                                                    </span>
+                                                }
+                                                <p className={`m-0 small ${task.completed ? "faint-text" : null}`}><strong>{task.taskKey}:</strong> {task.taskValue}</p>
+                                            </div>
+                                        })}
+                                    </div>
+                                </div>
+                                {/* end mission reminder */}
+                                {/* mission reminder button */}
+                                <button onClick={() => toggleMissionReminder()} className="missionReminderButton">
+                                    <span className="material-symbols-outlined lift">
+                                        rocket_launch
+                                    </span>
+                                </button>
+                                {/* end mission reminder button */}
+                            </>
+                        }
                         {/* Task Box(es) */}
                         {Object.values(tasks).map((task, index) => {
                             if (categories[selectedCategory].includes(task.id)) {
-                                return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} openDateAndTimePickerModal={openDateAndTimePickerModal} />
+                                return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} openDateAndTimePickerModal={openDateAndTimePickerModal} deleteTaskFromDB={deleteTaskFromDB} />
                             }
                         })}
                         {Object.values(tasks).map((task, index) => {
@@ -796,10 +1210,10 @@ const Dashboard = () => {
 
                         <div className="empty-6"></div>
                         <div className="empty-6"></div>
-                        <div className="empty-6"></div>
+                        <div className="empty-2"></div>
                     </div>
-                </div>
-            </Fade>
+                </Fade>
+            </div>
         </>
     )
 }

@@ -211,6 +211,10 @@ button:focus-visible {
   width: 200px;
   object-fit: contain;
 }
+.img-largo {
+  width: 230px;
+  object-fit: contain;
+}
 .img-fitWidth {
   width: 100%;
   object-fit: contain;
@@ -219,6 +223,12 @@ button:focus-visible {
   height: 100%;
   object-fit: contain;
 }
+.img-blown-up {
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+}
+
 .grayscale {
   filter: grayscale(100%);
 }
@@ -477,6 +487,9 @@ button:focus-visible {
 }
 .mt-0 {
   margin-top: 0px;
+}
+.mt-h {
+  margin-top: 3px;
 }
 .mt-1 {
   margin-top: 5px;
@@ -850,6 +863,11 @@ button:focus-visible {
   display: block;
   margin: auto;
 }
+.h-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .right {
   float: right;
 }
@@ -1051,7 +1069,22 @@ button:focus-visible {
   filter: brightness(90%);
   transition: 0.2s;
   /* transform: translateY(-3px); */
-
+}
+.btn-primaryflex .lift {
+  transition: 0.2s;
+}
+.btn-primaryflex:hover .lift {
+  transform: translateY(-3px);
+  transition: 0.2s;
+}
+.btn-primaryflex .liftslow {
+  transition: 0.2s;
+  z-index: 1;
+}
+.btn-primaryflex:hover .liftslow {
+  transform: translateY(-2px);
+  z-index: 1;
+  transition: 0.2s;
 }
 .btn-secondary {
   background-color: white;
@@ -1983,7 +2016,24 @@ selection:hover .sub-selection {
   flex-direction: row;
   align-items: center;
   gap: 12px;
+  position: relative;
 } 
+.task-setting-participants .toolTip {
+  top: 0;
+  background-color: black;
+  border-radius: 8px; 
+  padding: 8px 12px;
+  color: white;
+  transform: translateY(-12px);
+  font-size: small;
+  z-index: 1;
+  transition: 0.2s;
+  opacity: 0;
+}
+.task-setting-participants:hover .toolTip {
+  opacity: 1;
+  transition: 0.2s;
+}
 .participants-box {
   position: relative;
   width: 168px;
@@ -2163,6 +2213,21 @@ selection:hover .sub-selection {
 }
 .addStep {
   width: 84px;
+}
+.create-task-modal-empty {
+  /* height: 625px;
+  width: 1024px; */
+  background-color: purple;
+  border-radius: 12px;
+  box-sizing: border-box;
+  /* padding: 24px 32px; */
+  /* top: 50%;
+  left: 50%; */
+  margin: auto;
+  /* transform: translate(-50%, -50%); */
+  position: relative;
+  transition: 0.3s;
+  overflow: hidden;
 }
 .create-task-modal {
   height: 625px;
@@ -2794,6 +2859,12 @@ selection:hover .sub-selection {
   /* transform: translateX(-100%); */
   /* transform: translateY(-100%); */
 }
+.ws-nowrap {
+  white-space: nowrap;
+}
+.ws-normal {
+  white-space: normal;
+}
 .carousel-item {
   display: flex;
   width: 100%;
@@ -2828,6 +2899,12 @@ selection:hover .sub-selection {
 }
 .font-jakarta {
   font-family: 'Plus Jakarta Sans';
+}
+.bold500 {
+  font-weight: 500;
+}
+.bold600 {
+  font-weight: 600;
 }
 .bold700 {
   font-weight: 700;
@@ -2890,7 +2967,7 @@ selection:hover .sub-selection {
   border-radius: 50%;
   border-top-color: rgb(239, 239, 239);
   border-left-color: rgb(239, 239, 239);
-  animation: spin 0.8s infinite ease;
+  animation: spin 0.8s infinite linear;
 }
 @keyframes spin {
   0% {
@@ -2903,7 +2980,7 @@ selection:hover .sub-selection {
 .feedback-modal {
   background-color: white;
   width: 500px;
-  height: 300px;
+  height: 400px;
   padding: 24px;
   box-sizing: border-box;
   border-radius: 12px;
@@ -2913,4 +2990,163 @@ selection:hover .sub-selection {
   display: flex;
   height: 100%;
   width: 100%;
+}
+.loadingBox-overlay {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: 0.2s;
+}
+.updatesNotification {
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  top: 5px;
+  right: 15px;
+  color: white;
+  font-size: x-small;
+}
+.toolTip-modal {
+  height: 500px;
+  width: 400px;
+  background-color: white;
+  border-radius: 12px;
+  margin: auto;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.step {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  white-space: normal;
+  /* background-color: beige; */
+  display: inline-flex;
+}
+.dot-indicators {
+  display: flex;
+  flex-direction: row;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: gainsboro;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.dot-selected {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: black;
+  transition: 0.2s;
+}
+.btn-match-height {
+  height: 42.4px;
+}
+.welcome-modal {
+  width: 540px;
+  height: 484px;
+  border-radius: 12px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  margin: auto;
+}
+.welcome-item {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  white-space: normal;
+  width: 100%;
+}
+.xxx-massive {
+  font-size: 120px;
+}
+.btn-primaryflex-custom {
+  background-color: black;
+  border-radius: 18px;
+  width: 180px;
+  color: white;
+  padding: 0.6em 1.2em;
+  display: flex;
+  transition: 0.2s;
+  justify-content: center;
+}
+.mission-btn {
+  color: black;
+  transform: translateY(5px);
+}
+.mission-modal {
+  width: 448px;
+  height: 448px;
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  margin: auto;
+}
+.missionReminderButton {
+  position: fixed;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  bottom: 12px;
+  right: 12px;
+  z-index: 100000;
+  transition: 0.2s;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.missionReminderButton:hover {
+  transition: 0.2s;
+}
+.missionReminderButton .lift {
+  transition: 0.2s;
+}
+.missionReminderButton:hover .lift {
+  filter: brightness(80%);
+  transform: translateY(-3px);
+  transition: 0.2s;
+}
+.missionReminderBox {
+  width: 340px;
+  /* height: 300px; */
+  color: black;
+  position: fixed;
+  right: 52px;
+  bottom: 52px;
+  background-color: whitesmoke;
+  /* background-color: beige; */
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  padding: 24px 24px 36px 24px;
+  box-sizing: border-box;
+  z-index: 100001;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  transition: 0.1s;
+}
+.mission-completed-modal {
+  width: 424px;
+  height: 448px;
+  padding: 24px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 12px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 }

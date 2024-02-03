@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Fade, Slide } from 'react-awesome-reveal'
 import ReactDatePicker from 'react-datepicker'
 
-const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, detail, option, onClose }) => {
+const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, db_task_id, detail, option, onClose }) => {
     if (!open) return null
     // useEffect(() => {
     //     console.log("detail: " + detail + ", option: " + option)
@@ -84,7 +84,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, detail, option, onCl
 
                                     <p className="m-0 box-title mb-">{detail === 'delete' ? "Are you sure?" : "Update " + capitalizeIt(detail)}</p>
                                     <hr className='w-100' />
-
+                                    {/* Change duration */}
                                     {detail === "duration" &&
                                         <>
                                             <span onClick={() => { clearDurationSelection() }} className="clearBtn aligns-r small">Clear</span>
@@ -111,8 +111,9 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, detail, option, onCl
                                             </div>
                                         </>
                                     }
+                                    {/* End change duration */}
 
-
+                                    {/* Change frequency */}
                                     {detail === "frequency" &&
                                         <>
                                             <div className="m-auto">
@@ -125,13 +126,16 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, detail, option, onCl
                                             </div>
                                         </>
                                     }
+                                    {/* End change frequency */}
 
+                                    {/* Delete task */}
                                     {detail === 'delete' &&
                                         <div className="flx-r gap-8 m-auto">
-                                            <button onClick={() => { quickUpdate.remove(taskId); onClose() }} className="btn-primary wide">Yes</button>
+                                            <button onClick={() => { quickUpdate.remove(taskId, db_task_id); onClose() }} className="btn-primary wide">Yes</button>
                                             <button onClick={() => onClose()} className="btn-secondary wide">No</button>
                                         </div>
                                     }
+                                    {/* End delete task */}
 
                                 </div>
                             </Slide>

@@ -4,7 +4,7 @@ import ReactDatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 import { DataContext } from '../context/DataProvider'
 
-const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal,  openDatePickerModal, openDateAndTimePickerModal }) => {
+const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal, openDatePickerModal, openDateAndTimePickerModal, deleteTaskFromDB }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
     // other functions
     function wait(ms) {
@@ -227,46 +227,46 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
         <>
             <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className="task-box-container">
                 <div className="section">
-                <div id={`taskBox-toolTip-${index}`} className="taskBox-toolTip d-none" style={{ width: task.myDay ? 216 : 174 }}>
-                    <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id) }}>
-                        <span className="material-symbols-outlined">
-                            edit
-                        </span>
-                        <p className="m-0">Edit</p>
-                    </selection>
-                    <selection onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }}>
-                        <span className="material-symbols-outlined">
-                            sunny
-                        </span>
-                        <p className="m-0">{task.myDay ? "Remove from My Day" : "Add to My Day"}</p>
-                    </selection>
-                    <selection onClick={(e) => e.stopPropagation()}>
-                        <span className="material-symbols-outlined">
-                            folder_open
-                        </span>
-                        <p className="m-0">Move to ...</p>
-                        <div className="sub-selection" style={{ right: task.myDay? 228 : 186 }}>
+                    <div id={`taskBox-toolTip-${index}`} className="taskBox-toolTip d-none" style={{ width: task.myDay ? 216 : 174 }}>
+                        <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id) }}>
+                            <span className="material-symbols-outlined">
+                                edit
+                            </span>
+                            <p className="m-0">Edit</p>
+                        </selection>
+                        <selection onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }}>
+                            <span className="material-symbols-outlined">
+                                sunny
+                            </span>
+                            <p className="m-0">{task.myDay ? "Remove from My Day" : "Add to My Day"}</p>
+                        </selection>
+                        <selection onClick={(e) => e.stopPropagation()}>
+                            <span className="material-symbols-outlined">
+                                folder_open
+                            </span>
+                            <p className="m-0">Move to ...</p>
+                            <div className="sub-selection" style={{ right: task.myDay ? 228 : 186 }}>
 
-                            {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
-                                let category = userCategories.categories[categoryName]
-                                return <div key={index} onClick={(e) => {e.stopPropagation(); quickUpdate.updateCategory(task.id, category.categoryName)}} className="option">
-                                    <img src={category.iconUrl} alt="" className="catTinyIcon mr-1" />
-                                    <p className="m-0">{category.categoryName}</p>
-                                    <span className={`material-symbols-outlined medium position-right ${category.categoryName === task.category ? null : "d-none"}`}>
-                                        check
-                                    </span>
+                                {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
+                                    let category = userCategories.categories[categoryName]
+                                    return <div key={index} onClick={(e) => { e.stopPropagation(); quickUpdate.updateCategory(task.id, category.categoryName) }} className="option">
+                                        <img src={category.iconUrl} alt="" className="catTinyIcon mr-1" />
+                                        <p className="m-0">{category.categoryName}</p>
+                                        <span className={`material-symbols-outlined medium position-right ${category.categoryName === task.category ? null : "d-none"}`}>
+                                            check
+                                        </span>
                                     </div>
-                            }): null}
-                           
-                        </div>
-                    </selection>
-                    <selection onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, "delete") }}>
-                        <span className="material-symbols-outlined">
-                            delete
-                        </span>
-                        <p className="m-0">Delete</p>
-                    </selection>
-                </div>
+                                }) : null}
+
+                            </div>
+                        </selection>
+                        <selection onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete") }}>
+                            <span className="material-symbols-outlined">
+                                delete
+                            </span>
+                            <p className="m-0">Delete</p>
+                        </selection>
+                    </div>
                 </div>
                 <div className={`taskBox-overFlowLimit ${task.completed ? "faint-text" : null}`}>
                     <div className="task-box-content">
@@ -293,14 +293,14 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             </div>
                             {task.endDate ?
                                 <>
-                                    <div onClick={(e) => { e.stopPropagation(); openDatePickerModal(task.id) }} className="date-detail">{datify(task.endDate)}
+                                    <div onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className="date-detail">{datify(task.endDate)}
                                         {/* <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={datifunc(selectedDate)} placeholderText='Set Date' className="datepicker-detail" withPortal/> */}
                                     </div>
                                 </>
                                 :
                                 <div onClick={(e) => { e.stopPropagation(); openDatePickerModal(task.id) }} className="date-detail faint-text small pointer"><u>Set Date</u></div>
                             }
-                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, 'duration', task.duration) }} className="duration-detail">
+                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
                                 {durationIconText ?
                                     <span className="material-symbols-outlined m-auto">
                                         {durationIconText}
@@ -368,15 +368,20 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                         <div id={`fullIconsTray-${index}`} className="full-icons-tray">
                             <div onClick={(e) => { e.stopPropagation() }} className="date-detail">
                                 {task.endDate || task.endTime ?
-                                    <div onClick={(e) => {e.stopPropagation(); openDateAndTimePickerModal(task.id)}} className="flx-c">
+                                    <div onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className="flx-c">
                                         <p className={`m-0 ${task.endTime ? "x-small" : "small"}`}>{task.endDate ? datify(task.endDate) : null}</p>
                                         <p className={`m-0 ${task.endDate ? "xx-small" : "small"}`}>{task.endTime}</p>
                                     </div>
                                     :
-                                    <p onClick={(e) => {e.stopPropagation(); openDateAndTimePickerModal(task.id)}} className="m-0 small faint-text"><u>Set Date</u></p>
+                                    <p onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className="m-0 small faint-text"><u>Set Date</u></p>
                                 }
                             </div>
-                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, 'duration', task.duration) }} className="duration-detail">
+                            <div onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }} className="myDay-detail">
+                                <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : "faintish-text"}`}>
+                                    sunny
+                                </span>
+                            </div>
+                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
                                 {durationIconText ?
                                     <span className="material-symbols-outlined m-auto">
                                         {durationIconText}
@@ -395,7 +400,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                     landscape
                                 </span>
                             </div>
-                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, 'frequency', task.frequency) }} className="frequency-detail">
+                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'frequency', task.frequency) }} className="frequency-detail">
                                 <p className="m-0 purple-text m-auto">{task.frequency}</p>
                             </div>
                             <div className="participants-detail">
@@ -408,7 +413,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 </div>
                             </div>
                             <div className="remove-task-btn hoverSlightFade">
-                                <span onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, "delete") }} className="material-symbols-outlined m-auto">
+                                <span onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete") }} className="material-symbols-outlined m-auto">
                                     delete
                                 </span>
                             </div>

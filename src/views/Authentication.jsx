@@ -13,7 +13,7 @@ const Authentication = () => {
     const [tipIndex, setTipIndex] = useState(0);
     const [tipSliderOn, setTipSliderOn] = useState(false)
     const [timer, setTimer] = useState(0);
-    const { showNavbar, setShowNavbar, user, setUser, tasks, setTasks } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, user, setUser, tasks, setTasks, databaseOn } = useContext(DataContext);
 
     // other functions
     function wait(ms) {
@@ -172,7 +172,6 @@ const Authentication = () => {
     const [signUpName, setSignUpName] = useState("")
     const [signUpEmail, setSignUpEmail] = useState("")
     const [signUpPassword, setSignUpPassword] = useState("")
-    
     const signUp = () => {
         let nameError = document.getElementById('signUpNameError')
         let emailError = document.getElementById('signUpEmailError')
@@ -212,7 +211,6 @@ const Authentication = () => {
     // sign in authentication code
     const [signInEmail, setSignInEmail] = useState("")
     const [signInPassword, setSignInPassword] = useState("")
-    
     const signIn = () => {
         let emailError = document.getElementById('signInEmailError')
         let passwordError = document.getElementById('signInPasswordError')
@@ -238,7 +236,6 @@ const Authentication = () => {
             })
         }
     }
-
     const handleLogin = async (cred) => {
         let userLevelDoc = await getDoc(doc(firestore, `userLevel/${auth.currentUser.uid}`))
         let userLevelData = userLevelDoc.data()
@@ -258,6 +255,8 @@ const Authentication = () => {
         navigateToDashboard()
     }
     
+
+    // after signing up, modal comes up to welcome the new user
     const [completeSignUpModalOpen, setCompleteSignUpModalOpen] = useState(false);
     const openCompleteSignUpModal = () => {
         setCompleteSignUpModalOpen(true)
@@ -270,14 +269,189 @@ const Authentication = () => {
     }
 
     const sendData = async () => {
-        let url = "http://localhost:5000/auth/create_user"
-        let data = "testing"
-        const response = await axios.post(url, JSON.stringify(data), {
-            headers: { "Content-Type" : "application/json" }
-        }).then((response) => {
-            console.log(response.data)
-        }).catch((error) => {
-            console.log(error)
+        if (databaseOn) {
+            let url = "http://localhost:5000/auth/create_user"
+            let data = "testing"
+            const response = await axios.post(url, JSON.stringify(data), {
+                headers: { "Content-Type" : "application/json" }
+            }).then((response) => {
+                console.log(response.data)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    }
+
+    // for tour as guest, load demo tasks to play with
+    const loadDemoTasks = () => {
+        setTasks({
+            1: {
+                id: 1,
+                myDay: false,
+                taskName: "Update my car's registration",
+                category: "Car",
+                notes: "Get car inspection done and update registration!",
+                highPriority: false,
+                endDate: "01/06/2024",
+                endTime: "11:30 AM",
+                frequency: "Once",
+                duration: "Long",
+                outdoors: true,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Complete car inspection", completed: false },
+                    { number: 2, desc: "Go to grocery store to purchase updated registration", completed: false }
+                ], // [{number: #, desc: "", completed: false}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            },
+            2: {
+                id: 2,
+                myDay: true,
+                taskName: "Wash the dishes!",
+                category: "Home",
+                notes: "Clear the sink when I get home",
+                highPriority: true,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Medium",
+                outdoors: false,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    {number: 1, desc: "Wash the dishes", completed: false},
+                    {number: 2, desc: "Set them on the drying rack", completed: false},
+                    {number: 3, desc: "Put the dishes away", completed: false}
+                ], // [{number: 1, desc: "", completed: false}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            },
+            3: {
+                id: 3,
+                myDay: false,
+                taskName: "Find the best fast food in Houston",
+                category: null,
+                notes: "Eat at different fast food spots and decide which is the best fast food in houston. Chick fil a = 8/10, Briother's pizza = 7.5/10",
+                highPriority: false,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Long",
+                outdoors: false,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Chick fil a", completed: true },
+                    { number: 2, desc: "Potbelly", completed: false },
+                    { number: 3, desc: "Pizza from Brother's", completed: true },
+                    { number: 4, desc: "Whataburger", completed: false },
+                    { number: 5, desc: "Chili's", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            },
+            4: {
+                id: 4,
+                myDay: false,
+                taskName: "Go to the Park",
+                category: null,
+                notes: "Go get some fresh air and exercise at the local park",
+                highPriority: false,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Medium",
+                outdoors: true,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [], // [{number: 1, desc: "", completed: false}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            },
+            5: {
+                id: 5,
+                myDay: false,
+                taskName: "Sell my company for $1 million",
+                category: null,
+                notes: "Sell my company to the highest bidder and become a millionaire",
+                highPriority: true,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: null,
+                outdoors: false,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Own a company", completed: false },
+                    { number: 2, desc: "Sell it for a million bucks!", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            },
+            6: {
+                id: 6,
+                myDay: false,
+                taskName: "Find the infinity stones",
+                category: null,
+                notes: "6 infinity stones away from World Domination!",
+                highPriority: true,
+                endDate: null,
+                endTime: null,
+                frequency: "Once",
+                duration: "Long",
+                outdoors: true,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Find one infinity stone", completed: false },
+                    { number: 2, desc: "Find the rest of the inifinity stones", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            },
+            7: {
+                id: 7,
+                myDay: true,
+                taskName: "Catch a new Pokemon",
+                category: null,
+                notes: "Gotta catch 'em all",
+                highPriority: true,
+                endDate: "01/26/2024",
+                endTime: null,
+                frequency: "Once",
+                duration: "Medium",
+                outdoors: true,
+                participants: [
+    
+                ], // [{uid: "", displayName: "", photoURL: ""}]
+                steps: [
+                    { number: 1, desc: "Buy pokeballs", completed: true },
+                    { number: 2, desc: "Walk through tall grass", completed: false },
+                    { number: 3, desc: "Battle a pokemon", completed: false },
+                    { number: 4, desc: "Weaken the pokemon", completed: false },
+                    { number: 5, desc: "Catch the pokemon", completed: false }
+                ], // [{number: "", desc: "", completed: ""}]
+                progress: 0,
+                completed: false,
+                completionDate : null,
+                dumped: false,
+                pointsAwarded: null,
+            }
         })
     }
 
@@ -383,7 +557,7 @@ const Authentication = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => navigateToDashboard()} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
+                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => {loadDemoTasks(); navigateToDashboard()}} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
                                         </div>
                                     </div>
 
