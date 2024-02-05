@@ -1088,6 +1088,7 @@ button:focus-visible {
 }
 .btn-secondary {
   background-color: white;
+  color: black;
   border: 1px solid black;
   padding: 0.6em 1.8em;
   transition: 0.2s;
@@ -2233,6 +2234,7 @@ selection:hover .sub-selection {
   height: 625px;
   width: 1024px;
   background-color: white;
+  color: black;
   border-radius: 12px;
   padding: 24px 32px;
   box-sizing: border-box;
@@ -2244,6 +2246,7 @@ selection:hover .sub-selection {
   height: 625px;
   width: 1024px;
   background-color: whitesmoke;
+  color: black;
   border-radius: 12px;
   padding: 24px 32px;
   box-sizing: border-box;
@@ -2329,6 +2332,7 @@ selection:hover .sub-selection {
   height: 250px; */
   border-radius: 12px;
   padding: 18px 24px;
+  color: black;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -2720,6 +2724,7 @@ selection:hover .sub-selection {
   width: 500px;
   height: 520px;
   background-color: white;
+  color: black;
   margin: auto;
   border-radius: 12px;
   padding: 24px 32px;
@@ -2981,6 +2986,7 @@ selection:hover .sub-selection {
   background-color: white;
   width: 500px;
   height: 400px;
+  color: black;
   padding: 24px;
   box-sizing: border-box;
   border-radius: 12px;
@@ -3013,6 +3019,7 @@ selection:hover .sub-selection {
   height: 500px;
   width: 400px;
   background-color: white;
+  color: black;
   border-radius: 12px;
   margin: auto;
   padding: 24px;
@@ -3056,6 +3063,7 @@ selection:hover .sub-selection {
   height: 484px;
   border-radius: 12px;
   background-color: white;
+  color: black;
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -3091,6 +3099,7 @@ selection:hover .sub-selection {
   height: 448px;
   background-color: white;
   border-radius: 12px;
+  color: black;
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -3145,6 +3154,7 @@ selection:hover .sub-selection {
   padding: 24px;
   box-sizing: border-box;
   background-color: white;
+  color: black;
   border-radius: 12px;
   margin: auto;
   display: flex;

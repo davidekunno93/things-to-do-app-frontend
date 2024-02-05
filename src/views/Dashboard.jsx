@@ -1140,7 +1140,7 @@ const Dashboard = () => {
                         {currentMission > 0 &&
                             <>
                                 {/* mission reminder */}
-                                <div id='missionReminderBox' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>
+                                <div id='missionReminderBox black-text' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>
                                     <div className="align-all-items gap-2">
                                         <p className="box-title m-0">Current Mission</p>
                                         {currentMission === 1 &&

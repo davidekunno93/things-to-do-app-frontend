@@ -7,7 +7,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
         <div className="overlay-placeholder">
             <Fade duration={200}>
                 <div className="overlay">
-                    <div className="mission-modal font-jakarta">
+                    <div className="mission-modal font-jakarta black-text">
 
                         {currentMission === 1 &&
                             <>

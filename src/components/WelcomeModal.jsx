@@ -21,7 +21,7 @@ const WelcomeModal = ({ open, onClose }) => {
             <Fade duration={200} delay={200} triggerOnce>
                 <div className="overlay">
                     <Slide direction='up' duration={400} delay={100} className='flx w-100' triggerOnce>
-                        <div className="welcome-modal">
+                        <div className="welcome-modal black-text">
                             <div className="box-title">We're so glad you're here!</div>
                             <hr className='w-100' />
 
