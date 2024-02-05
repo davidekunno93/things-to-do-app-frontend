@@ -485,9 +485,10 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     const openToolTip = () => {
         setToolTipOpen(true)
     }
-    useEffect(() => {
-        openToolTip()
-    }, [])
+    // create new task tool tip
+    // useEffect(() => {
+    //     openToolTip()
+    // }, [])
 
     return (
         <>
