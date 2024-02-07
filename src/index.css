@@ -279,6 +279,9 @@ button:focus-visible {
 .green-text {
   color: #55d400;
 }
+.deepgreen-text{
+  color: rgb(0, 150, 0);
+}
 .yellow-text {
   color: #ffd12d;
 }
@@ -293,6 +296,9 @@ button:focus-visible {
 }
 .faint-text {
   color: rgba(0, 0, 0, 0.2);
+}
+.faintishy-text {
+  color: rgba(0, 0, 0, 0.15);
 }
 .faintish-text {
   color: rgba(0, 0, 0, 0.1);
@@ -1085,6 +1091,25 @@ button:focus-visible {
   transform: translateY(-2px);
   z-index: 1;
   transition: 0.2s;
+}
+.btn-primaryflex-disabled {
+  background-color: gainsboro;
+  color: gray;
+  padding: 0.6em 1.2em;
+  display: flex;
+  cursor: auto;
+}
+.btn-primaryflex-green {
+  background-color: rgb(0, 150, 0);
+  color: white;
+  padding: 0.6em 1.2em;
+  display: flex;
+  transition: 0.2s;
+}
+.btn-primaryflex-green:hover {
+  filter: brightness(90%);
+  transition: 0.2s;
+  /* transform: translateY(-3px); */
 }
 .btn-secondary {
   background-color: white;
@@ -2326,6 +2351,20 @@ selection:hover .sub-selection {
   /* dark mode setting needed */
 }
 
+.confirmation-modal {
+  background-color: white;
+  width: 500px;
+  height: 150px;
+  border-radius: 12px;
+  padding: 18px 24px;
+  color: black;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  position: relative;
+}
 .quick-update-modal {
   background-color: white;
   /* width: 500px;
@@ -3159,4 +3198,14 @@ selection:hover .sub-selection {
   margin: auto;
   display: flex;
   flex-direction: column;
+}
+.circular-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-left: 3px;
+  margin-right: 3px;
+  align-self: center;
+  display: flex;
 }

@@ -13,7 +13,7 @@ const Authentication = () => {
     const [tipIndex, setTipIndex] = useState(0);
     const [tipSliderOn, setTipSliderOn] = useState(false)
     const [timer, setTimer] = useState(0);
-    const { showNavbar, setShowNavbar, user, setUser, tasks, setTasks, databaseOn } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, user, setUser, tasks, setTasks, databaseOn, missionsOn, setMissionsOn } = useContext(DataContext);
 
     // other functions
     function wait(ms) {
@@ -517,7 +517,7 @@ const Authentication = () => {
                                         <div className="registerBtn flx-c">
                                             <div className="flx">
                                                 <div className="align-all-items hoverLightGraylight pointer">
-                                                    <p onClick={() => signUp()} className="m-0 x-large">Register</p>
+                                                    <p onClick={() => {signUp(); setMissionsOn(false)}} className="m-0 x-large">Register</p>
                                                     <span className="material-symbols-outlined ml-2">
                                                         arrow_forward
                                                     </span>
@@ -550,14 +550,14 @@ const Authentication = () => {
 
                                         <div className="registerBtn flx-c">
                                             <div className="flx">
-                                                <div onClick={() => signIn()} className="align-all-items hoverLightGraylight pointer">
+                                                <div onClick={() => {signIn(); setMissionsOn(false)}} className="align-all-items hoverLightGraylight pointer">
                                                     <p className="m-0 x-large">Login</p>
                                                     <span className="material-symbols-outlined ml-2">
                                                         arrow_forward
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => {loadDemoTasks(); navigateToDashboard()}} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
+                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => {loadDemoTasks(); navigateToDashboard(); setMissionsOn(false)}} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
                                         </div>
                                     </div>
 

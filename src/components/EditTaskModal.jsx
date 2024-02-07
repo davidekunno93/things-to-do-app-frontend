@@ -280,6 +280,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     })
 
     // steps code
+    const [stepsList, setStepsList] = useState(task.steps)
     const updateStep = (e, index) => {
         let stepsListCopy = [...stepsList]
         stepsListCopy[index].desc = e.target.value
@@ -297,6 +298,9 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                 number: stepsList.length + 1,
                 desc: ""
             })
+            // let newStep = document.getElementById(`stepInput-${stepsList.length - 1}`)
+            // newStep.focus()
+            setFocusOnNextStep(true)
         }
         setStepsList(stepsListCopy)
         if (action === "remove") {
@@ -304,6 +308,14 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         }
 
     }
+    const [focusOnNextStep, setFocusOnNextStep] = useState(false);
+    useEffect(() => {
+        if (focusOnNextStep) {
+            let nextStep = document.getElementById(`stepInput-${stepsList.length - 1}`)
+            nextStep.focus()
+            setFocusOnNextStep(false)
+        }
+    }, [stepsList])
     const resetStepInputValues = (stepsListCopy) => {
         // set step input values on the page equal to those in the stepsListCopy passed thru as the argument
         for (let i = 0; i < stepsListCopy.length; i++) {
@@ -311,7 +323,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
             stepInput.value = stepsListCopy[i].desc
         }
     }
-    const [stepsList, setStepsList] = useState(task.steps)
+    
     const [stepsListDemo, setStepsListDemo] = useState([
         {
             number: 1,
@@ -674,7 +686,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                             {stepsList.map((step, stepIndex) => {
                                                 return <div key={stepIndex} className="step-div">
                                                     <div className="overlay-icon2">{step.number})</div>
-                                                    <input id={`stepInput-${stepIndex}`} onChange={(e) => updateStep(e, stepIndex)} type='input' className="step-input-box" />
+                                                    <input onKeyDown={(e) => (e.key === "Enter" ? updateStepsList("add") : null)} id={`stepInput-${stepIndex}`} onChange={(e) => updateStep(e, stepIndex)} type='input' className="step-input-box" />
                                                     <div className="closeBtn4 ml-1">
                                                         <span onClick={() => updateStepsList("remove", stepIndex)} className="material-symbols-outlined">
                                                             close

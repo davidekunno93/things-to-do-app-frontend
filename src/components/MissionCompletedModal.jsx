@@ -26,7 +26,7 @@ const MissionCompletedModal = ({ open, currentMission, setCurrentMission, closeM
                                 <p className="m-0 center-text"><u>Well Done!</u> Click the <strong>mission button</strong> <span className="material-symbols-outlined v-align">rocket</span> to see your next mission.</p>
                             }
                             {currentMission === 2 &&
-                                <p className="m-0 center-text"><u>Sweet!</u> Click the <strong>mission button</strong> <span className="material-symbols-outlined v-align">rocket</span> to see your final mission.</p>
+                                <p className="m-0 center-text"><u>Sweet!</u> Hit the <strong>mission button</strong> <span className="material-symbols-outlined v-align">rocket</span> to see your final mission.</p>
                             }
                             {currentMission === 3 &&
                                 <p className="m-0 center-text"><u>You rockstar, you!</u> All missions are complete. Hit the <strong>mission button</strong> <span className="material-symbols-outlined v-align">rocket</span> for one final request!</p>

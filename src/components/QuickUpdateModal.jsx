@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Fade, Slide } from 'react-awesome-reveal'
 import ReactDatePicker from 'react-datepicker'
 
-const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, db_task_id, detail, option, onClose }) => {
+const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, db_task_id, detail, option, onClose }) => {
     if (!open) return null
     // useEffect(() => {
     //     console.log("detail: " + detail + ", option: " + option)
@@ -82,7 +82,8 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, taskId, db_task_id, detail, 
                                         </span>
                                     </div>
 
-                                    <p className="m-0 box-title mb-">{detail === 'delete' ? "Are you sure?" : "Update " + capitalizeIt(detail)}</p>
+
+                                    <p className="m-0 box-title">{detail === 'delete' ? "Are you sure?" : "Update " + capitalizeIt(detail)}</p>
                                     <hr className='w-100' />
                                     {/* Change duration */}
                                     {detail === "duration" &&

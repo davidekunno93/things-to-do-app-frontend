@@ -33,7 +33,7 @@ const WelcomeModal = ({ open, onClose }) => {
                                     </div>
                                     <div className="welcome-item">
                                         <img src="https://i.imgur.com/sOm576g.png" alt="" className="img-blown-up h-center mt-2" />
-                                        <p className="m-0 font-jakarta large center-text mt-2">Feel free to explore the web application but first... you have <strong>3 missions</strong> to complete.</p>
+                                        <p className="m-0 font-jakarta large center-text mt-2">Feel free to explore, but first... you have <strong>3 missions</strong> to complete.</p>
                                     </div>
                                     <div className="welcome-item">
                                         <img src="https://i.imgur.com/rJWjBQh.png" alt="" className="img-blown-up h-center mt-2" />

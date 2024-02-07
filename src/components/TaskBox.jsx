@@ -226,6 +226,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     return (
         <>
             <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className="task-box-container">
+                {/* taskbar options */}
                 <div className="section">
                     <div id={`taskBox-toolTip-${index}`} className="taskBox-toolTip d-none" style={{ width: task.myDay ? 216 : 174 }}>
                         <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id) }}>
@@ -268,15 +269,18 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                         </selection>
                     </div>
                 </div>
+                {/* end taskbar options */}
                 <div className={`taskBox-overFlowLimit ${task.completed ? "faint-text" : null}`}>
                     <div className="task-box-content">
                         <div className="flx-r flx-1">
                             <span onClick={(e) => { e.stopPropagation(); quickUpdate.toggleCompleteTask(task.id) }} className={`material-symbols-outlined o-90 pointer ${task.completed ? "green-text" : null}`}>
                                 {task.completed ? "check_circle" : "circle"}
                             </span>
-                            <span onClick={(e) => { e.stopPropagation(); quickUpdate.togglePriority(task.id) }} className={`material-symbols-outlined darkred-text mr-1 pointer ${task.highPriority ? null : "fainter-text"}`}>
+
+                            <span onClick={(e) => { e.stopPropagation(); quickUpdate.togglePriority(task.id) }} className={`material-symbols-outlined darkred-text mr-1 pointer ${task.highPriority ? null : "faintishy-text"}`}>
                                 exclamation
                             </span>
+
                             {edit.taskName ?
                                 <input ref={refTaskName} id={`taskNameInput-${index}`} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
                                 :

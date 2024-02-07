@@ -15,11 +15,12 @@ import axios from 'axios';
 import WelcomeModal from '../components/WelcomeModal';
 import MissionModal from '../components/MissionModal';
 import MissionCompletedModal from '../components/MissionCompletedModal';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 
 
 const Dashboard = () => {
-    const { showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories, missionsCompleted, setMissionscompleted, databaseOn } = useContext(DataContext);
+    const { showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories, missionsOn, setMissionsOn, databaseOn } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
     useEffect(() => {
         setShowNavbar(true)
@@ -634,9 +635,11 @@ const Dashboard = () => {
         }
     }
     // Welcome and Mission Code - if missions complete
-    const [welcomeModalOpen, setWelcomeModalOpen] = useState(missionsCompleted ? false : true);
+
+    const [welcomeModalOpen, setWelcomeModalOpen] = useState(missionsOn ? true : false);
     const [missionModalOpen, setMissionModalOpen] = useState(false)
-    const [currentMission, setCurrentMission] = useState(1)
+    // set current mission number
+    const [currentMission, setCurrentMission] = useState(1);
     const openMissionModal = () => {
         setMissionModalOpen(true);
     }
@@ -648,7 +651,7 @@ const Dashboard = () => {
         {
             "mission-1":
             {
-                desc: "Your first mission is to create a task that has the following settings:",
+                desc: "Your first mission is to create a task with the following settings:",
                 numberOfTasks: 5,
                 tasksCompleted: 0,
                 missionCompleted: false,
@@ -675,7 +678,7 @@ const Dashboard = () => {
                     },
                     {
                         taskKey: "Steps",
-                        taskValue: "Create 3 steps for your task",
+                        taskValue: "Create any 3 steps for your task",
                         completed: false
                     },
                 ]
@@ -895,7 +898,9 @@ const Dashboard = () => {
         }
     }
     useEffect(() => {
-        checkMissionCompleted()
+        if (missionsOn) {
+            checkMissionCompleted()
+        }
     }, [tasks])
     // mission completed modal
     const [missionCompletedModalOpen, setMissionCompletedModalOpen] = useState(false);
@@ -920,13 +925,22 @@ const Dashboard = () => {
     }
 
     const [feedbackAlert, setFeedbackAlert] = useState(false)
+    const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+    const openConfirmationModal = (action) => {
+        if (action === "dump") {
+            if (categories.completed.length > 0) {
+                setConfirmationModalOpen(true)
+            }
+        }
+    }
     return (
         <>
+            <ConfirmationModal open={confirmationModalOpen} completedTasks={categories.completed} dumpCompletedTasks={dumpCompletedTasks} onClose={() => setConfirmationModalOpen(false)} />
             <MissionCompletedModal open={missionCompletedModalOpen} currentMission={currentMission} setCurrentMission={setCurrentMission} closeMissionReminder={() => setMissionReminderOpen(false)} onClose={closeMissionCompletedModal} />
             <MissionModal open={missionModalOpen} currentMission={currentMission} missionProgress={missionProgress} checkMissionCompleted={checkMissionCompleted} activateFeedbackAlert={() => setFeedbackAlert(true)} onClose={closeMissionModal} />
             <WelcomeModal open={welcomeModalOpen} onClose={() => setWelcomeModalOpen(false)} />
             <CreateTaskModal open={newTaskModalOpen} category={selectedCategory} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
-            <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} db_task_id={quickUpdateSettings.db_task_id} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} />
+            <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} db_task_id={quickUpdateSettings.db_task_id} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} dumpCompletedTasks={dumpCompletedTasks} />
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
             <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
             <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
@@ -958,19 +972,21 @@ const Dashboard = () => {
                                 </Slide>
                             </Fade>
                             <div className="flx-r gap-3">
-                                <button onClick={(e) => { e.stopPropagation(); openMissionModal() }} className="btn-primaryflex mt-1 position-relative">
-                                    <div className="updatesNotification position-absolute liftslow">
-                                        {currentMission === 0 ? "!" : 4 - currentMission}
-                                    </div>
-                                    <span class="material-symbols-outlined lift">
-                                        rocket
-                                    </span>
-                                </button>
+                                {missionsOn &&
+                                    <button onClick={(e) => { e.stopPropagation(); openMissionModal() }} className="btn-primaryflex mt-1 position-relative">
+                                        <div className="updatesNotification position-absolute liftslow">
+                                            {currentMission === 0 ? "!" : 4 - currentMission}
+                                        </div>
+                                        <span class="material-symbols-outlined lift">
+                                            rocket
+                                        </span>
+                                    </button>
+                                }
                                 <button onClick={(e) => { e.stopPropagation(); openFeedbackModal() }} className="btn-tertiary mt-1 position-relative">
-                                    {feedbackAlert && 
-                                    <div className="updatesNotification position-absolute liftslow">
-                                        !
-                                    </div>
+                                    {feedbackAlert &&
+                                        <div className="updatesNotification position-absolute liftslow">
+                                            !
+                                        </div>
                                     }
                                     Feedback
                                 </button>
@@ -1037,22 +1053,22 @@ const Dashboard = () => {
                         {selectedCategory === "completed" &&
                             <>
                                 <div className="tab-container position-relative tb-completed green-text mb-2">
-                                    <div id='completedPopUp' className="popUp hidden-o">
+                                    {/* <div id='completedPopUp' className="popUp hidden-o">
                                         <div onClick={() => { dumpCompletedTasks(); hideCompletedPopUp() }} className={`${categories.completed.length > 0 ? "option" : "option-disabled"}`}>
                                             <span className="material-symbols-outlined">
                                                 delete
                                             </span>
                                             <p className="m-0">Dump Completed Tasks</p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="align-all-items gap-2">
                                         <span className="material-symbols-outlined xx-large">
                                             done
                                         </span>
                                         <p className="m-0 xx-large">Completed Tasks</p>
-                                        <span onClick={() => toggleCompletedPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 black-text pointer">
+                                        {/* <span onClick={() => toggleCompletedPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 black-text pointer">
                                             more_vert
-                                        </span>
+                                        </span> */}
                                     </div>
                                 </div>
                                 <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> After completing tasks, click the vertical dots by the <i>Completed Tasks</i> heading to dump them and trade them in for points!</p>
@@ -1097,15 +1113,27 @@ const Dashboard = () => {
                             </div>
                         }
 
-                        {/* Add New Task Button */}
-                        <button onClick={() => openCreateNewTask()} className="btn-primaryflex position-right">
-                            <div className="align-all-items">
-                                <span className="material-symbols-outlined v-bott mr-1 medium">
-                                    add
-                                </span>
-                                <p className="m-0">Add New Task</p>
-                            </div>
-                        </button>
+                        {/* Add New Task or Dump Task Button */}
+                        {selectedCategory === "completed" ?
+                            <button onClick={() => openConfirmationModal("dump")} className={`${categories.completed.length > 0 ? "btn-primaryflex-green" : "btn-primaryflex-disabled"} position-right`}>
+                                <div className="align-all-items">
+                                    <span className="material-symbols-outlined v-bott mr-2 mt-h large">
+                                        delete
+                                    </span>
+                                    <p className="m-0">Dump Completed Tasks</p>
+                                </div>
+                            </button>
+                            :
+                            <button onClick={() => openCreateNewTask()} className="btn-primaryflex position-right">
+                                <div className="align-all-items">
+                                    <span className="material-symbols-outlined v-bott mr-1 medium">
+                                        add
+                                    </span>
+                                    <p className="m-0">Add New Task</p>
+                                </div>
+                            </button>
+                        }
+                        {/* End Add New Task or Dump Task Button */}
 
                         {/* Title Column */}
                         <div className="title-column flx-r align-c">
@@ -1137,7 +1165,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="page-body page-container96">
-                        {currentMission > 0 &&
+                        {currentMission > 0 && missionsOn &&
                             <>
                                 {/* mission reminder */}
                                 <div id='missionReminderBox black-text' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>

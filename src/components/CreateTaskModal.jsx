@@ -10,11 +10,19 @@ import ToolTip from './ToolTip';
 
 const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     if (!open) return null
+    // making sure the dashboard page loads the category into the task being created unless it's a sytem category
+    const [taskCategory, setTaskCategory] = useState(category)
+    useEffect(() => {
+        let newTaskCopy = {...newTask}
+        newTaskCopy.category = taskCategory
+        setNewTask(newTaskCopy)
+    }, [taskCategory])
     useEffect(() => {
         let categorySelect = document.getElementById('categorySelect')
         if (category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" || category === "No Category") {
             category = null
-        }
+            setTaskCategory(null)
+        } 
         categorySelect.value = category ? category : "No Category"
     }, [])
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
@@ -25,7 +33,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         id: taskLastInArr[0] ? parseInt(taskLastInArr[0]) + 1 : 1,
         myDay: false,
         taskName: "",
-        category: category ? category : "No Category",
+        category: taskCategory ? taskCategory : null,
         notes: null,
         highPriority: false,
         endDate: null,
@@ -143,6 +151,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
 
     const addTask = async () => {
         if (newTask.taskName) {
+            console.log(newTask)
             // put the steps on the task
             await updateTaskSteps()
             // open loader
@@ -180,6 +189,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                     })
             } else {
                 // complete adding the task in front end
+                console.log(newTask)
                 let tasksCopy = Object.values(tasks)
                 tasksCopy.push({
                     ...newTask,
@@ -295,6 +305,13 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     })
 
     // steps code
+    const [stepsList, setStepsList] = useState([
+        {
+            number: 1,
+            desc: "",
+            completed: false
+        }
+    ])
     const updateStep = (e, index) => {
         let stepsListCopy = [...stepsList]
         stepsListCopy[index].desc = e.target.value
@@ -312,11 +329,20 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                 number: stepsList.length + 1,
                 desc: ""
             })
+            setFocusOnNextStep(true);
         }
         setStepsList(stepsListCopy)
         resetStepInputValues(stepsListCopy)
 
     }
+    const [focusOnNextStep, setFocusOnNextStep] = useState(false);
+    useEffect(() => {
+        if (focusOnNextStep) {
+            let nextStep = document.getElementById(`stepInput-${stepsList.length - 1}`)
+            nextStep.focus()
+        }
+        setFocusOnNextStep(false);
+    }, [stepsList])
     const resetStepInputValues = (stepsListCopy) => {
         // set input values on the page to be equal to those values in the stepsList passed thru as the argument
         for (let i = 0; i < stepsListCopy.length; i++) {
@@ -326,13 +352,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
             }
         }
     }
-    const [stepsList, setStepsList] = useState([
-        {
-            number: 1,
-            desc: "",
-            completed: false
-        }
-    ])
+    
 
 
     // funtion not called but code used in addTask function
@@ -515,7 +535,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                 </div>
 
 
-                                <p onClick={() => printTime()} className="box-title m-0">Create New Task</p>
+                                <p onClick={() => printNewTask()} className="box-title m-0">Create New Task</p>
                                 <hr className='w-100' />
 
                                 <div className="flx-r">
@@ -734,7 +754,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 {stepsList.map((step, index) => {
                                                     return <div key={index} className="step-div">
                                                         <div className="overlay-icon2">{step.number})</div>
-                                                        <input id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className="step-input-box" />
+                                                        <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className="step-input-box" />
                                                         <div className="closeBtn4 ml-1">
                                                             <span onClick={() => updateStepsList("remove", index)} className="material-symbols-outlined">
                                                                 close
