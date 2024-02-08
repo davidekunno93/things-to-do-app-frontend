@@ -70,7 +70,7 @@ Feedback
 <!-- *Make AM/PM drop down separate selection (meet user expectations) -->
 <!-- *Make priority btn bolder when inactive -->
 *create tooltips to help users understand how to... use advanced settings/set priority/add to my day/edit name and steps of tasks from task box
-make priority button on task bar more visible
+<!-- make priority button on task bar more visible -->
 make indicator to turn on advanced settings more visible or have quick tooltip
 make demo give task date in the future
 make dump tasks a button

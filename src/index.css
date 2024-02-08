@@ -1334,6 +1334,7 @@ input:-webkit-autofill {
   border: none;
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
+  color: black;
 }
 .input-box:hover {
   background-color: gainsboro;
@@ -1347,6 +1348,7 @@ input:-webkit-autofill {
   border: none;
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
+  color: black;
 }
 .textarea-box2 {
   border-radius: 8px;
@@ -1356,6 +1358,7 @@ input:-webkit-autofill {
   border: none;
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
+  color: black;
 }
 .textarea-box:hover {
   background-color: gainsboro;
@@ -2208,6 +2211,8 @@ selection:hover .sub-selection {
   padding: 8px;
   border-radius: 8px;
   width: 300px;
+  background-color: white;
+  color: black;
 }
 .step-div {
   width: 100%;
@@ -2227,6 +2232,7 @@ selection:hover .sub-selection {
   border: none;
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
+  color: black;
 }
 .step-input-box:hover {
   background-color: gainsboro;

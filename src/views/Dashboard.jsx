@@ -1078,7 +1078,7 @@ const Dashboard = () => {
                             <>
                                 <div className="tab-container tb-none mb-2">
                                     <div className="align-all-items gap-2">
-                                        <span className="material-symbols-outlined xx-large">
+                                        <span className="material-symbols-outlined xx-large black-text">
                                             list
                                         </span>
                                         <p className="m-0 xx-large dark-text">All Tasks</p>
