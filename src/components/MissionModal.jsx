@@ -28,7 +28,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                         return <p key={index} className="m-0">&bull; <strong>{task.taskKey}:</strong> {task.taskValue}</p>
                                     })}
                                 </div>
-                                <p className="m-0 position-bottom small"><strong>Tip:</strong> Use the mission reminder button at the <u>bottom right</u> of the page to show the settings and check your progress.</p>
+                                <p className="m-0 position-bottom small"><strong className='red-text'>IMPORTANT:</strong> Use the mission reminder button at the <u>bottom right</u> of the page to refer back to the settings.</p>
                                 <div className="flx just-en">
                                     <button onClick={() => onClose()} className="btn-primaryflex mt-4">Got it!</button>
                                 </div>
@@ -53,7 +53,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                         return <p key={index} className="m-0">&bull; <strong>{task.taskKey}:</strong> {task.taskValue}</p>
                                     })}
                                 </div>
-                                <p className="m-0 position-bottom small"><strong>Tip:</strong> If you need to remind yourself of the task settings, click the mission reminder button at the <u>bottom right</u> of the page.</p>
+                                <p className="m-0 position-bottom small"><strong className='red-text'>IMPORTANT:</strong> If you need to remind yourself of the task settings, click the mission reminder button at the <u>bottom right</u> of the page.</p>
                                 <div className="flx just-en">
                                     <button onClick={() => onClose()} className="btn-primaryflex mt-4">Got it!</button>
                                 </div>
