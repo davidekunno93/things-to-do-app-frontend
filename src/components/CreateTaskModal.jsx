@@ -573,7 +573,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 </select>
                                                 <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
                                                     <div className="align-all-items gap-2">
-                                                        <p id='myDayText' className="m-0 font20">Add to My Day</p>
+                                                        <p id='myDayText' className="m-0 font20 font-jakarta bold600">Add to My Day</p>
                                                         <span id='myDayIcon' className="material-symbols-outlined medium">
                                                             sunny
                                                         </span>
