@@ -237,10 +237,18 @@ const Dashboard = () => {
         },
         togglePriority: function (taskId) {
             let tasksCopy = { ...tasks }
+            let key = "highPriority"
+            let value = ""
             if (tasks[taskId].highPriority) {
                 tasksCopy[taskId].highPriority = false
+                value = false
             } else {
                 tasksCopy[taskId].highPriority = true
+                value = true
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                updateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
@@ -634,6 +642,14 @@ const Dashboard = () => {
                 })
         }
     }
+    const updateTaskInDB = async (db_task_id, key, value) => {
+        let url = `http://localhost:5000/update_task/${db_task_id}`
+        const response = await axios.patch(url, {updateKey: key, updateValue: value}, {
+            headers: { "Content-Type": "application/json" }
+        }).then((response) => {
+            console.log(response)
+        })
+    }
     // Welcome and Mission Code - if missions complete
 
     const [welcomeModalOpen, setWelcomeModalOpen] = useState(missionsOn ? true : false);
@@ -658,7 +674,7 @@ const Dashboard = () => {
                 tasks: [
                     {
                         taskKey: "Deadline",
-                        taskValue: "1st February 2024 at 8:45PM",
+                        taskValue: "1st March 2024 at 8:45PM",
                         completed: false
                     },
                     {
@@ -702,7 +718,7 @@ const Dashboard = () => {
                     },
                     {
                         taskKey: "Deadline",
-                        taskValue: "4th February 2024 at 10:00AM",
+                        taskValue: "4th March 2024 at 10:00AM",
                         completed: false
                     },
                     {
@@ -763,7 +779,7 @@ const Dashboard = () => {
             let task = tasksArr[i]
             tasksCompleted = 0
             // console.log(task.endDate)
-            if (task.endDate === "02/01/2024" && task.endTime === "8:45 PM") {
+            if (task.endDate === "03/01/2024" && task.endTime === "8:45 PM") {
                 missionProgressCopy["mission-1"].tasks[0].completed = true
                 tasksCompleted++
             } else {
@@ -825,7 +841,7 @@ const Dashboard = () => {
             } else {
                 missionProgressCopy["mission-2"].tasks[1].completed = false
             }
-            if (task.endDate === "02/04/2024" && task.endTime === "10:00 AM") {
+            if (task.endDate === "03/04/2024" && task.endTime === "10:00 AM") {
                 missionProgressCopy["mission-2"].tasks[2].completed = true
                 tasksCompleted++
             } else {

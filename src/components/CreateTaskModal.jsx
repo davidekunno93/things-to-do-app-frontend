@@ -13,7 +13,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     // making sure the dashboard page loads the category into the task being created unless it's a sytem category
     const [taskCategory, setTaskCategory] = useState(category)
     useEffect(() => {
-        let newTaskCopy = {...newTask}
+        let newTaskCopy = { ...newTask }
         newTaskCopy.category = taskCategory
         setNewTask(newTaskCopy)
     }, [taskCategory])
@@ -22,7 +22,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         if (category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" || category === "No Category") {
             category = null
             setTaskCategory(null)
-        } 
+        }
         categorySelect.value = category ? category : "No Category"
     }, [])
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
@@ -45,7 +45,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         steps: [], // [{number: "", desc: "", completed: ""}]
         progress: 0,
         completed: false,
-        completionDate : null,
+        completionDate: null,
         dumped: false,
         pointsAwarded: null,
     })
@@ -67,13 +67,17 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         setNewTask(newTaskCopy)
     }
     const updateTaskPriority = () => {
-        let priorityIcon = document.getElementById('priorityIcon')
+        let priorityBtn = document.getElementById('priorityBtn')
+        // let priorityIcon = document.getElementById('priorityIcon')
+        
         let newTaskCopy = { ...newTask }
-        if (priorityIcon.classList.contains('noPriority')) {
-            priorityIcon.classList.replace('noPriority', 'highPriority')
+        if (priorityBtn.classList.contains('noPriority')) {
+            // priorityIcon.classList.replace('noPriority', 'highPriority')
+            priorityBtn.classList.replace('noPriority', 'highPriority')
             newTaskCopy.highPriority = true;
-        } else if (priorityIcon.classList.contains('highPriority')) {
-            priorityIcon.classList.replace('highPriority', 'noPriority')
+        } else if (priorityBtn.classList.contains('highPriority')) {
+            // priorityIcon.classList.replace('highPriority', 'noPriority')
+            priorityBtn.classList.replace('highPriority', 'noPriority')
             newTaskCopy.highPriority = false;
         }
         setNewTask(newTaskCopy);
@@ -352,7 +356,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
             }
         }
     }
-    
+
 
 
     // funtion not called but code used in addTask function
@@ -545,9 +549,12 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                         <div className="task-setting">
                                             <label htmlFor='taskTitleInput' className="m-0 ml-1">Task title<span className="red-text">*</span></label>
                                             <div className="input-div">
-                                                <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right3 pointer noPriority">
-                                                    priority_high
-                                                </span>
+                                                <div onClick={() => updateTaskPriority()} id='priorityBtn' className="priority-button overlay-icon-right4 flx-r font-jakarta pointer noPriority">
+                                                    <p className="m-0 bold600">High Priority</p>
+                                                    <span id='priorityIcon' className="material-symbols-outlined">
+                                                        priority_high
+                                                    </span>
+                                                </div>
                                                 <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" placeholder='What do you need to do?' />
                                             </div>
                                         </div>

@@ -1401,6 +1401,7 @@ input:-webkit-autofill {
   padding-left: 32px;
   font-size: medium;
   box-sizing: border-box;
+  color: black;
   border: none;
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
@@ -1426,6 +1427,7 @@ input:-webkit-autofill {
   padding-left: 32px;
   font-size: medium;
   box-sizing: border-box;
+  color: black;
   border: none;
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
@@ -1439,6 +1441,7 @@ input:-webkit-autofill {
   width: 64px;
   padding: 8px;
   /* padding-left: 32px; */
+  color: black;
   font-size: medium;
   box-sizing: border-box;
   border: none;
@@ -2191,6 +2194,16 @@ selection:hover .sub-selection {
 .overlay-icon-right {
   position: absolute;
   opacity: 0.5;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+}
+.overlay-icon-right4 {
+  position: absolute;
+  padding: 0 6px 0 10px;
+  opacity: 0.75;
   top: 50%;
   right: 5px;
   transform: translateY(-50%);

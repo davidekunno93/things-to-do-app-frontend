@@ -43,6 +43,7 @@ Currently, two official plugins are available:
 <!-- *make + Add steps button fade out if 5 steps already added -->
 *equalize image sizes of tips on auth page, make fade out fade in with small delay*
 AFTER MVP UPDATES
+Have quick update edit from taskbar settings be close modal on click?
 **User sign in and out with Firebase - catch login errors**
 **Earn pts for completing and deleting tasks (will need tooltip explaining)**
 *animation for dumping tasks*

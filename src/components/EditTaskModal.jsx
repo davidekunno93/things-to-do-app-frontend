@@ -62,13 +62,13 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskPriority = () => {
-        let priorityIcon = document.getElementById('priorityIcon')
+        let priorityBtn = document.getElementById('priorityBtn')
         let updatedTaskCopy = { ...updatedTask }
-        if (priorityIcon.classList.contains('noPriority')) {
-            priorityIcon.classList.replace('noPriority', 'highPriority')
+        if (priorityBtn.classList.contains('noPriority')) {
+            priorityBtn.classList.replace('noPriority', 'highPriority')
             updatedTaskCopy.highPriority = true;
-        } else if (priorityIcon.classList.contains('highPriority')) {
-            priorityIcon.classList.replace('highPriority', 'noPriority')
+        } else if (priorityBtn.classList.contains('highPriority')) {
+            priorityBtn.classList.replace('highPriority', 'noPriority')
             updatedTaskCopy.highPriority = false;
         }
         setUpdatedTask(updatedTaskCopy);
@@ -90,7 +90,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     const updateTaskEndTime = () => {
         let taskCopy = { ...updatedTask }
         if (selectedHour && selectedMinute) {
-            taskCopy.endTime = timify(selectedHour+":"+selectedMinute) + " " + timeOfDay
+            taskCopy.endTime = timify(selectedHour + ":" + selectedMinute) + " " + timeOfDay
         } else {
             taskCopy.endTime = null
         }
@@ -323,7 +323,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
             stepInput.value = stepsListCopy[i].desc
         }
     }
-    
+
     const [stepsListDemo, setStepsListDemo] = useState([
         {
             number: 1,
@@ -537,9 +537,12 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                     <div className="task-setting">
                                         <label htmlFor='taskTitleInput' className="m-0 ml-1">Task title<span className="red-text">*</span></label>
                                         <div className="input-div">
-                                            <span onClick={() => updateTaskPriority()} id='priorityIcon' className="material-symbols-outlined overlay-icon-right3 pointer noPriority">
-                                                priority_high
-                                            </span>
+                                            <div onClick={() => updateTaskPriority()} id='priorityBtn' className="priority-button overlay-icon-right4 flx-r font-jakarta pointer noPriority">
+                                                <p className="m-0 bold600">High Priority</p>
+                                                <span id='priorityIcon' className="material-symbols-outlined">
+                                                    priority_high
+                                                </span>
+                                            </div>
                                             <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" />
                                         </div>
                                     </div>

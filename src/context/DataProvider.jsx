@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from "react";
 const DataProvider = (props) => {
     const [advancedSettingsOn, setAdvancedSettingsOn] = useState(false);
     const [showNavbar, setShowNavbar] = useState(false)
-    const [databaseOn, setDatabaseOn] = useState(false);
+    const [databaseOn, setDatabaseOn] = useState(true);
     // demo library
     const [user, setUser] = useState({
         uid: "testUser",
