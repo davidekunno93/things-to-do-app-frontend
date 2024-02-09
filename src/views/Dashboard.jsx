@@ -730,7 +730,7 @@ const Dashboard = () => {
                     },
                     {
                         taskKey: "Dump Tasks",
-                        taskValue: "Navigate to Completed tasks, click the three vertical dots and select the Dump Completed Tasks option on the pop-up to trade in your task for points",
+                        taskValue: "Select 'Dump Completed Tasks' to trade in your task for points. Take note of how many points you are awarded at the top of the navbar",
                         completed: false
                     },
                 ]

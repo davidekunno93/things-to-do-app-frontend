@@ -987,11 +987,26 @@ button:focus-visible {
   opacity: 0.8;
   transition: 0.2s;
 }
+.hoverSlighterFade {
+  transition: 0.2s;
+}
+.hoverSlighterFade:hover {
+  opacity: 0.9;
+  transition: 0.2s;
+}
 .hoverDarken {
   transition: 0.2s;
 }
 .hoverDarken:hover {
   filter: brightness(20%);
+  transition: 0.2s;
+}
+.hoverBottomLine-white {
+  border-bottom: 2px solid transparent;
+  transition: 0.2s;
+}
+.hoverBottomLine-white:hover {
+  border-bottom: 2px solid white;
   transition: 0.2s;
 }
 .onHover-show {
@@ -1451,7 +1466,16 @@ input:-webkit-autofill {
   align-items: center;
 }
 .todPicker {
-  width: 25px;
+  width: 34px;
+  height: 34px;
+  border-bottom: 2px solid black;
+  color: black;
+  /* background-color: black; */
+  /* border-radius: 8px; */
+  /* color: white; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .input-div {
   width: 100%;

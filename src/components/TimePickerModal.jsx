@@ -117,10 +117,10 @@ const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }
                         </select>
                     </div>
                     {selectedHour && selectedMinute && timeOfDay === "AM" &&
-                        <div onClick={() => setTimeOfDay("PM")} className="todPicker ml-2 hoverFade pointer">AM</div>
+                        <div onClick={() => setTimeOfDay("PM")} className="todPicker hoverSlighterFade ml-2 pointer">AM</div>
                     }
                     {selectedHour && selectedMinute && timeOfDay === "PM" &&
-                        <div onClick={() => setTimeOfDay("AM")} className="todPicker ml-2 hoverFade pointer">PM</div>
+                        <div onClick={() => setTimeOfDay("AM")} className="todPicker hoverSlighterFade ml-2 pointer">PM</div>
                     }
                 </div>
                 <p onClick={() => clearSelectedTime()} className={`m-0 small gray-text hoverFade pointer ${selectedHour ? null : "hidden-o"}`}>Clear</p>
