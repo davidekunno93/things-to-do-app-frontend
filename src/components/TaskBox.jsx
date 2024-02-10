@@ -227,7 +227,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
         <>
             <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className="task-box-container">
                 {/* priority indicator popup */}
-                <div id='priorityIndicatorPopUp' className="priority-indicator-popup">
+                <div id='priorityIndicatorPopUp' className="priority-indicator-popup hidden-o">
                     <p className="m-0 small">Click<span className='material-symbols-outlined v-align large'>exclamation</span>to toggle task priority</p>
                 </div>
                 {/* end priority indicator popup */}
