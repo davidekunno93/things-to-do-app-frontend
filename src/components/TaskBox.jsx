@@ -6,6 +6,7 @@ import { DataContext } from '../context/DataProvider'
 
 const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal, openDatePickerModal, openDateAndTimePickerModal, deleteTaskFromDB }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
+    const { firstTask, setFirstTask } = useContext(DataContext);
     // other functions
     function wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -223,12 +224,28 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
         let formattedDate = format(date, "MM/dd/yyyy")
         return datify(formattedDate)
     }
+
+    const priorityPopUpOnFirstTask = () => {
+        if (firstTask) {
+            let priorityPopUp = document.getElementById(`priorityIndicatorPopUp-${index}`)
+            priorityPopUp.classList.remove('hidden-o')
+            setFirstTask(false)
+            wait(5000).then(() => {
+                priorityPopUp.classList.add('hidden-o')
+            })
+        }
+    }
+
+    useEffect(() => {
+        priorityPopUpOnFirstTask()
+    }, [])
+
     return (
         <>
             <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className="task-box-container">
                 {/* priority indicator popup */}
-                <div id='priorityIndicatorPopUp' className="priority-indicator-popup hidden-o">
-                    <p className="m-0 small">Click<span className='material-symbols-outlined v-align large'>exclamation</span>to toggle task priority</p>
+                <div id={`priorityIndicatorPopUp-${index}`} className="priority-indicator-popup hidden-o">
+                    <p className="m-0 small font-jakarta">Click<span className='material-symbols-outlined v-align largish red-text'>exclamation</span>to toggle task <span className="bold600">high priority</span></p>
                 </div>
                 {/* end priority indicator popup */}
                 {/* taskbar options */}

@@ -86,3 +86,6 @@ selecting same day doesn't work when updating date/time from task bar
 
 **Backend connection points**
 CompleteSignUpModal.jsx - when signing up the user info is sent to the backend for saving to database (local)
+
+On spin up
+Make sure db turned off!

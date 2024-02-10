@@ -650,8 +650,7 @@ const Dashboard = () => {
             console.log(response)
         })
     }
-    // Welcome and Mission Code - if missions complete
-
+    // Welcome and Mission Code 
     const [welcomeModalOpen, setWelcomeModalOpen] = useState(missionsOn ? true : false);
     const [missionModalOpen, setMissionModalOpen] = useState(false)
     // set current mission number
