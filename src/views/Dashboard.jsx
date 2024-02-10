@@ -26,8 +26,9 @@ const Dashboard = () => {
         setShowNavbar(true)
     }, [])
     const taskObj = {
+        myDay: false,
         taskName: "",
-        category: "",
+        category: null,
         notes: null,
         highPriority: false,
         endDate: null,
@@ -35,10 +36,14 @@ const Dashboard = () => {
         frequency: "",
         duration: null,
         outdoors: false,
+        location: null,
         participants: null, // [{uid: "", displayName: "", photoURL: ""}]
         steps: [], // [{number: "", desc: "", completed: ""}]
         progress: 0,
-        completed: false
+        completed: false,
+        completionDate: null,
+        dumped: false,
+        pointsAwarded: null,
     };
 
 
@@ -290,6 +295,15 @@ const Dashboard = () => {
         updateFrequency: function (taskId, option) {
             let tasksCopy = { ...tasks }
             tasksCopy[taskId].frequency = option
+            setTasks(tasksCopy)
+        },
+        updateLocation: function (taskId, e) {
+            let tasksCopy = {...tasks}
+            if (e.target.value) {
+                tasksCopy[taskId].location = e.target.value
+            } else {
+                tasksCopy[taskId].location = null
+            }
             setTasks(tasksCopy)
         },
         updateNotes: function (taskId, e) {
@@ -687,8 +701,8 @@ const Dashboard = () => {
                         completed: false
                     },
                     {
-                        taskKey: "Outdoors",
-                        taskValue: "Yes",
+                        taskKey: "Location",
+                        taskValue: "Home",
                         completed: false
                     },
                     {
@@ -726,8 +740,8 @@ const Dashboard = () => {
                         completed: false
                     },
                     {
-                        taskKey: "Outdoors",
-                        taskValue: "No",
+                        taskKey: "Location",
+                        taskValue: "810 Sunrise Drive",
                         completed: false
                     },
                 ]
@@ -796,9 +810,11 @@ const Dashboard = () => {
             } else {
                 missionProgressCopy["mission-1"].tasks[2].completed = false
             }
-            if (task.outdoors) {
-                missionProgressCopy["mission-1"].tasks[3].completed = true
-                tasksCompleted++
+            if (task.location) {
+                if (task.location.toLowerCase().trim() === "home") {
+                    missionProgressCopy["mission-1"].tasks[3].completed = true
+                    tasksCompleted++
+                }
             } else {
                 missionProgressCopy["mission-1"].tasks[3].completed = false
             }
@@ -852,11 +868,13 @@ const Dashboard = () => {
             } else {
                 missionProgressCopy["mission-2"].tasks[3].completed = false
             }
-            if (!task.outdoors) {
-                missionProgressCopy["mission-2"].tasks[4].completed = true
-                tasksCompleted++
+            if (task.location) {
+                if (task.location.toLowerCase().trim() === "810 sunrise drive") {
+                    missionProgressCopy["mission-1"].tasks[3].completed = true
+                    tasksCompleted++
+                }
             } else {
-                missionProgressCopy["mission-2"].tasks[4].completed = false
+                missionProgressCopy["mission-1"].tasks[3].completed = false
             }
             missionProgressCopy["mission-2"].tasksCompleted = tasksCompleted
             if (tasksCompleted === missionProgressCopy["mission-1"].numberOfTasks) {
@@ -1253,7 +1271,7 @@ const Dashboard = () => {
 
                         <div className="empty-6"></div>
                         <div className="empty-6"></div>
-                        <div className="empty-2"></div>
+                        <div className="empty-3"></div>
                     </div>
                 </Fade>
             </div>

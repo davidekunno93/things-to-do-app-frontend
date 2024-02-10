@@ -65,6 +65,7 @@ Have quick update edit from taskbar settings be close modal on click?
 *dump folder that you can restore tasks from
 space man mascot
 don't confirm if dump tasks just do it option in account settings
+notes edit shouldn't disappear if you edit notes in taskbar and delete all text?
 
 
 Feedback

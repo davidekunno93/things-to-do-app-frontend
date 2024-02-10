@@ -24,6 +24,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         frequency: task.frequency,
         duration: task.duration,
         outdoors: task.outdoors,
+        location: task.location,
         participants: task.participants, // [{uid: "", displayName: "", photoURL: ""}]
         steps: task.steps, // [{number: "", desc: "", completed: ""}]
         progress: task.progress,
@@ -111,15 +112,26 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         }
         setUpdatedTask(updatedTaskCopy)
     }
-    const updateTaskOutdoors = (option) => {
+    // const updateTaskOutdoors = (option) => {
+    //     let updatedTaskCopy = { ...updatedTask }
+    //     if (!option) {
+    //         updatedTaskCopy.outdoors = false;
+    //     } else if (option === "Yes") {
+    //         updatedTaskCopy.outdoors = true
+    //     } else if (option === "No") {
+    //         updatedTaskCopy.outdoors = false
+    //     }
+    //     setUpdatedTask(updatedTaskCopy)
+    // }
+    const updateTaskLocation = (e) => {
         let updatedTaskCopy = { ...updatedTask }
-        if (!option) {
-            updatedTaskCopy.outdoors = false;
-        } else if (option === "Yes") {
-            updatedTaskCopy.outdoors = true
-        } else if (option === "No") {
-            updatedTaskCopy.outdoors = false
+        if (e.target.value.trim() === "") {
+            updatedTaskCopy.location = null
+        } else {
+            let location = e.target.value.trim()
+            updatedTaskCopy.location = location.charAt(0).toUpperCase()+location.slice(1)
         }
+        console.log(updatedTaskCopy.location)
         setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskParticipants = () => {
@@ -260,24 +272,24 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     })
 
     // outdoors code
-    const updateOutdoorSelection = (option) => {
-        let newOutdoorSelection = ({
-            "Yes": false,
-            "No": false
-        })
-        newOutdoorSelection[option] = true
-        setOutdoorSelection(newOutdoorSelection)
-    }
-    const clearOutdoorSelection = () => {
-        setOutdoorSelection({
-            "Yes": false,
-            "No": false
-        })
-    }
-    const [outdoorSelection, setOutdoorSelection] = useState({
-        "Yes": false,
-        "No": true
-    })
+    // const updateOutdoorSelection = (option) => {
+    //     let newOutdoorSelection = ({
+    //         "Yes": false,
+    //         "No": false
+    //     })
+    //     newOutdoorSelection[option] = true
+    //     setOutdoorSelection(newOutdoorSelection)
+    // }
+    // const clearOutdoorSelection = () => {
+    //     setOutdoorSelection({
+    //         "Yes": false,
+    //         "No": false
+    //     })
+    // }
+    // const [outdoorSelection, setOutdoorSelection] = useState({
+    //     "Yes": false,
+    //     "No": true
+    // })
 
     // steps code
     const [stepsList, setStepsList] = useState(task.steps)
@@ -455,12 +467,19 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         updateFrequencySelection(task.frequency)
     }
     // load outdoors
-    const loadOutdoors = () => {
-        if (task.outdoors) {
-            setOutdoorSelection({
-                "Yes": true,
-                "No": false
-            })
+    // const loadOutdoors = () => {
+    //     if (task.outdoors) {
+    //         setOutdoorSelection({
+    //             "Yes": true,
+    //             "No": false
+    //         })
+    //     }
+    // }
+    // load location
+    const loadLocation = () => {
+        if (task.location) {
+            let locationInput = document.getElementById('locationInput')
+            locationInput.value = task.location
         }
     }
     // load steps
@@ -482,7 +501,8 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         loadEndTime()
         loadDuration()
         loadFrequency()
-        loadOutdoors()
+        // loadOutdoors()
+        loadLocation()
         loadSteps()
     }, [])
 
@@ -670,16 +690,12 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                     </div>
 
                                     <div className="task-setting">
-                                        <p className="m-0 ml-1">Task is outdoors?
-                                            {/* <span onClick={() => { clearOutdoorSelection(); updateTaskOutdoors() }} className="clearBtn small">Clear</span> */}
-                                        </p>
-                                        <div className="selection-box">
-                                            {Object.keys(outdoorSelection).map((option, index) => {
-                                                let selected = outdoorSelection[option]
-                                                return <div key={index} onClick={() => { updateOutdoorSelection(option); updateTaskOutdoors(option) }} className={`${selected ? "selection-selected" : "selection-unselected"}`}>
-                                                    <p className="m-0 m-auto">{option}</p>
-                                                </div>
-                                            })}
+                                        <p className="m-0 ml-1">Location</p>
+                                        <div className="inputBox flx-c">
+                                            <span className="material-symbols-outlined overlay-icon">
+                                                location_on
+                                            </span>
+                                            <input id='locationInput' onChange={(e) => updateTaskLocation(e)} type="text" className="location-input-box" placeholder='e.g. Home, 1722 Smith Ave. etc' />
                                         </div>
                                     </div>
 

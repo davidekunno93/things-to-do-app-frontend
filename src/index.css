@@ -1004,6 +1004,13 @@ button:focus-visible {
   filter: brightness(20%);
   transition: 0.2s;
 }
+.hoverOpaque {
+  transition: 0.2s;
+}
+.hoverOpaque:hover {
+  opacity: 1;
+  transition: 0.2s;
+}
 .hoverBottomLine-white {
   border-bottom: 2px solid transparent;
   transition: 0.2s;
@@ -1396,6 +1403,21 @@ input:-webkit-autofill {
   background-color: rgb(235, 235, 235);
   transition: 0.2s;
 }
+.location-input-box{
+  border-radius: 8px;
+  font-size: medium;
+  height: 36px;
+  padding: 0px 8px 0px 32px;
+  box-sizing: border-box;
+  border: none;
+  background-color: rgb(235, 235, 235);
+  transition: 0.2s;
+  color: black;
+}
+.location-input-box:hover {
+  background-color: gainsboro;
+  transition: 0.2s;
+}
 .date-input-box{
   border-radius: 8px;
   height: 36px;
@@ -1531,6 +1553,17 @@ input:-webkit-autofill {
   padding: 0;
   font-size: 15px;
   margin-top: 5px;
+}
+.input-style4 {
+  background-color: transparent;
+  border: none;
+  /* border-bottom: 1px solid black; */
+  /* text-decoration: underline; */
+  /* padding: 0; */
+  padding: 0 0 4px 0;
+  font-size: 16px;
+  margin-top: 5px;
+  transition: 0.2s;
 }
 .input-style2 {
   background-color: transparent;
@@ -1851,6 +1884,40 @@ input:-webkit-autofill {
   display: flex;
   width: 50px;
   cursor: pointer;
+}
+.location-detail {
+  display: flex;
+  width: 50px;
+  cursor: pointer;
+}
+.location-popUp {
+  position: absolute;
+  background-color: gainsboro;
+  /* height: 30px; */
+  /* width: 120px; */
+  bottom: 36px;
+  /* left: ; */
+  padding: 8px 8px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: auto;
+}
+.location-popUp::after {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  left: 20px;
+  bottom: -24px;
+  display: block;
+  border: 5px solid transparent;
+  border-top: 10px solid gainsboro;
+  transform: translateY(-10px);
+  transition: 0.2s;
 }
 .frequency-detail {
   display: flex;

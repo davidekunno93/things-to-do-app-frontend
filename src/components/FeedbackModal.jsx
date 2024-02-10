@@ -59,7 +59,7 @@ const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
                                     </div>
                                     <hr className='w-100'/>
                                     <p className="m-0 mt- font-jakarta x-large center-text">Click the link to take the feedback Survey!</p>
-                                    <Link to='https://forms.gle/saSbJJi9hdadS8kq6' target='_blank'>
+                                    <Link to='https://forms.gle/iVciH9gSEX2eQKAVA' target='_blank'>
                                         <div className="align-all-items gap-1 just-ce my-2">
                                             <p className="m-0 ml-2 large">Feedback Survey</p>
                                             <span className="material-symbols-outlined large mt-h">

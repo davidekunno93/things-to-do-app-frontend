@@ -31,6 +31,7 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: "Long",
     //         outdoors: true,
+    //         location: "Kroger's",
     //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [
     //             { number: 1, desc: "Complete car inspection", completed: false },
@@ -39,8 +40,8 @@ const DataProvider = (props) => {
     //         progress: 0,
     //         completed: false,
     //         completionDate : null,
-    // dumped: false,
-    // pointsAwarded: null,
+    //         dumped: false,
+    //         pointsAwarded: null,
     //     },
     //     2: {
     //         id: 2,
@@ -55,6 +56,7 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: "Medium",
     //         outdoors: false,
+    //         location: "Home",
     //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [
     //             {number: 1, desc: "Wash the dishes", completed: false},
@@ -64,8 +66,8 @@ const DataProvider = (props) => {
     //         progress: 0,
     //         completed: false,
     //         completionDate : null,
-    // dumped: false,
-    // pointsAwarded: null,
+    //         dumped: false,
+    //         pointsAwarded: null,
     //     },
     //     3: {
     //         id: 3,
@@ -80,6 +82,7 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: "Long",
     //         outdoors: false,
+    //         location: "Central Houston",
     //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [
     //             { number: 1, desc: "Chick fil a", completed: true },
@@ -91,8 +94,8 @@ const DataProvider = (props) => {
     //         progress: 0,
     //         completed: false,
     //         completionDate : null,
-    // dumped: false,
-    // pointsAwarded: null,
+    //         dumped: false,
+    //         pointsAwarded: null,
     //     },
     //     4: {
     //         id: 4,
@@ -107,13 +110,14 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: "Medium",
     //         outdoors: true,
+    //         location: null,
     //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [], // [{number: 1, desc: "", completed: false}]
     //         progress: 0,
     //         completed: false,
     //         completionDate : null,
-    // dumped: false,
-    // pointsAwarded: null,
+    //         dumped: false,
+    //         pointsAwarded: null,
     //     },
     //     5: {
     //         id: 5,
@@ -128,6 +132,7 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: null,
     //         outdoors: false,
+    //         location: null,
     //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [
     //             { number: 1, desc: "Own a company", completed: false },
@@ -152,6 +157,7 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: "Long",
     //         outdoors: true,
+    //         location: null,
     //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [
     //             { number: 1, desc: "Find one infinity stone", completed: false },
@@ -160,8 +166,8 @@ const DataProvider = (props) => {
     //         progress: 0,
     //         completed: false,
     //         completionDate : null,
-    // dumped: false,
-    // pointsAwarded: null,
+    //         dumped: false,
+    //         pointsAwarded: null,
     //     },
     //     7: {
     //         id: 7,
@@ -176,9 +182,8 @@ const DataProvider = (props) => {
     //         frequency: "Once",
     //         duration: "Medium",
     //         outdoors: true,
-    //         participants: [
-
-    //         ], // [{uid: "", displayName: "", photoURL: ""}]
+    //         location: null,
+    //         participants: [], // [{uid: "", displayName: "", photoURL: ""}]
     //         steps: [
     //             { number: 1, desc: "Buy pokeballs", completed: true },
     //             { number: 2, desc: "Walk through tall grass", completed: false },
@@ -189,8 +194,8 @@ const DataProvider = (props) => {
     //         progress: 0,
     //         completed: false,
     //         completionDate : null,
-    // dumped: false,
-    // pointsAwarded: null,
+    //         dumped: false,
+    //         pointsAwarded: null,
     //     },
     // })
     const [categories, setCategories] = useState({

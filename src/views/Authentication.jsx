@@ -197,24 +197,24 @@ const Authentication = () => {
         }
         if (!error) {
             createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
-            .then(() => {
-                // after user has been signed up go to CompleteSignUpModal to handle dname/dp/initiate level on firestore and get tasks/userCategories environment ready
-                setCompleteSignUpModalOpen(true)
-            })
-            .catch((error) => {
-                console.log(error)
-                alert("Something went wrong. Please try again later.")
-            })
+                .then(() => {
+                    // after user has been signed up go to CompleteSignUpModal to handle dname/dp/initiate level on firestore and get tasks/userCategories environment ready
+                    setCompleteSignUpModalOpen(true)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    alert("Something went wrong. Please try again later.")
+                })
         }
     }
-    
+
     // sign in authentication code
     const [signInEmail, setSignInEmail] = useState("")
     const [signInPassword, setSignInPassword] = useState("")
     const signIn = () => {
         let emailError = document.getElementById('signInEmailError')
         let passwordError = document.getElementById('signInPasswordError')
-        
+
         let error = false
         if (!signInEmail || !signInEmail.includes('@')) {
             emailError.classList.remove('d-none')
@@ -240,7 +240,7 @@ const Authentication = () => {
         let userLevelDoc = await getDoc(doc(firestore, `userLevel/${auth.currentUser.uid}`))
         let userLevelData = userLevelDoc.data()
         console.log(userLevelData)
-        let userCopy = {...user}
+        let userCopy = { ...user }
         // using login cred response from firebase
         userCopy.uid = cred.user.uid
         userCopy.displayName = cred.user.displayName
@@ -254,7 +254,7 @@ const Authentication = () => {
         // set tasks environment
         navigateToDashboard()
     }
-    
+
 
     // after signing up, modal comes up to welcome the new user
     const [completeSignUpModalOpen, setCompleteSignUpModalOpen] = useState(false);
@@ -273,7 +273,7 @@ const Authentication = () => {
             let url = "http://localhost:5000/auth/create_user"
             let data = "testing"
             const response = await axios.post(url, JSON.stringify(data), {
-                headers: { "Content-Type" : "application/json" }
+                headers: { "Content-Type": "application/json" }
             }).then((response) => {
                 console.log(response.data)
             }).catch((error) => {
@@ -287,6 +287,7 @@ const Authentication = () => {
         setTasks({
             1: {
                 id: 1,
+                db_task_id: null,
                 myDay: false,
                 taskName: "Update my car's registration",
                 category: "Car",
@@ -297,6 +298,7 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: "Long",
                 outdoors: true,
+                location: "Kroger's",
                 participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [
                     { number: 1, desc: "Complete car inspection", completed: false },
@@ -304,12 +306,13 @@ const Authentication = () => {
                 ], // [{number: #, desc: "", completed: false}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
             },
             2: {
                 id: 2,
+                db_task_id: null,
                 myDay: true,
                 taskName: "Wash the dishes!",
                 category: "Home",
@@ -320,20 +323,22 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: "Medium",
                 outdoors: false,
+                location: "Home",
                 participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [
-                    {number: 1, desc: "Wash the dishes", completed: false},
-                    {number: 2, desc: "Set them on the drying rack", completed: false},
-                    {number: 3, desc: "Put the dishes away", completed: false}
+                    { number: 1, desc: "Wash the dishes", completed: false },
+                    { number: 2, desc: "Set them on the drying rack", completed: false },
+                    { number: 3, desc: "Put the dishes away", completed: false }
                 ], // [{number: 1, desc: "", completed: false}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
             },
             3: {
                 id: 3,
+                db_task_id: null,
                 myDay: false,
                 taskName: "Find the best fast food in Houston",
                 category: null,
@@ -344,6 +349,7 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: "Long",
                 outdoors: false,
+                location: "Central Houston",
                 participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [
                     { number: 1, desc: "Chick fil a", completed: true },
@@ -354,12 +360,13 @@ const Authentication = () => {
                 ], // [{number: "", desc: "", completed: ""}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
             },
             4: {
                 id: 4,
+                db_task_id: null,
                 myDay: false,
                 taskName: "Go to the Park",
                 category: null,
@@ -370,16 +377,18 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: "Medium",
                 outdoors: true,
+                location: null,
                 participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [], // [{number: 1, desc: "", completed: false}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
             },
             5: {
                 id: 5,
+                db_task_id: null,
                 myDay: false,
                 taskName: "Sell my company for $1 million",
                 category: null,
@@ -390,6 +399,7 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: null,
                 outdoors: false,
+                location: null,
                 participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [
                     { number: 1, desc: "Own a company", completed: false },
@@ -397,12 +407,13 @@ const Authentication = () => {
                 ], // [{number: "", desc: "", completed: ""}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
             },
             6: {
                 id: 6,
+                db_task_id: null,
                 myDay: false,
                 taskName: "Find the infinity stones",
                 category: null,
@@ -413,6 +424,7 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: "Long",
                 outdoors: true,
+                location: null,
                 participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [
                     { number: 1, desc: "Find one infinity stone", completed: false },
@@ -420,12 +432,13 @@ const Authentication = () => {
                 ], // [{number: "", desc: "", completed: ""}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
             },
             7: {
                 id: 7,
+                db_task_id: null,
                 myDay: true,
                 taskName: "Catch a new Pokemon",
                 category: null,
@@ -436,9 +449,8 @@ const Authentication = () => {
                 frequency: "Once",
                 duration: "Medium",
                 outdoors: true,
-                participants: [
-    
-                ], // [{uid: "", displayName: "", photoURL: ""}]
+                location: null,
+                participants: [], // [{uid: "", displayName: "", photoURL: ""}]
                 steps: [
                     { number: 1, desc: "Buy pokeballs", completed: true },
                     { number: 2, desc: "Walk through tall grass", completed: false },
@@ -448,26 +460,26 @@ const Authentication = () => {
                 ], // [{number: "", desc: "", completed: ""}]
                 progress: 0,
                 completed: false,
-                completionDate : null,
+                completionDate: null,
                 dumped: false,
                 pointsAwarded: null,
-            }
+            },
         })
     }
 
     return (
         <>
-        <CompleteSignUpModal open={completeSignUpModalOpen} displayName={signUpName} photoURL={selectedAvatarUrl} onClose={completeSignUp} />
+            <CompleteSignUpModal open={completeSignUpModalOpen} displayName={signUpName} photoURL={selectedAvatarUrl} onClose={completeSignUp} />
             <div id='authContainer' className="auth-container">
                 {/* <Fade fraction={0} triggerOnce> */}
-                    <div id='tipBox' className="website-tips z-1 flx position-absolute white-text hidden-o">
-                        <div className="m-auto">
-                            <p className="m-0 xx-large font-jakarta">{tips[tipIndex].title}</p>
+                <div id='tipBox' className="website-tips z-1 flx position-absolute white-text hidden-o">
+                    <div className="m-auto">
+                        <p className="m-0 xx-large font-jakarta">{tips[tipIndex].title}</p>
 
-                            <img src={tips[tipIndex].imgUrl} alt="" className="img-tip my-2" />
-                            <p className="m-0">{tips[tipIndex].text}</p>
-                        </div>
+                        <img src={tips[tipIndex].imgUrl} alt="" className="img-tip my-2" />
+                        <p className="m-0">{tips[tipIndex].text}</p>
                     </div>
+                </div>
                 {/* </Fade> */}
                 <Fade fraction={0} triggerOnce>
                     <div id='pageBody' className="pagebody-bg-black flx">
@@ -493,12 +505,12 @@ const Authentication = () => {
 
                                         <div className="avatarsTitle flx-r align-r">
                                             <p className="m-0">Avatar:</p>
-                                            <p onClick={() => {setSelectedAvatar(null); setSelectedAvatarUrl(null)}} className="m-0 position-right gray-text small hoverFade pointer">Clear</p>
+                                            <p onClick={() => { setSelectedAvatar(null); setSelectedAvatarUrl(null) }} className="m-0 position-right gray-text small hoverFade pointer">Clear</p>
                                         </div>
                                         <div className="avatarIcons mb-4 flx-r just-sb">
                                             {avatars.map((avatar, index) => {
                                                 let selected = avatar.avatarName === selectedAvatar ? true : false
-                                                return <img key={index} onClick={() => {setSelectedAvatar(avatar.avatarName); setSelectedAvatarUrl(avatar.imgUrl)}} src={avatar.imgUrl} alt={avatar.avatarName} className={`img-small pointer ${selected ? " chosen" : "unchosen"}`} />
+                                                return <img key={index} onClick={() => { setSelectedAvatar(avatar.avatarName); setSelectedAvatarUrl(avatar.imgUrl) }} src={avatar.imgUrl} alt={avatar.avatarName} className={`img-small pointer ${selected ? " chosen" : "unchosen"}`} />
                                             })}
                                         </div>
 
@@ -517,7 +529,7 @@ const Authentication = () => {
                                         <div className="registerBtn flx-c">
                                             <div className="flx">
                                                 <div className="align-all-items hoverLightGraylight pointer">
-                                                    <p onClick={() => {signUp(); setMissionsOn(false)}} className="m-0 x-large">Register</p>
+                                                    <p onClick={() => { signUp(); setMissionsOn(false) }} className="m-0 x-large">Register</p>
                                                     <span className="material-symbols-outlined ml-2">
                                                         arrow_forward
                                                     </span>
@@ -550,14 +562,14 @@ const Authentication = () => {
 
                                         <div className="registerBtn flx-c">
                                             <div className="flx">
-                                                <div onClick={() => {signIn(); setMissionsOn(false)}} className="align-all-items hoverLightGraylight pointer">
+                                                <div onClick={() => { signIn(); setMissionsOn(false) }} className="align-all-items hoverLightGraylight pointer">
                                                     <p className="m-0 x-large">Login</p>
                                                     <span className="material-symbols-outlined ml-2">
                                                         arrow_forward
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => {loadDemoTasks(); navigateToDashboard(); setMissionsOn(false)}} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
+                                            <p className="m-0 gray-text">Don't have an account? <span onClick={() => goToSignUp()} className="hoverGraylight pointer"><u>Sign Up</u></span> or <span onClick={() => { loadDemoTasks(); navigateToDashboard(); setMissionsOn(false) }} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
                                         </div>
                                     </div>
 

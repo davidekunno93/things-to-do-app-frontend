@@ -135,6 +135,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     const [edit, setEdit] = useState({
         taskName: false,
         steps: null, // steps value = the step number that will become editable
+        location: false,
         notes: false
     })
     // edit task name
@@ -153,6 +154,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
         document.addEventListener('click', hideOnClickOutsideName, true)
         document.addEventListener('click', hideOnClickOutsideStep, true)
         document.addEventListener('click', hideOnClickOutsideNotes, true)
+        document.addEventListener('click', hideOnClickOutsideLocation, true)
     }, [])
     useEffect(() => {
         const taskNameInput = document.getElementById(`taskNameInput-${index}`)
@@ -163,6 +165,10 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             const stepInput = document.getElementById(`stepInput-${index}-${edit.steps}`)
             resizeStepInput(edit.steps)
             stepInput.focus()
+        } else if (edit.location) {
+            let locationInput = document.getElementById(`locationInput-${index}`)
+            resizeLocationInput()
+            locationInput.focus()
         }
     }, [edit])
 
@@ -172,9 +178,65 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             let editCopy = { ...edit }
             editCopy.taskName = false
             setEdit(editCopy)
+            completeTaskNameEdit()
         }
     }
+    const completeTaskNameEdit = () => {
+        let editCopy = {...edit}
+        editCopy.taskName = false
+        setEdit(editCopy)
+        // send updated information to backend database
+    }
 
+    
+    
+    // edit location
+    const editLocation = () => {
+        let editCopy = { ...edit }
+        editCopy.location = true
+        setEdit(editCopy)
+    }
+    const resizeLocationInput = () => {
+        // index is passed into this component as a prop
+        const locationInput = document.getElementById(`locationInput-${index}`)
+        let offset = Math.floor(locationInput.value.length / 6) - 1
+        locationInput.style.width = locationInput.value.length - offset + "ch";
+    }
+    const refLocation = useRef(null)
+    const hideOnClickOutsideLocation = (e) => {
+        if (refLocation.current && !refLocation.current.contains(e.target)) {
+            let editCopy = {...edit}
+            editCopy.location = false
+            setEdit(editCopy)
+            completeLocationEdit()
+        }
+    }
+    const completeLocationEdit = () => {
+        let editCopy = {...edit}
+        editCopy.location = false
+        setEdit(editCopy)
+        // send updated information to backend database
+    }
+
+    const openLocationPopUp = () => {
+        let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        locationPopUp.classList.remove('hidden-o')
+    }
+    const closeLocationPopUp = () => {
+        let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        locationPopUp.classList.add('hidden-o')
+    }
+    const toggleLocationPopUp = () => {
+        let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        if (locationPopUp.classList.contains('hidden-o')) {
+            openLocationPopUp()
+            if (!task.location) {
+                editLocation()
+            }
+        } else {
+            closeLocationPopUp()
+        }
+    }
 
     // edit steps
     const editSteps = (stepIndex) => {
@@ -194,7 +256,14 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             let editCopy = { ...edit }
             editCopy.steps = null
             setEdit(editCopy)
+            completeStepsEdit()
         }
+    }
+    const completeStepEdit = () => {
+        let editCopy = {...edit}
+        editCopy.steps = false
+        setEdit(editCopy)
+        // send updated information to backend database
     }
 
     // edit notes
@@ -215,8 +284,15 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             let editCopy = { ...edit }
             editCopy.notes = false
             setEdit(editCopy)
+            completeNotesEdit()
         }
     }
+    const completeNotesEdit = () => {
+        let editCopy = {...edit}
+        editCopy.notes = false
+        setEdit(editCopy)
+        // send updated information to backend database
+    }    
 
 
     const [selectedDate, setSelectedDate] = useState(task.endDate ? new Date(task.endDate) : null)
@@ -304,7 +380,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             </span>
 
                             {edit.taskName ?
-                                <input ref={refTaskName} id={`taskNameInput-${index}`} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
+                                <input ref={refTaskName} id={`taskNameInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit() : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
                                 :
                                 <p className={`task-name font-jakarta-strong m-0 ${task.completed ? "line-out faint-text" : null}`}>{task.taskName}
                                     <span onClick={(e) => { e.stopPropagation(e); editTaskName() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
@@ -369,7 +445,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         </span>
                                         <div className="step-text-line">
                                             {stepIndex === forEdit ?
-                                                <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e); resizeStepInput(stepIndex) }} type="text" className="input-style2" value={step.desc} />
+                                                <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onKeyDown={(e) => e.key === "Enter" ? completeStepEdit() : null}  onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e); resizeStepInput(stepIndex) }} type="text" className="input-style2" value={step.desc} />
                                                 :
                                                 <p className={`m-0 my-h small ${step.completed ? "line-out faint-text" : null}`}>{/*<strong>{step.number})</strong>*/} {step.desc}
                                                     <span onClick={(e) => { e.stopPropagation(e); editSteps(stepIndex) }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
@@ -384,7 +460,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         <span onClick={(e) => { e.stopPropagation(e); editNotes() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
                                     </p>
                                     {edit.notes ?
-                                        <textarea ref={refNotes} onClick={(e) => e.stopPropagation(e)} onChange={(e) => quickUpdate.updateNotes(task.id, e)} id='notesInput' className='textarea-boxflex' value={task.notes}></textarea>
+                                        <textarea ref={refNotes} onClick={(e) => e.stopPropagation(e)} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit() : null}  onChange={(e) => quickUpdate.updateNotes(task.id, e)} id='notesInput' className='textarea-boxflex' value={task.notes}></textarea>
                                         :
                                         <p className="m-0 small gray-text">{task.notes}</p>
                                     }
@@ -421,9 +497,24 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                     <CircularProgressBar width={24} height={24} percent={taskPercent} />
                                 </div>
                             </div>
-                            <div onClick={(e) => { e.stopPropagation(); quickUpdate.toggleOutdoors(task.id) }} className="outdoors-detail">
+                            {/* <div onClick={(e) => { e.stopPropagation(); quickUpdate.toggleOutdoors(task.id) }} className="outdoors-detail">
                                 <span className={`material-symbols-outlined m-auto ${task.outdoors ? null : "fainter-text"}`}>
                                     landscape
+                                </span>
+                            </div> */}
+                            <div onClick={(e) => { e.stopPropagation() }} className="location-detail position-relative">
+                                <div id={`location-popUp-${index}`} className="location-popUp hidden-o gap-2">
+                                    {edit.location ?
+                                        <input ref={refLocation} id={`locationInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeLocationEdit() : null} onChange={(e) => { quickUpdate.updateLocation(task.id, e); resizeLocationInput() }} type="text" className="input-style4 font-jakarta" value={task.location} />
+                                        :
+                                        <p className="m-0 font-jakarta ws-nowrap">{task.location}</p>
+                                    }
+                                    <span onClick={() => editLocation()} className="material-symbols-outlined medium o-50 hoverOpaque pointer">
+                                        edit
+                                    </span>
+                                </div>
+                                <span onClick={() => toggleLocationPopUp()} className={`material-symbols-outlined m-auto ${task.location ? null : "fainter-text"}`}>
+                                    location_on
                                 </span>
                             </div>
                             <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'frequency', task.frequency) }} className="frequency-detail">
