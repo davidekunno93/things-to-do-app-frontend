@@ -32,7 +32,7 @@ Currently, two official plugins are available:
 *attribute <a href="https://www.freepik.com/free-vector/trophy-flat-style_73897148.htm#query=trophy%20png&position=3&from_view=keyword&track=ais&uuid=007cb5db-57b1-420e-a773-9e90c9bd46a0">Image by juicy_fish</a> on Freepik for the trophy img in missionCompleted modal*
 <!-- *add my day to full tray icons* -->
 *create dumped key and arr for dumped tasks*
-*Deep navbar will have dumped tasks, account settings, my friends, points, log out?*
+*Deep navbar will have my profile, account settings, my friends, my trophies, log out?*
 <!-- *confetti for final mission completed?* - nahhh -->
 <!-- are you sure modal for task dumping -->
 <!-- *remove it would be cool textarea from feedback modal* -->

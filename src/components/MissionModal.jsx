@@ -28,7 +28,10 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                         return <p key={index} className="m-0">&bull; <strong>{task.taskKey}:</strong> {task.taskValue}</p>
                                     })}
                                 </div>
-                                <p className="m-0 position-bottom small"><strong className='red-text'>IMPORTANT:</strong> Use the mission reminder button at the <u>bottom right</u> of the page to refer back to the settings.</p>
+                                <div className="flx-c position-bottom">
+                                    <p className="m-0 position-bottom small"><strong className='red-text'>IMPORTANT:</strong> Click on the mission reminder button at the <u>bottom right</u> of the page to refer back to the settings. <img src="https://i.imgur.com/XW1LyNm.png" alt="" className="img-xsmall v-top mx-1" /></p>
+                                    {/* <img src="https://i.imgur.com/XW1LyNm.png" alt="" className="img-xsmall" /> */}
+                                </div>
                                 <div className="flx just-en">
                                     <button onClick={() => onClose()} className="btn-primaryflex mt-4">Got it!</button>
                                 </div>
@@ -88,7 +91,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                     <p className="m-0 small mt-4 gray-text">P.S. Come back and explore the app afterwards but just know - when you refresh the page everything resets.</p>
                                 </div>
                                 <div className="flx just-ce position-bottom">
-                                    <button onClick={() => {onClose(); activateFeedbackAlert()}} className="btn-primaryflex">&nbsp;OK!&nbsp;</button>
+                                    <button onClick={() => { onClose(); activateFeedbackAlert() }} className="btn-primaryflex">&nbsp;OK!&nbsp;</button>
                                 </div>
                             </>
                         }

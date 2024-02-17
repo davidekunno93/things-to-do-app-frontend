@@ -204,42 +204,66 @@ const Dashboard = () => {
         },
         toggleCompleteStep: function (taskId, stepIndex) {
             let tasksCopy = { ...tasks }
+            let key = "steps"
+            let value = ""
             if (tasksCopy[taskId].steps[stepIndex].completed) {
                 tasksCopy[taskId].steps[stepIndex].completed = false
+                value = {value: false, stepNumber: stepIndex}
             } else {
                 tasksCopy[taskId].steps[stepIndex].completed = true
+                value = {value: true, stepNumber: stepIndex}
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
         toggleCompleteTask: function (taskId) {
             let tasksCopy = { ...tasks }
+            let key = 'completed'
+            let value = ""
             if (tasksCopy[taskId].completed) {
                 tasksCopy[taskId].completed = false
-                tasksCopy[taskId].completedDate = null
+                tasksCopy[taskId].completionDate = null
+                value = {value : false, completionDate: ""}
             } else {
                 tasksCopy[taskId].completed = true
-                tasksCopy[taskId].completedDate = datinormal(new Date())
+                tasksCopy[taskId].completionDate = datinormal(new Date())
+                value = {value : true, completionDate: datinormal(new Date())}
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
         toggleMyDay: function (taskId) {
             let tasksCopy = { ...tasks }
+            let key = "myDay"
+            let value = ""
             if (tasks[taskId].myDay) {
                 tasksCopy[taskId].myDay = false
+                value = false
             } else {
                 tasksCopy[taskId].myDay = true
+                value = true
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
-        toggleOutdoors: function (taskId) {
-            let tasksCopy = { ...tasks }
-            if (tasks[taskId].outdoors) {
-                tasksCopy[taskId].outdoors = false
-            } else {
-                tasksCopy[taskId].outdoors = true
-            }
-            setTasks(tasksCopy)
-        },
+        // toggleOutdoors: function (taskId) {
+        //     let tasksCopy = { ...tasks }
+        //     if (tasks[taskId].outdoors) {
+        //         tasksCopy[taskId].outdoors = false
+        //     } else {
+        //         tasksCopy[taskId].outdoors = true
+        //     }
+        //     setTasks(tasksCopy)
+        // },
         togglePriority: function (taskId) {
             let tasksCopy = { ...tasks }
             let key = "highPriority"
@@ -253,73 +277,142 @@ const Dashboard = () => {
             }
             if (databaseOn) {
                 let db_task_id = tasksCopy[taskId].db_task_id
-                updateTaskInDB(db_task_id, key, value)
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
         updateCategory: function (taskId, newCategory) {
             let tasksCopy = { ...tasks }
+            let key = "category"
+            let value = newCategory
             tasksCopy[taskId].category = newCategory
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
+            }
             setTasks(tasksCopy)
         },
         updateDuration: function (taskId, option) {
             let tasksCopy = { ...tasks }
+            let key = "duration"
+            let value = ""
             if (option) {
                 tasksCopy[taskId].duration = option
+                value = option
             } else {
                 tasksCopy[taskId].duration = null
+                value = ""
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
         updateEndDate: function (taskId, date) {
             let tasksCopy = { ...tasks }
             // console.log(datifunc(date))
+            let key = "endDate"
+            let value = ""
             if (date) {
                 if (date === "clear") {
                     tasksCopy[taskId].endDate = null
+                    value = ""
                 } else {
                     tasksCopy[taskId].endDate = format(date, "MM/dd/yyyy")
+                    value = format(date, "MM/dd/yyyy")
                 }
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
         updateEndTime: function (taskId, time, timeOfDay) {
             let tasksCopy = { ...tasks }
+            let key = "endTime"
+            let value = ""
             if (time) {
                 tasksCopy[taskId].endTime = timify(time) + " " + timeOfDay
+                value = timify(time) + " " + timeOfDay
             } else {
                 tasksCopy[taskId].endTime = null
+                value = ""
+            }
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
         updateFrequency: function (taskId, option) {
             let tasksCopy = { ...tasks }
+            let key = "frequency"
+            let value = option
             tasksCopy[taskId].frequency = option
-            setTasks(tasksCopy)
-        },
-        updateLocation: function (taskId, e) {
-            let tasksCopy = {...tasks}
-            if (e.target.value) {
-                tasksCopy[taskId].location = e.target.value
-            } else {
-                tasksCopy[taskId].location = null
+            if (databaseOn) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
             }
             setTasks(tasksCopy)
         },
-        updateNotes: function (taskId, e) {
+        updateLocation: function (taskId, e, complete) {
+            let tasksCopy = {...tasks}
+            // update location on complete location edit?
+            let key = "location"
+            let value = ""
+            if (e.target.value) {
+                tasksCopy[taskId].location = e.target.value
+                value = e.target.value.trim()
+            } else {
+                tasksCopy[taskId].location = null
+                value = ""
+            }
+            if (databaseOn && complete) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
+            }
+            setTasks(tasksCopy)
+        },
+        updateNotes: function (taskId, e, complete) {
             let tasksCopy = { ...tasks }
+            let key = "notes"
+            let value = e.target.value.trim()
+            // update DB notes on complete notes edit
             tasksCopy[taskId].notes = e.target.value
+            if (databaseOn && complete) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
+            }
             setTasks(tasksCopy)
         },
-        updateStep: function (taskId, stepIndex, e) {
+        updateStep: function (taskId, stepIndex, e, complete) {
             // console.log("taskId: "+taskId, ", index: "+stepIndex)
+            // update DB steps on complete step edit
             let tasksCopy = { ...tasks }
+            let key = "step"
             tasksCopy[taskId].steps[stepIndex].desc = e.target.value
+            if (databaseOn && complete) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
+            }
             setTasks(tasksCopy)
         },
-        updateTaskName: function (taskId, e) {
+        updateTaskName: function (taskId, e, complete) {
             let tasksCopy = { ...tasks }
-            tasksCopy[taskId].taskName = e.target.value
+            let key = "taskName"
+            let value = ""
+            if (complete) {
+                // update DB task name on complete task name edit
+                value = tasksCopy[taskId].taskName
+            } else {
+                tasksCopy[taskId].taskName = e.target.value.trim()
+            }
+            if (databaseOn && complete) {
+                let db_task_id = tasksCopy[taskId].db_task_id
+                quickUpdateTaskInDB(db_task_id, key, value)
+            }
             setTasks(tasksCopy)
         },
         remove: function (taskId, db_task_id) {
@@ -350,6 +443,7 @@ const Dashboard = () => {
             setTasks(tasksCopy)
         },
         removeAll: function (taskIds) {
+            // currently not using this function
             let newTasksObj = {}
             let tasksCopy = { ...tasks }
             for (let i = 0; i < taskIds.length; i++) {
@@ -433,8 +527,36 @@ const Dashboard = () => {
         // await updateTaskSteps()
         let tasksCopy = { ...tasks }
         tasksCopy[updatedTask.id] = updatedTask
+        if (databaseOn) {
+            updateTaskInDB(updatedTask.db_task_id, updatedTask)
+        }
         setTasks(tasksCopy)
         // setEditTaskModalOpen(false)
+    }
+    // send updated task to backend database
+    const updateTaskInDB = (db_task_id, updatedTask) => {
+        let data = {
+            myDay: updatedTask.myDay,
+            taskName: updatedTask.taskName,
+            category: updatedTask.category,
+            highPriority: updatedTask.highPriority,
+            frequency: updatedTask.frequency,
+            location: updatedTask.location,
+            notes: updatedTask.notes,
+            endDate: updatedTask.endDate,
+            endTime: updatedTask.endTime,
+            duration: updatedTask.duration,
+            steps: updatedTask.steps
+        }
+        console.log(data)
+        let url = `http://localhost:5000/update_task/${db_task_id}`
+        const response = axios.post(url, JSON.stringify(data), {
+            headers: {"Content-Type" : "application/json"}
+        }).then((response) => {
+            console.log(response.data)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     // get today's date code
@@ -656,9 +778,10 @@ const Dashboard = () => {
                 })
         }
     }
-    const updateTaskInDB = async (db_task_id, key, value) => {
-        let url = `http://localhost:5000/update_task/${db_task_id}`
-        const response = await axios.patch(url, {updateKey: key, updateValue: value}, {
+    const quickUpdateTaskInDB = async (db_task_id, key, value) => {
+        let url = `http://localhost:5000/quick_update_task/${db_task_id}`
+        let data = {updateKey: key, updateValue: value}
+        const response = await axios.patch(url, data, {
             headers: { "Content-Type": "application/json" }
         }).then((response) => {
             console.log(response)
@@ -707,7 +830,7 @@ const Dashboard = () => {
                     },
                     {
                         taskKey: "Steps",
-                        taskValue: "Create any 3 steps for your task",
+                        taskValue: "Create 3 steps for your task",
                         completed: false
                     },
                 ]

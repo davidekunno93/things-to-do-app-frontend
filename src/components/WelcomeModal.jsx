@@ -37,7 +37,7 @@ const WelcomeModal = ({ open, onClose }) => {
                                     </div>
                                     <div className="welcome-item">
                                         <img src="https://i.imgur.com/rJWjBQh.png" alt="" className="img-blown-up h-center mt-2" />
-                                        <p className="m-0 font-jakarta large center-text mt-2">Hit the <strong>mission button</strong> <span className="material-symbols-outlined mission-btn">rocket</span> at the <u>top of the dashboard</u> to get started!</p>
+                                        <p className="m-0 font-jakarta large center-text mt-2">Start by hitting the <strong>mission button</strong> <img src="https://i.imgur.com/la8ZiXg.png" alt="" className="img-xsmall v-bott mx-1" /> at the <u>top of the dashboard</u>!</p>
                                     </div>
                                 </div>
                             </div>
