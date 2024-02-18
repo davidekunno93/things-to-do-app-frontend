@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Fade, Slide } from 'react-awesome-reveal';
 import { DataContext } from '../context/DataProvider';
 
-const WelcomeModal = ({ open, onClose }) => {
+const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
     
@@ -52,7 +52,7 @@ const WelcomeModal = ({ open, onClose }) => {
                             </div>
                             <div className="flx-r just-en">
                                 {activeIndex === itemCount - 1 ?
-                                    <button onClick={() => onClose()} className={`btn-primaryflex${darkMode ? "-dark" : ""}`}>Ready!</button>
+                                    <button onClick={() => {onClose(); setCurrentMission(1)}} className={`btn-primaryflex${darkMode ? "-dark" : ""}`}>Ready!</button>
                                     :
                                     <div onClick={() => nextStep()} className="align-all-items pointer btn-match-height hoverFade">
                                         <p className="m-0 font-jakarta bold500">Next</p>

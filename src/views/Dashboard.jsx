@@ -209,10 +209,10 @@ const Dashboard = () => {
             let value = ""
             if (tasksCopy[taskId].steps[stepIndex].completed) {
                 tasksCopy[taskId].steps[stepIndex].completed = false
-                value = {value: false, stepNumber: stepIndex}
+                value = { value: false, stepNumber: stepIndex }
             } else {
                 tasksCopy[taskId].steps[stepIndex].completed = true
-                value = {value: true, stepNumber: stepIndex}
+                value = { value: true, stepNumber: stepIndex }
             }
             if (databaseOn) {
                 let db_task_id = tasksCopy[taskId].db_task_id
@@ -227,11 +227,11 @@ const Dashboard = () => {
             if (tasksCopy[taskId].completed) {
                 tasksCopy[taskId].completed = false
                 tasksCopy[taskId].completionDate = null
-                value = {value : false, completionDate: ""}
+                value = { value: false, completionDate: "" }
             } else {
                 tasksCopy[taskId].completed = true
                 tasksCopy[taskId].completionDate = datinormal(new Date())
-                value = {value : true, completionDate: datinormal(new Date())}
+                value = { value: true, completionDate: datinormal(new Date()) }
             }
             if (databaseOn) {
                 let db_task_id = tasksCopy[taskId].db_task_id
@@ -359,7 +359,7 @@ const Dashboard = () => {
             setTasks(tasksCopy)
         },
         updateLocation: function (taskId, e, complete) {
-            let tasksCopy = {...tasks}
+            let tasksCopy = { ...tasks }
             // update location on complete location edit?
             let key = "location"
             let value = ""
@@ -552,7 +552,7 @@ const Dashboard = () => {
         console.log(data)
         let url = `http://localhost:5000/update_task/${db_task_id}`
         const response = axios.post(url, JSON.stringify(data), {
-            headers: {"Content-Type" : "application/json"}
+            headers: { "Content-Type": "application/json" }
         }).then((response) => {
             console.log(response.data)
         }).catch((error) => {
@@ -781,7 +781,7 @@ const Dashboard = () => {
     }
     const quickUpdateTaskInDB = async (db_task_id, key, value) => {
         let url = `http://localhost:5000/quick_update_task/${db_task_id}`
-        let data = {updateKey: key, updateValue: value}
+        let data = { updateKey: key, updateValue: value }
         const response = await axios.patch(url, data, {
             headers: { "Content-Type": "application/json" }
         }).then((response) => {
@@ -792,7 +792,7 @@ const Dashboard = () => {
     const [welcomeModalOpen, setWelcomeModalOpen] = useState(missionsOn ? true : false);
     const [missionModalOpen, setMissionModalOpen] = useState(false)
     // set current mission number
-    const [currentMission, setCurrentMission] = useState(1);
+    const [currentMission, setCurrentMission] = useState(0);
     const openMissionModal = () => {
         setMissionModalOpen(true);
     }
@@ -1095,13 +1095,58 @@ const Dashboard = () => {
             <ConfirmationModal open={confirmationModalOpen} completedTasks={categories.completed} dumpCompletedTasks={dumpCompletedTasks} onClose={() => setConfirmationModalOpen(false)} />
             <MissionCompletedModal open={missionCompletedModalOpen} currentMission={currentMission} setCurrentMission={setCurrentMission} closeMissionReminder={() => setMissionReminderOpen(false)} onClose={closeMissionCompletedModal} />
             <MissionModal open={missionModalOpen} currentMission={currentMission} missionProgress={missionProgress} checkMissionCompleted={checkMissionCompleted} activateFeedbackAlert={() => setFeedbackAlert(true)} onClose={closeMissionModal} />
-            <WelcomeModal open={welcomeModalOpen} onClose={() => setWelcomeModalOpen(false)} />
+            <WelcomeModal open={welcomeModalOpen} setCurrentMission={setCurrentMission} onClose={() => setWelcomeModalOpen(false)} />
             <CreateTaskModal open={newTaskModalOpen} category={selectedCategory} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
             <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} db_task_id={quickUpdateSettings.db_task_id} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} dumpCompletedTasks={dumpCompletedTasks} />
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
             <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
             <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
             <FeedbackModal open={feedbackModalOpen} deactivateFeedbackAlert={() => setFeedbackAlert(false)} onClose={() => setFeedbackModalOpen(false)} />
+            {currentMission > 0 && missionsOn &&
+                <>
+                    <div id='missionReminderBox black-text' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>
+                        <div className="align-all-items gap-2">
+                            <p className="box-title m-0">Current Mission</p>
+                            {currentMission === 1 &&
+                                <img src="https://i.imgur.com/PvTpowR.png" alt="" className="img-xsmall" />
+                            }
+                            {currentMission === 2 &&
+                                <img src="https://i.imgur.com/9wsBTFU.png" alt="" className="img-xsmall" />
+                            }
+                            {currentMission === 3 &&
+                                <img src="https://i.imgur.com/GQcgbs7.png" alt="" className="img-xsmall" />
+                            }
+                        </div>
+                        <hr className='w-100' />
+                        <p className="m-0 mb-2">{missionProgress[`mission-${currentMission}`].desc ? missionProgress[`mission-${currentMission}`].desc : null}</p>
+                        <div className="flx-c gap-2">
+
+                            {missionProgress[`mission-${currentMission}`].tasks.map((task, index) => {
+                                return <div key={index} className="align-all-items gap-2">
+                                    {task.completed ?
+                                        <span className="material-symbols-outlined green-text large">
+                                            check_circle
+                                        </span>
+                                        :
+                                        <span className="material-symbols-outlined large">
+                                            circle
+                                        </span>
+                                    }
+                                    <p className={`m-0 small ${task.completed ? "faint-text" : null}`}><strong>{task.taskKey}:</strong> {task.taskValue}</p>
+                                </div>
+                            })}
+                        </div>
+                    </div>
+                    {/* end mission reminder */}
+                    {/* mission reminder button */}
+                    <button onClick={() => toggleMissionReminder()} className="missionReminderButton">
+                        <span className="material-symbols-outlined lift">
+                            rocket_launch
+                        </span>
+                    </button>
+                    {/* end mission reminder button */}
+                </>
+            }
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Page Rendered to the right to make space for navbar */}
             <div className="page-container-right">
@@ -1322,52 +1367,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="page-body page-container96">
-                        {currentMission > 0 && missionsOn &&
-                            <>
-                                {/* mission reminder */}
-                                <div id='missionReminderBox black-text' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>
-                                    <div className="align-all-items gap-2">
-                                        <p className="box-title m-0">Current Mission</p>
-                                        {currentMission === 1 &&
-                                            <img src="https://i.imgur.com/PvTpowR.png" alt="" className="img-xsmall" />
-                                        }
-                                        {currentMission === 2 &&
-                                            <img src="https://i.imgur.com/9wsBTFU.png" alt="" className="img-xsmall" />
-                                        }
-                                        {currentMission === 3 &&
-                                            <img src="https://i.imgur.com/GQcgbs7.png" alt="" className="img-xsmall" />
-                                        }
-                                    </div>
-                                    <hr className='w-100' />
-                                    <p className="m-0 mb-2">{missionProgress[`mission-${currentMission}`].desc ? missionProgress[`mission-${currentMission}`].desc : null}</p>
-                                    <div className="flx-c gap-2">
 
-                                        {missionProgress[`mission-${currentMission}`].tasks.map((task, index) => {
-                                            return <div key={index} className="align-all-items gap-2">
-                                                {task.completed ?
-                                                    <span className="material-symbols-outlined green-text large">
-                                                        check_circle
-                                                    </span>
-                                                    :
-                                                    <span className="material-symbols-outlined large">
-                                                        circle
-                                                    </span>
-                                                }
-                                                <p className={`m-0 small ${task.completed ? "faint-text" : null}`}><strong>{task.taskKey}:</strong> {task.taskValue}</p>
-                                            </div>
-                                        })}
-                                    </div>
-                                </div>
-                                {/* end mission reminder */}
-                                {/* mission reminder button */}
-                                <button onClick={() => toggleMissionReminder()} className="missionReminderButton">
-                                    <span className="material-symbols-outlined lift">
-                                        rocket_launch
-                                    </span>
-                                </button>
-                                {/* end mission reminder button */}
-                            </>
-                        }
                         {/* Task Box(es) */}
                         {Object.values(tasks).map((task, index) => {
                             if (categories[selectedCategory].includes(task.id)) {
