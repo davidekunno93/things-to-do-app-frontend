@@ -5,6 +5,7 @@ import { DataContext } from '../context/DataProvider'
 const CreateCategoryModal = ({ open, onClose }) => {
     if (!open) return null
     const { userCategories, setUserCategories } = useContext(DataContext);
+    const { darkMode } = useContext(DataContext);
     const [newCategory, setNewCategory] = useState({
         categoryName: "",
         color: "none",

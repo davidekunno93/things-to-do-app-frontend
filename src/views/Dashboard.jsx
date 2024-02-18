@@ -21,6 +21,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 
 const Dashboard = () => {
     const { showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories, missionsOn, setMissionsOn, databaseOn } = useContext(DataContext);
+    const { darkMode } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
     useEffect(() => {
         setShowNavbar(true)
@@ -1152,7 +1153,7 @@ const Dashboard = () => {
 
                     {/* Page body starts here */}
                     {/* Page sub-title section */}
-                    <div className="sub-title-section sticky-top page-container96-byPadding">
+                    <div className={`sub-title-section${darkMode ? "-dark" : ""} sticky-top page-container96-byPadding`}>
 
                         {selectedCategory === "myDay" &&
                             <>
@@ -1234,13 +1235,13 @@ const Dashboard = () => {
                             <>
                                 <div className="tab-container tb-none mb-2">
                                     <div className="align-all-items gap-2">
-                                        <span className="material-symbols-outlined xx-large black-text">
+                                        <span className={`material-symbols-outlined xx-large ${darkMode ? "gray-text" : "dark-text"}`}>
                                             list
                                         </span>
-                                        <p className="m-0 xx-large dark-text">All Tasks</p>
+                                        <p className={`m-0 xx-large ${darkMode ? "white-text" : "dark-text"}`}>All Tasks</p>
                                     </div>
                                 </div>
-                                <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className='black-text'>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these deatils on the fly.</p>
+                                <p className="m-0 w-60 gray-text ml-2 font-jakarta"><strong className={`${darkMode ? "gains-text" : "black-text"}`}>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these deatils on the fly.</p>
                             </>
                         }
                         {selectedCategory !== 'myDay' && selectedCategory !== 'upcoming' && selectedCategory !== 'priority' && selectedCategory !== 'overdue' && selectedCategory !== 'completed' && selectedCategory !== 'allTasks' &&
@@ -1280,7 +1281,7 @@ const Dashboard = () => {
                                 </div>
                             </button>
                             :
-                            <button onClick={() => openCreateNewTask()} className="btn-primaryflex position-right">
+                            <button onClick={() => openCreateNewTask()} className={`btn-primaryflex${darkMode ? "-dark" : ""} position-right`}>
                                 <div className="align-all-items">
                                     <span className="material-symbols-outlined v-bott mr-1 medium">
                                         add
@@ -1383,7 +1384,7 @@ const Dashboard = () => {
 
                         {/* Add New Task Box */}
                         {selectedCategory !== "completed" &&
-                            <div onClick={() => openCreateNewTask()} className="addNewTask-box">
+                            <div onClick={() => openCreateNewTask()} className={`addNewTask-box${darkMode ? "-dark" : ""}`}>
                                 <p className="m-0"><span className="material-symbols-outlined v-bott mr-2">
                                     add
                                 </span>

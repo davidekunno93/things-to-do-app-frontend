@@ -7,16 +7,17 @@ import ReactDatePicker from 'react-datepicker'
 const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     if (!open) return null
     useEffect(() => {
-        let categorySelect = document.getElementById('categorySelect')
-        categorySelect.value = task.category ? task.category : "No Category"
+        let categorySelected = document.getElementById('categorySelected')
+        categorySelected.innerHTML = task.category ? task.category : "None"
     }, [])
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
+    const { darkMode } = useContext(DataContext);
     const [updatedTask, setUpdatedTask] = useState({
         id: task.id,
         myDay: task.myDay,
         taskName: task.taskName,
-        category: task.category ? task.category : "No Category",
+        category: task.category ? task.category : "None",
         notes: task.notes,
         highPriority: task.highPriority,
         endDate: task.endDate,
@@ -38,8 +39,10 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskCategory = (e) => {
+        let categorySelected = document.getElementById('categorySelected')
+        categorySelected.innerHTML = e.target.innerHTML
         let updatedTaskCopy = { ...updatedTask }
-        updatedTaskCopy.category = e.target.value
+        updatedTaskCopy.category = e.target.innerHTML
         setUpdatedTask(updatedTaskCopy)
     }
     // my day button code
@@ -129,7 +132,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
             updatedTaskCopy.location = null
         } else {
             let location = e.target.value.trim()
-            updatedTaskCopy.location = location.charAt(0).toUpperCase()+location.slice(1)
+            updatedTaskCopy.location = location.charAt(0).toUpperCase() + location.slice(1)
         }
         console.log(updatedTaskCopy.location)
         setUpdatedTask(updatedTaskCopy)
@@ -193,6 +196,30 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         myDayText.classList.remove("green-text")
         myDayIcon.classList.remove("green-text")
         myDayIcon.innerHTML = "sunny"
+    }
+
+    // category code
+    const refCategoryMenu = useRef(null);
+    const openCategoryMenu = () => {
+        let menu = document.getElementById('categoryMenu')
+        menu.classList.remove('hidden-o')
+    }
+    const closeCategoryMenu = () => {
+        let menu = document.getElementById('categoryMenu')
+        menu.classList.add('hidden-o')
+    }
+    const toggleCategoryMenu = () => {
+        let menu = document.getElementById('categoryMenu')
+        if (menu.classList.contains('hidden-o')) {
+            openCategoryMenu()
+        } else {
+            closeCategoryMenu()
+        }
+    }
+    const hideOnClickOutsideCategoryMenu = (e) => {
+        if (refCategoryMenu.current && !refCategoryMenu.current.contains(e.target)) {
+            closeCategoryMenu()
+        }
     }
 
     // time code
@@ -512,6 +539,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     const refModal = useRef(null)
     useEffect(() => {
         window.addEventListener('click', hideOnClickOutsideWindow, true)
+        window.addEventListener('click', hideOnClickOutsideCategoryMenu, true)
     }, [])
     const hideOnClickOutsideWindow = (e) => {
         if (refModal.current && !refModal.current.contains(e.target)) {
@@ -571,15 +599,26 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                         <label className="m-0 ml-1">Category<span className="red-text">*</span></label>
                                         {/* <input type="input" className="input-box" /> */}
                                         <div className="flx-r">
-                                            <select onChange={(e) => updateTaskCategory(e)} name="categories" className='categorySelection' id="categorySelect">
-                                                <option value="No Category">No Category</option>
-                                                {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
-                                                    let category = userCategories.categories[categoryName]
-                                                    return <option key={index} value={category.categoryName}>{category.categoryName}</option>
-                                                }) : null}
-
-                                                {/* <option value="CreateNew">-- Create New Category --</option> */}
-                                            </select>
+                                            <div ref={refCategoryMenu} onClick={() => toggleCategoryMenu()} className={`categorySelections${darkMode ? "-dark" : ""}`}>
+                                                <div id='categoryMenu' className="menu hidden-o">
+                                                    <div onClick={(e) => updateTaskCategory(e)} className="option"><p className="m-0 gray-text">None</p></div>
+                                                    {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
+                                                        let category = userCategories.categories[categoryName]
+                                                        return <div key={index} onClick={(e) => updateTaskCategory(e)} value={category.categoryName} className='option'>{category.categoryName}</div>
+                                                    }) : null}
+                                                    {/* <hr className='w-95' /> */}
+                                                    <div value="add-new-category" className='option'>
+                                                        <div className="align-all-items gap-2">
+                                                            <span className="material-symbols-outlined">
+                                                                add
+                                                            </span>
+                                                            <p className="m-0">Add New Category</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p id="categorySelected" className="m-0">None</p>
+                                                <span className="material-symbols-outlined">expand_more</span>
+                                            </div>
                                             <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
                                                 <div className="align-all-items gap-2">
                                                     <p id='myDayText' className="m-0 font20 font-jakarta bold600">Add to My Day</p>

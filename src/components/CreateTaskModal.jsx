@@ -18,16 +18,17 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         setNewTask(newTaskCopy)
     }, [taskCategory])
     useEffect(() => {
-        let categorySelect = document.getElementById('categorySelect')
+        let categorySelected = document.getElementById('categorySelected')
         if (category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" || category === "No Category") {
             category = null
             setTaskCategory(null)
         }
-        categorySelect.value = category ? category : "No Category"
+        categorySelected.value = category ? category : "No Category"
     }, [])
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { databaseOn } = useContext(DataContext);
+    const { darkMode } = useContext(DataContext);
     let taskLastInArr = Object.keys(tasks).slice(-1)
     const [newTask, setNewTask] = useState({
         id: taskLastInArr[0] ? parseInt(taskLastInArr[0]) + 1 : 1,
@@ -58,8 +59,11 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         setNewTask(newTaskCopy)
     }
     const updateTaskCategory = (e) => {
+        // console.log(e.target.innerHTML)
+        let categorySelected = document.getElementById('categorySelected')
+        categorySelected.innerHTML = e.target.innerHTML
         let newTaskCopy = { ...newTask }
-        newTaskCopy.category = e.target.value
+        newTaskCopy.category = e.target.innerHTML
         setNewTask(newTaskCopy)
     }
     const updateTaskNotes = (e) => {
@@ -138,7 +142,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
             newTaskCopy.location = null
         } else {
             let location = e.target.value.trim()
-            newTaskCopy.location = location.charAt(0).toUpperCase()+location.slice(1)
+            newTaskCopy.location = location.charAt(0).toUpperCase() + location.slice(1)
         }
         // console.log(newTaskCopy.location)
         setNewTask(newTaskCopy)
@@ -387,6 +391,29 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
             })
     }
 
+    // category code
+    const refCategoryMenu = useRef(null);
+    const openCategoryMenu = () => {
+        let menu = document.getElementById('categoryMenu')
+        menu.classList.remove('hidden-o')
+    }
+    const closeCategoryMenu = () => {
+        let menu = document.getElementById('categoryMenu')
+        menu.classList.add('hidden-o')
+    }
+    const toggleCategoryMenu = () => {
+        let menu = document.getElementById('categoryMenu')
+        if (menu.classList.contains('hidden-o')) {
+            openCategoryMenu()
+        } else {
+            closeCategoryMenu()
+        }
+    }
+    const hideOnClickOutsideCategoryMenu = (e) => {
+        if (refCategoryMenu.current && !refCategoryMenu.current.contains(e.target)) {
+            closeCategoryMenu()
+        }
+    }
 
 
 
@@ -494,6 +521,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     const refModal = useRef(null)
     useEffect(() => {
         window.addEventListener('click', hideOnClickOutsideWindow, true)
+        window.addEventListener('click', hideOnClickOutsideCategoryMenu, true)
     }, [])
     const hideOnClickOutsideWindow = (e) => {
         if (refModal.current && !refModal.current.contains(e.target)) {
@@ -535,9 +563,9 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                         <div id='loadingDiv' className="create-task-modal-empty">
                             <Loading open={isLoading} />
 
-                            <div id='createTaskModal' className="create-task-modal">
+                            <div id='createTaskModal' className={`create-task-modal${darkMode ? "-dark" : ""}`}>
 
-                            
+
                                 <div className="toggleAdvancedSettings flx-r">
                                     <p className="m-0 mr-2">Advanced Settings {advancedSettingsOn ? "On" : "Off"} </p>
                                     <span id='advancedSettingsToggleIcon' onClick={() => toggleAdvancedSettings()} className="material-symbols-outlined pointer">
@@ -547,7 +575,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                 </div>
 
 
-                                <p onClick={() => printNewTask()} className="box-title m-0">Create New Task</p>
+                                <p onClick={() => printNewTask()} className={`box-title${darkMode ? "-dark" : ""} m-0`}>Create New Task</p>
                                 <hr className='w-100' />
 
                                 <div className="flx-r">
@@ -557,13 +585,13 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                         <div className="task-setting">
                                             <label htmlFor='taskTitleInput' className="m-0 ml-1">Task title<span className="red-text">*</span></label>
                                             <div className="input-div">
-                                                <div onClick={() => updateTaskPriority()} id='priorityBtn' className="priority-button overlay-icon-right4 flx-r font-jakarta pointer noPriority">
+                                                <div onClick={() => updateTaskPriority()} id='priorityBtn' className={`priority-button overlay-icon-right4${darkMode ? "-dark" : ""} flx-r font-jakarta pointer noPriority`}>
                                                     <p className="m-0 bold600">High Priority</p>
                                                     <span id='priorityIcon' className="material-symbols-outlined">
                                                         priority_high
                                                     </span>
                                                 </div>
-                                                <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" placeholder='What do you need to do?' />
+                                                <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className={`input-box${darkMode ? "-dark" : ""}`} placeholder='What do you need to do?' />
                                             </div>
                                         </div>
 
@@ -571,14 +599,34 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                             <label className="m-0 ml-1">Category<span className="red-text">*</span></label>
                                             {/* <input type="input" className="input-box" /> */}
                                             <div className="flx-r">
-                                                <select onChange={(e) => updateTaskCategory(e)} name="categories" className='categorySelection' id="categorySelect">
+                                                <div ref={refCategoryMenu} onClick={() => toggleCategoryMenu()} className={`categorySelections${darkMode ? "-dark" : ""}`}>
+                                                    <div id='categoryMenu' className="menu hidden-o">
+                                                        <div onClick={(e) => updateTaskCategory(e)} className="option"><p className="m-0 gray-text">None</p></div>
+                                                        {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
+                                                            let category = userCategories.categories[categoryName]
+                                                            return <div key={index} onClick={(e) => updateTaskCategory(e)} value={category.categoryName} className='option'>{category.categoryName}</div>
+                                                        }) : null}
+                                                        {/* <hr className='w-95' /> */}
+                                                        <div value="add-new-category" className='option'>
+                                                            <div className="align-all-items gap-2">
+                                                                <span className="material-symbols-outlined">
+                                                                    add
+                                                                </span>
+                                                                <p className="m-0">Add New Category</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p id="categorySelected" className="m-0">None</p>
+                                                    <span className="material-symbols-outlined">expand_more</span>
+                                                </div>
+                                                {/* <select onChange={(e) => updateTaskCategory(e)} name="categories" className={`categorySelection${darkMode ? "-dark" : ""}`} id="categorySelected">
                                                     <option value="No Category">No Category</option>
                                                     {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
                                                         let category = userCategories.categories[categoryName]
                                                         return <option key={index} value={category.categoryName}>{category.categoryName}</option>
                                                     }) : null}
-                                                    {/* <option value="CreateNew">-- Create New Category --</option> */}
-                                                </select>
+                                                    <option value="CreateNew">-- Create New Category --</option> 
+                                                </select> */}
                                                 <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
                                                     <div className="align-all-items gap-2">
                                                         <p id='myDayText' className="m-0 font20 font-jakarta bold600">Add to My Day</p>
@@ -591,8 +639,10 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                         </div>
 
                                         <div className="task-setting">
-                                            <label htmlFor='notesInput' className="m-0 ml-1">Notes</label>
-                                            <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className="textarea-box2" placeholder='Any extra details, notes or reminders about the task' />
+                                            <div className="flx-r">
+                                                <label htmlFor='notesInput' className="m-0 ml-1">Notes</label>
+                                            </div>
+                                            <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className={`textarea-box2${darkMode ? "-dark" : ""}`} placeholder='Any extra details, notes or reminders about the task' />
                                         </div>
 
                                         <div className="task-setting">
@@ -608,7 +658,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                         </span>
 
                                                         {/* <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} minDate={subDays(new Date(), 0)} placeholderText='mm/dd/yyyy' className="date-input-box" /> */}
-                                                        <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className="date-input-box" />
+                                                        <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className={`date-input-box${darkMode ? "-dark" : ""}`} />
                                                     </div>
                                                 </div>
                                                 <div className="task-time flx-c">
@@ -621,8 +671,8 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                             schedule
                                                         </span>
                                                         <div className="time-picker-box">
-                                                            
-                                                            <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className='hour-input-box' placeholder="hh" required>
+
+                                                            <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className={`hour-input-box${darkMode ? "-dark" : ""}`} placeholder="hh" required>
                                                                 <option value="" disabled selected hidden>hh</option>
                                                                 <option value="01">1</option>
                                                                 <option value="02">2</option>
@@ -638,7 +688,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                                 <option value="12">12</option>
                                                             </select>
                                                             <div className="">&nbsp;:&nbsp;</div>
-                                                            <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className='minute-input-box' placeholder="mm" required>
+                                                            <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className={`minute-input-box${darkMode ? "-dark" : ""}`} placeholder="mm" required>
                                                                 <option value="" disabled selected hidden>mm</option>
                                                                 <option value="00">00</option>
                                                                 <option value="05">05</option>
@@ -653,13 +703,13 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                                 <option value="50">50</option>
                                                                 <option value="55">55</option>
                                                             </select>
-                                                        
+
                                                         </div>
                                                         {selectedHour && selectedMinute && timeOfDay === "AM" &&
-                                                            <div onClick={() => setTimeOfDay("PM")} className="todPicker ml-2 hoverFade pointer">AM</div>
+                                                            <div onClick={() => setTimeOfDay("PM")} className={`todPicker${darkMode ? "-dark" : ""} ml-2 hoverFade pointer`}>AM</div>
                                                         }
                                                         {selectedHour && selectedMinute && timeOfDay === "PM" &&
-                                                            <div onClick={() => setTimeOfDay("AM")} className="todPicker ml-2 hoverFade pointer">PM</div>
+                                                            <div onClick={() => setTimeOfDay("AM")} className={`todPicker${darkMode ? "-dark" : ""} ml-2 hoverFade pointer`}>PM</div>
                                                         }
                                                     </div>
                                                 </div>
@@ -674,17 +724,17 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                             <div className="frequencyOptions flx-r">
                                                 {Object.keys(frequencySelection).map((option, index) => {
                                                     let selected = frequencySelection[option]
-                                                    return <div key={index} onClick={() => { updateFrequencySelection(option); updateTaskFrequency(option) }} className={`${selected ? "underline-option-selected" : "underline-option-unselected"}`}>{option}</div>
+                                                    return <div key={index} onClick={() => { updateFrequencySelection(option); updateTaskFrequency(option) }} className={`${selected ? "underline-option-selected" : "underline-option-unselected"} ${darkMode ? selected ? "underline-option-selected-dark" : "underline-option-unselected-dark" : null}`}>{option}</div>
                                                 })}
                                             </div>
                                         </div>
 
                                         <div className="task-setting">
                                             <p className="m-0 ml-1">Duration <span onClick={() => { clearDurationSelection(); updateTaskDuration(null) }} className="clearBtn small">Clear</span> </p>
-                                            <div className="selection-box">
+                                            <div className={`selection-box${darkMode ? "-dark" : ""}`}>
                                                 {Object.keys(durationSelection).map((option, index) => {
                                                     let selected = durationSelection[option]
-                                                    return <div key={index} onClick={() => { updateDurationSelection(option); updateTaskDuration(option) }} className={`${selected ? "selection-selected" : "selection-unselected"}`}>
+                                                    return <div key={index} onClick={() => { updateDurationSelection(option); updateTaskDuration(option) }} className={`${selected ? "selection-selected" : "selection-unselected"} ${darkMode ? selected ? "selection-selected-dark" : "selection-unselected-dark" : ""}`}>
                                                         <p className="m-0 m-auto">{option}</p>
                                                     </div>
                                                 })}
@@ -699,7 +749,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 <span className="material-symbols-outlined overlay-icon">
                                                     location_on
                                                 </span>
-                                                <input onChange={(e) => updateTaskLocation(e)} type="text" className="location-input-box" placeholder='e.g. Home, 1722 Smith Ave. etc'/>
+                                                <input onChange={(e) => updateTaskLocation(e)} type="text" className={`location-input-box${darkMode ? "-dark" : ""}`} placeholder='e.g. Home, 1722 Smith Ave. etc' />
                                             </div>
                                             {/* <div className="selection-box">
                                                 {Object.keys(outdoorSelection).map((option, index) => {
@@ -717,7 +767,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 {stepsList.map((step, index) => {
                                                     return <div key={index} className="step-div">
                                                         <div className="overlay-icon2">{step.number})</div>
-                                                        <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className="step-input-box" />
+                                                        <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className={`step-input-box${darkMode ? "-dark" : ""}`} />
                                                         <div className="closeBtn4 ml-1">
                                                             <span onClick={() => updateStepsList("remove", index)} className="material-symbols-outlined">
                                                                 close
@@ -741,8 +791,8 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                 </div>
 
                                 <div className="completeBtns mt-3 flx-r">
-                                    <button onClick={() => { addTask() }} className='btn-primary mr-3'>Add Task</button>
-                                    <button onClick={() => onClose()} className='btn-secondary'>Cancel</button>
+                                    <button onClick={() => { addTask() }} className={`btn-primary${darkMode ? "-dark" : ""} mr-3`}>Add Task</button>
+                                    <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""}`}>Cancel</button>
                                     <div className="task-setting-participants position-right">
                                         <div className="position-absolute toolTip">
                                             This feature is not set up yet!

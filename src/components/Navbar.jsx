@@ -9,6 +9,15 @@ import { signOut } from 'firebase/auth';
 const Navbar = () => {
     const { tasks, showNavbar, setShowNavbar, user, setUser, setTasks } = useContext(DataContext);
     const { categories, setCategories, selectedCategory, setSelectedCategory, userCategories } = useContext(DataContext);
+    const { darkMode, setDarkMode } = useContext(DataContext);
+
+    const toggleTheme = () => {
+        if (darkMode) {
+            setDarkMode(false)
+        } else {
+            setDarkMode(true)
+        }
+    }
 
     // navigations
     const navigate = useNavigate()
@@ -46,7 +55,7 @@ const Navbar = () => {
     const clearTasks = () => {
         setTasks({})
     }
-    
+
     const logOut = () => {
         clearUser()
         clearTasks()
@@ -67,11 +76,17 @@ const Navbar = () => {
             <div className="navbar-holder">
 
 
-                <div className='native-nav navbar-black' style={{ transform: `translateX(-${showNavbar ? "0" : "101"}%)` }}>
+                <div className={`native-nav navbar${darkMode ? "-dark" : "-black"}`} style={{ transform: `translateX(-${showNavbar ? "0" : "101"}%)` }}>
 
 
                     <div className="nav-option-cold">
-                        <img onClick={() => printCred()} src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
+                        <img src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
+                        {/* <div onClick={() => toggleTheme()} className="toggle-theme">
+                            <div className={`button${darkMode ? "-dark" : ""}`} style={{ left: darkMode ? '12px' : '0px', right: darkMode ? '0px' : '12px' }}>
+                                <img src={darkMode ? "https://i.imgur.com/Ya1NVA5.png" : "https://i.imgur.com/oZuiPMP.png"} alt="" className="toggle-button-img" />
+                            </div>
+                            <div className="bar"></div>
+                        </div> */}
                     </div>
                     <div className="nav-option-cold">
                         {/* <span className="material-symbols-outlined">
@@ -82,8 +97,8 @@ const Navbar = () => {
                         <p className="m-0 position-right x-small pr-2 pt-2 gray-text">Level {user.level}</p>
                     </div>
                     <div className="flx-r just-ce">
-                    
-                    <ProgressBar height={15} progress={user.points} total={user.pointsForLevelUp} />
+
+                        <ProgressBar height={15} progress={user.points} total={user.pointsForLevelUp} />
                     </div>
                     <div onClick={() => { setSelectedCategory("myDay"); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined yellow-text">

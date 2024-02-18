@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Fade, Slide } from 'react-awesome-reveal';
+import { DataContext } from '../context/DataProvider';
 
 const MissionCompletedModal = ({ open, currentMission, setCurrentMission, closeMissionReminder, onClose }) => {
     if (!open) return null
+    const { darkMode } = useContext(DataContext);
 
 
     const nextMission = () => {

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Fade } from 'react-awesome-reveal';
+import { DataContext } from '../context/DataProvider';
 
 const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackAlert, onClose }) => {
     if (!open) return null
+    const { setMissionsOn } = useContext(DataContext);
+    const { darkMode } = useContext(DataContext);
+    
     return (
         <div className="overlay-placeholder">
             <Fade duration={200}>
@@ -91,7 +95,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                     <p className="m-0 small mt-4 gray-text">P.S. Come back and explore the app afterwards but just know - when you refresh the page everything resets.</p>
                                 </div>
                                 <div className="flx just-ce position-bottom">
-                                    <button onClick={() => { onClose(); activateFeedbackAlert() }} className="btn-primaryflex">&nbsp;OK!&nbsp;</button>
+                                    <button onClick={() => { onClose(); activateFeedbackAlert(); setMissionsOn(false) }} className="btn-primaryflex">&nbsp;OK!&nbsp;</button>
                                 </div>
                             </>
                         }

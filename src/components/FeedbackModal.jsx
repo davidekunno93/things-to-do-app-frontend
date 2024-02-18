@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Fade } from 'react-awesome-reveal'
 import { Link } from 'react-router-dom'
+import { DataContext } from '../context/DataProvider'
 
 const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
     if (!open) return null
-    const [text, setText] = useState("")
+    const { darkMode } = useContext(DataContext);
+    const [text, setText] = useState("");
     const [sentFeedback, setSentFeedback] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 

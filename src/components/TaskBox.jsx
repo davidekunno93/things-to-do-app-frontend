@@ -7,6 +7,7 @@ import { DataContext } from '../context/DataProvider'
 const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal, openDatePickerModal, openDateAndTimePickerModal, deleteTaskFromDB }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { firstTask, setFirstTask } = useContext(DataContext);
+    const { darkMode } = useContext(DataContext);
     // other functions
     function wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -317,10 +318,12 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     const priorityPopUpOnFirstTask = () => {
         if (firstTask) {
             let priorityPopUp = document.getElementById(`priorityIndicatorPopUp-${index}`)
-            priorityPopUp.classList.remove('hidden-o')
-            setFirstTask(false)
-            wait(5000).then(() => {
-                priorityPopUp.classList.add('hidden-o')
+            wait(600).then(() => {
+                priorityPopUp.classList.remove('hidden-o')
+                setFirstTask(false)
+                wait(5000).then(() => {
+                    priorityPopUp.classList.add('hidden-o')
+                })
             })
         }
     }
@@ -331,33 +334,33 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
 
     return (
         <>
-            <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className="task-box-container">
+            <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className={`task-box-container${darkMode ? "-dark" : ""}`}>
                 {/* priority indicator popup */}
                 <div id={`priorityIndicatorPopUp-${index}`} className="priority-indicator-popup hidden-o">
-                    <p className="m-0 small font-jakarta">Click<span className='material-symbols-outlined v-align largish red-text'>exclamation</span>to toggle task <span className="bold600">high priority</span></p>
+                    <p className="m-0 small font-jakarta black-text">Click<span className='material-symbols-outlined v-align largish red-text'>exclamation</span>to toggle task <span className="bold600">high priority</span></p>
                 </div>
                 {/* end priority indicator popup */}
                 {/* taskbar options */}
                 <div className="section">
-                    <div id={`taskBox-toolTip-${index}`} className="taskBox-toolTip d-none" style={{ width: task.myDay ? 216 : 174 }}>
+                    <div id={`taskBox-toolTip-${index}`} className={`taskBox-toolTip d-none ${darkMode ? "taskBox-toolTip-dark" : null}`} style={{ width: task.myDay ? 216 : 174 }}>
                         <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id) }}>
-                            <span className="material-symbols-outlined">
+                            <span className={`material-symbols-outlined ${darkMode ? "blue-text" : null}`}>
                                 edit
                             </span>
                             <p className="m-0">Edit</p>
                         </selection>
                         <selection onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }}>
-                            <span className="material-symbols-outlined">
+                            <span className={`material-symbols-outlined ${darkMode ? "yellow-text" : null}`}>
                                 sunny
                             </span>
                             <p className="m-0">{task.myDay ? "Remove from My Day" : "Add to My Day"}</p>
                         </selection>
                         <selection onClick={(e) => e.stopPropagation()}>
-                            <span className="material-symbols-outlined">
+                            <span className={`material-symbols-outlined ${darkMode ? "orange-text" : null}`}>
                                 folder_open
                             </span>
                             <p className="m-0">Move to ...</p>
-                            <div className="sub-selection" style={{ right: task.myDay ? 228 : 186 }}>
+                            <div className={`sub-selection${darkMode ? "-dark" : ""}`} style={{ right: task.myDay ? 228 : 186 }}>
 
                                 {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
                                     let category = userCategories.categories[categoryName]
@@ -373,7 +376,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             </div>
                         </selection>
                         <selection onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete") }}>
-                            <span className="material-symbols-outlined">
+                            <span className={`material-symbols-outlined ${darkMode ? "red-text" : null}`}>
                                 delete
                             </span>
                             <p className="m-0">Delete</p>
@@ -402,7 +405,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                         </div>
                         <div id={`simpleIconsTray-${index}`} className="simple-icons-tray flx-r gap-2 just-sb">
                             <div onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }} className="myDay-detail">
-                                <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : "faintish-text"}`}>
+                                <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : darkMode ? "darkgray-text" : "faintish-text"}`}>
                                     sunny
                                 </span>
                             </div>
@@ -413,11 +416,11 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                     </div>
                                 </>
                                 :
-                                <div onClick={(e) => { e.stopPropagation(); openDatePickerModal(task.id) }} className="date-detail faint-text small pointer"><u>Set Date</u></div>
+                                <div onClick={(e) => { e.stopPropagation(); openDatePickerModal(task.id) }} className={`date-detail ${darkMode ? "darkgray-text" : "faint-text" } small pointer`}><u>Set Date</u></div>
                             }
                             <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
                                 {durationIconText ?
-                                    <span className="material-symbols-outlined m-auto">
+                                    <span className="material-symbols-outlined m-auto blue-text">
                                         {durationIconText}
                                     </span>
                                     :
@@ -488,7 +491,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         <p className={`m-0 ${task.endDate ? "xx-small" : "small"}`}>{task.endTime}</p>
                                     </div>
                                     :
-                                    <p onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className="m-0 small faint-text"><u>Set Date</u></p>
+                                    <p onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className={`m-0 small ${darkMode ? "darkgray-text" : "faint-text" }`}><u>Set Date</u></p>
                                 }
                             </div>
                             <div onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }} className="myDay-detail">
@@ -498,7 +501,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             </div>
                             <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
                                 {durationIconText ?
-                                    <span className="material-symbols-outlined m-auto">
+                                    <span className="material-symbols-outlined m-auto blue-text">
                                         {durationIconText}
                                     </span>
                                     :
@@ -526,7 +529,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         edit
                                     </span>
                                 </div>
-                                <span onClick={() => toggleLocationPopUp()} className={`material-symbols-outlined m-auto ${task.location ? null : "fainter-text"}`}>
+                                <span onClick={() => toggleLocationPopUp()} className={`material-symbols-outlined m-auto ${task.location ? darkMode ? "white-text" : null : darkMode ? "darkgray-text" : "faint-text"}`}>
                                     location_on
                                 </span>
                             </div>

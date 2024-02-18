@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Fade, Slide } from 'react-awesome-reveal'
 import ReactDatePicker from 'react-datepicker'
+import { DataContext } from '../context/DataProvider'
 
 const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, db_task_id, detail, option, onClose }) => {
     if (!open) return null
+    const { darkMode } = useContext(DataContext);
+    
     // useEffect(() => {
     //     console.log("detail: " + detail + ", option: " + option)
     // }, [])

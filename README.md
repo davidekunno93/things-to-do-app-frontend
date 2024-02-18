@@ -28,6 +28,7 @@ Currently, two official plugins are available:
   db.session.commit() -->
 <!-- *Welcome to Demo mode - w instructions on what you can do* -->
 <!-- *category of newly created tasks = allTasks??* -->
+change no category to none
 *create category gives new category next order index/del category reshuffles order indexes*
 *attribute <a href="https://www.freepik.com/free-vector/trophy-flat-style_73897148.htm#query=trophy%20png&position=3&from_view=keyword&track=ais&uuid=007cb5db-57b1-420e-a773-9e90c9bd46a0">Image by juicy_fish</a> on Freepik for the trophy img in missionCompleted modal*
 <!-- *add my day to full tray icons* -->

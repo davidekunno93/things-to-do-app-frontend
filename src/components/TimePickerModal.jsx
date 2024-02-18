@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { DataContext } from '../context/DataProvider';
 
 const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }) => {
     if (!open) return null
+    const { darkMode } = useContext(DataContext);
+    
     // time code
     const [selectedHour, setSelectedHour] = useState(null)
     const [selectedMinute, setSelectedMinute] = useState(null)

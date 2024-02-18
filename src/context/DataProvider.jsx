@@ -6,6 +6,7 @@ const DataProvider = (props) => {
     const [showNavbar, setShowNavbar] = useState(false)
     const [databaseOn, setDatabaseOn] = useState(false);
     const [firstTask, setFirstTask] = useState(true);
+    const [darkMode, setDarkMode] = useState(false);
     // demo library
     const [user, setUser] = useState({
         uid: "testUser",
@@ -380,7 +381,7 @@ const DataProvider = (props) => {
     const [missionsOn, setMissionsOn] = useState(true);
 
     return (
-        <DataContext.Provider value={{ 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask' : firstTask, 'setFirstTask' : setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn }}>
+        <DataContext.Provider value={{ 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask' : firstTask, 'setFirstTask' : setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode' : setDarkMode }}>
             {props.children}
         </DataContext.Provider>
     )
