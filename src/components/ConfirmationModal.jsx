@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Fade, Slide } from 'react-awesome-reveal';
+import { DataContext } from '../context/DataProvider';
 
-const ConfirmationModal = ({ open, completedTasks, dumpCompletedTasks, onClose }) => {
+const ConfirmationModal = ({ open, completedTasks, selectedForDump, dumpSelectedTasks, onClose }) => {
     if (!open) return null
+    const { darkMode } = useContext(DataContext);
 
     return (
         <div className="overlay-placeholder">
@@ -10,12 +12,12 @@ const ConfirmationModal = ({ open, completedTasks, dumpCompletedTasks, onClose }
                 <div className="overlay">
                     <Fade className='m-auto' duration={200} triggerOnce>
                         <Slide direction='up' duration={200} triggerOnce>
-                            <div className="confirmation-modal">
-                                <div className="box-title">Dump {completedTasks.length} {completedTasks.length === 1 ? "task" : "tasks" }?</div>
+                            <div className={`confirmation-modal${darkMode ? "-dark" : ""}`}>
+                                <div className={`box-title${darkMode ? "-dark" : ""}`}>Dump {selectedForDump.length} {selectedForDump.length === 1 ? "task" : "tasks" }?</div>
                                 <hr className='w-100' />
                                 <div className="flx-r gap-8 m-auto">
-                                    <button onClick={() => { dumpCompletedTasks(); onClose() }} className="btn-primary wide">Yes</button>
-                                    <button onClick={() => onClose()} className="btn-secondary wide">No</button>
+                                    <button onClick={() => { dumpSelectedTasks(); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""} wide`}>Yes</button>
+                                    <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""} wide`}>No</button>
                                 </div>
                             </div>
                         </Slide>

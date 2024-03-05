@@ -6,7 +6,7 @@ import { DataContext } from '../context/DataProvider'
 const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, db_task_id, detail, option, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
-    
+
     // useEffect(() => {
     //     console.log("detail: " + detail + ", option: " + option)
     // }, [])
@@ -61,7 +61,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
 
     const [modal, setModal] = useState({
         width: 500,
-        height: detail === "frequency" || detail === "delete" ? 150 : 250
+        height: detail === "frequency" || detail === "delete" || detail === "restore" ? 150 : 250
     })
 
 
@@ -78,7 +78,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                     <div className="overlay">
                         <Fade className='m-auto' duration={200} triggerOnce>
                             <Slide direction='up' duration={200} triggerOnce>
-                                <div className="quick-update-modal" style={{ width: modal.width, height: modal.height }}>
+                                <div className={`quick-update-modal${darkMode ? "-dark" : ""}`} style={{ width: modal.width, height: modal.height }}>
                                     <div onClick={() => onClose()} className="closeBtn3">
                                         <span className="material-symbols-outlined">
                                             close
@@ -86,7 +86,16 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                     </div>
 
 
-                                    <p className="m-0 box-title">{detail === 'delete' ? "Are you sure?" : "Update " + capitalizeIt(detail)}</p>
+                                    <p className={`m-0 box-title${darkMode ? "-dark" : ""}`}>
+                                        {detail === 'delete' &&
+                                            "Delete Task?"}
+                                        {detail === 'restore' &&
+                                            "Restore Task?"}
+                                        {detail === "duration" &&
+                                            "Update " + capitalizeIt(detail)}
+                                        {detail === "frequency" &&
+                                            "Update " + capitalizeIt(detail)}
+                                    </p>
                                     <hr className='w-100' />
                                     {/* Change duration */}
                                     {detail === "duration" &&
@@ -95,7 +104,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                             <div className="box-after-title w-100 position-bottom2">
                                                 <div className="durationIcon-select flx-r w-100 just-se">
                                                     <span onClick={() => { updateDurationSelection("Short") }} className={`material-symbols-outlined pointer durationIcon-big ${durationSelection.Short ? "selected" : "unselected"}`}>
-                                                        clock_loader_20
+                                                        clock_loader_10
                                                     </span>
                                                     <span onClick={() => { updateDurationSelection("Medium") }} className={`material-symbols-outlined pointer durationIcon-big mx16 ${durationSelection.Medium ? "selected" : "unselected"}`}>
                                                         clock_loader_40
@@ -104,11 +113,11 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                                         clock_loader_90
                                                     </span>
                                                 </div>
-                                                <div className="selection-box">
+                                                <div className={`selection-box${darkMode ? "-dark" : ""}`}>
                                                     {Object.keys(durationSelection).map((option, index) => {
                                                         let selected = durationSelection[option]
-                                                        return <div key={index} onClick={() => { updateDurationSelection(option) }} className={`${selected ? "selection-selected" : "selection-unselected"}`}>
-                                                            <p className="m-0 m-auto">{option}</p>
+                                                        return <div key={index} onClick={() => { updateDurationSelection(option) }} className={`${selected ? darkMode ? "selection-selected-dark" : "selection-selected" : darkMode ? "selection-unselected-dark" : "selection-unselected"}`}>
+                                                            <p className="m-auto">{option}</p>
                                                         </div>
                                                     })}
                                                 </div>
@@ -124,7 +133,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                                 <div className="frequencyOptions flx-r">
                                                     {Object.keys(frequencySelection).map((option, index) => {
                                                         let selected = frequencySelection[option]
-                                                        return <div key={index} onClick={() => { updateFrequencySelection(option) }} className={`${selected ? "underline-option-selected" : "underline-option-unselected"}`}>{option}</div>
+                                                        return <div key={index} onClick={() => { updateFrequencySelection(option) }} className={`${selected ? darkMode ? "underline-option-selected-dark" : "underline-option-selected" : darkMode ? "underline-option-unselected-dark" : "underline-option-unselected"}`}>{option}</div>
                                                     })}
                                                 </div>
                                             </div>
@@ -135,11 +144,19 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                     {/* Delete task */}
                                     {detail === 'delete' &&
                                         <div className="flx-r gap-8 m-auto">
-                                            <button onClick={() => { quickUpdate.remove(taskId, db_task_id); onClose() }} className="btn-primary wide">Yes</button>
-                                            <button onClick={() => onClose()} className="btn-secondary wide">No</button>
+                                            <button onClick={() => { quickUpdate.remove(taskId, db_task_id); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""} wide`}>Yes</button>
+                                            <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""} wide`}>No</button>
                                         </div>
                                     }
                                     {/* End delete task */}
+                                    {/* Restore task */}
+                                    {detail === 'restore' &&
+                                        <div className="flx-r gap-8 m-auto">
+                                            <button onClick={() => { quickUpdate.restoreTask(taskId, db_task_id); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""} wide`}>Yes</button>
+                                            <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""} wide`}>No</button>
+                                        </div>
+                                    }
+                                    {/* End restore task */}
 
                                 </div>
                             </Slide>

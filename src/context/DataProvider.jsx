@@ -7,6 +7,8 @@ const DataProvider = (props) => {
     const [databaseOn, setDatabaseOn] = useState(false);
     const [firstTask, setFirstTask] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
+    const [createCategoryModalOpen, setCreateCategoryModalOpen] = useState(false);
+
     // demo library
     const [user, setUser] = useState({
         uid: "testUser",
@@ -17,6 +19,26 @@ const DataProvider = (props) => {
         points: 5,
         pointsForLevelUp: 45
     })
+    useEffect(() => {
+        if (user.points >= user.pointsForLevelUp) {
+            let userCopy = {...user}
+            userCopy.level ++
+            userCopy.points = userCopy.points - userCopy.pointsForLevelUp
+            userCopy.pointsForLevelUp = userCopy.pointsForLevelUp + 15
+            // if auth save changes to database
+
+            setUser(userCopy)
+            // open level up modal
+            setLevelUpModalOpen(true);
+        } else if (user.points < 0) {
+            let userCopy = {...user}
+            userCopy.pointsForLevelUp = userCopy.pointsForLevelUp - 15
+            userCopy.points = userCopy.points + userCopy.pointsForLevelUp
+            userCopy.level --
+            setUser(userCopy)
+        }
+    }, [user])
+    const [levelUpModalOpen, setLevelUpModalOpen] = useState(false);
     const [tasks, setTasks] = useState({})
     // const [tasks, setTasks] = useState({
     //     1: {
@@ -314,6 +336,7 @@ const DataProvider = (props) => {
             priorityCompleted: priorityCompletedArr,
             overdue: overdueArr,
             completed: completedArr,
+            dumped: dumpedArr
         }
         if (userCategories) {
             // loop thru u cats
@@ -377,11 +400,58 @@ const DataProvider = (props) => {
             photoURL: "https://i.imgur.com/egZgyCb.jpg"
         }
     ]
+    const [showDumped, setShowDumped] = useState(false);
+    const levelKey = {
+        "Level 1" : 45,
+        "Level 2" : 60,
+        "Level 3" : 75,
+        "Level 4" : 90,
+        "Level 5" : 105,
+        "Level 6" : 120,
+        "Level 7" : 135,
+        "Level 8" : 150,
+        "Level 9" : 165,
+        "Level 10" : 180,
+        "Level 11" : 195,
+        "Level 12" : 210,
+        "Level 13" : 225,
+        "Level 14" : 240,
+        "Level 15" : 255,
+        "Level 16" : 270,
+        "Level 17" : 285,
+        "Level 18" : 300,
+        "Level 19" : 315,
+        "Level 20" : 330,
+        "Level 21" : 345,
+        "Level 22" : 360,
+        "Level 23" : 375,
+        "Level 24" : 390,
+        "Level 25" : 405,
+    }
+
+    const [mobileWidth, setMobileWidth] = useState(false);
+    const handleResize = () => {
+        if (document.body.clientWidth < 375) {
+            setMobileWidth(true)
+            // console.log('true')
+        } else {
+            setMobileWidth(false)
+            // console.log('false')
+        }
+        console.log(document.body.clientWidth)
+    }
+    useEffect(() => {
+        handleResize()
+        window.addEventListener('resize', handleResize, true)
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [])
 
     const [missionsOn, setMissionsOn] = useState(true);
 
     return (
-        <DataContext.Provider value={{ 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask' : firstTask, 'setFirstTask' : setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'setUserCategories': setUserCategories, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode' : setDarkMode }}>
+        <DataContext.Provider value={{ 'mobileWidth': mobileWidth, 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask' : firstTask, 'setFirstTask' : setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'createCategoryModalOpen': createCategoryModalOpen, 'setCreateCategoryModalOpen': setCreateCategoryModalOpen, 'setUserCategories': setUserCategories, 'showDumped': showDumped, 'setShowDumped': setShowDumped, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode' : setDarkMode, 'levelUpModalOpen': levelUpModalOpen, 'setLevelUpModalOpen': setLevelUpModalOpen }}>
             {props.children}
         </DataContext.Provider>
     )

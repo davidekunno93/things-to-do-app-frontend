@@ -27,6 +27,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     }, [])
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
     const { userCategories, setUserCategories } = useContext(DataContext);
+    const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
     const { databaseOn } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
     let taskLastInArr = Object.keys(tasks).slice(-1)
@@ -455,39 +456,31 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     }, [])
 
     const toggleAdvancedSettingsOn = () => {
-        const toggleIcon = document.getElementById('advancedSettingsToggleIcon')
         const settingsAdvanced = document.getElementById('taskSettingsAdvanced')
         const modal = document.getElementById('createTaskModal')
 
         setAdvancedSettingsOn(true)
         // console.log('advanced settings turned on')
-        toggleIcon.innerHTML = "toggle_on"
         modal.style.width = "1024px"
-        // toggleIcon.classList.remove('faint-text')
         settingsAdvanced.classList.remove('d-none')
         wait(300).then(() => {
             settingsAdvanced.classList.remove('o-none')
         })
     }
     const toggleAdvancedSettingsOff = () => {
-        const toggleIcon = document.getElementById('advancedSettingsToggleIcon')
         const settingsAdvanced = document.getElementById('taskSettingsAdvanced')
         const modal = document.getElementById('createTaskModal')
 
         setAdvancedSettingsOn(false)
         // console.log('advanced settings turned off')
-        toggleIcon.innerHTML = "toggle_off"
         settingsAdvanced.classList.add('d-none')
         modal.style.width = "640px"
-        // toggleIcon.classList.add('faint-text')
         settingsAdvanced.classList.add('o-none')
     }
     const toggleAdvancedSettings = () => {
-        const toggleIcon = document.getElementById('advancedSettingsToggleIcon')
-
-        if (toggleIcon.innerHTML === "toggle_on") {
+        if (advancedSettingsOn) {
             toggleAdvancedSettingsOff()
-        } else if (toggleIcon.innerHTML === "toggle_off") {
+        } else {
             toggleAdvancedSettingsOn()
         }
     }
@@ -502,14 +495,14 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
 
         if (myDayText.innerHTML === "Add to My Day") {
             myDayText.innerHTML = "Added to My Day"
-            myDayText.classList.add("green-text")
-            myDayIcon.classList.add("green-text")
+            myDayText.classList.add("deepgreen-text")
+            myDayIcon.classList.add("deepgreen-text")
             myDayIcon.innerHTML = "done"
             newTaskCopy.myDay = true
         } else {
             myDayText.innerHTML = "Add to My Day"
-            myDayText.classList.remove("green-text")
-            myDayIcon.classList.remove("green-text")
+            myDayText.classList.remove("deepgreen-text")
+            myDayIcon.classList.remove("deepgreen-text")
             myDayIcon.innerHTML = "sunny"
             newTaskCopy.myDay = false
         }
@@ -568,10 +561,10 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
 
                                 <div className="toggleAdvancedSettings flx-r">
                                     <p className="m-0 mr-2">Advanced Settings {advancedSettingsOn ? "On" : "Off"} </p>
-                                    <span id='advancedSettingsToggleIcon' onClick={() => toggleAdvancedSettings()} className="material-symbols-outlined pointer">
-                                        {/* {advancedSettingsOn ? "toggle_on" : "toggle_off"} */}
-                                        toggle_on
-                                    </span>
+                                    <div onClick={() => toggleAdvancedSettings()} className={`toggle-option2${darkMode ? "-dark" : ""}`}>
+                                        <div className={`bar${advancedSettingsOn ? "-on" : ""}`}></div>
+                                        <div className={`button${advancedSettingsOn ? "-on" : ""}`}></div>
+                                    </div>
                                 </div>
 
 
@@ -591,7 +584,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                         priority_high
                                                     </span>
                                                 </div>
-                                                <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className={`input-box${darkMode ? "-dark" : ""}`} placeholder='What do you need to do?' />
+                                                <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className={`input-box${darkMode ? "-dark" : ""} pr-5`} placeholder='What do you need to do?' autoComplete='off'/>
                                             </div>
                                         </div>
 
@@ -607,7 +600,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                             return <div key={index} onClick={(e) => updateTaskCategory(e)} value={category.categoryName} className='option'>{category.categoryName}</div>
                                                         }) : null}
                                                         {/* <hr className='w-95' /> */}
-                                                        <div value="add-new-category" className='option'>
+                                                        <div onClick={() => setCreateCategoryModalOpen(true)} value="add-new-category" className='option'>
                                                             <div className="align-all-items gap-2">
                                                                 <span className="material-symbols-outlined">
                                                                     add
@@ -627,7 +620,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                     }) : null}
                                                     <option value="CreateNew">-- Create New Category --</option> 
                                                 </select> */}
-                                                <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
+                                                <button onClick={() => toggleMyDay()} id='myDayBtn' className={`btn-tertiary my-day-button${darkMode ? "-dark" : ""}`}>
                                                     <div className="align-all-items gap-2">
                                                         <p id='myDayText' className="m-0 font20 font-jakarta bold600">Add to My Day</p>
                                                         <span id='myDayIcon' className="material-symbols-outlined medium">
@@ -642,7 +635,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                             <div className="flx-r">
                                                 <label htmlFor='notesInput' className="m-0 ml-1">Notes</label>
                                             </div>
-                                            <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className={`textarea-box2${darkMode ? "-dark" : ""}`} placeholder='Any extra details, notes or reminders about the task' />
+                                            <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className={`textarea-box2${darkMode ? "-dark" : ""}`} placeholder='Any extra details, notes or reminders about your task' />
                                         </div>
 
                                         <div className="task-setting">
@@ -735,7 +728,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 {Object.keys(durationSelection).map((option, index) => {
                                                     let selected = durationSelection[option]
                                                     return <div key={index} onClick={() => { updateDurationSelection(option); updateTaskDuration(option) }} className={`${selected ? "selection-selected" : "selection-unselected"} ${darkMode ? selected ? "selection-selected-dark" : "selection-unselected-dark" : ""}`}>
-                                                        <p className="m-0 m-auto">{option}</p>
+                                                        <p className="m-auto">{option}</p>
                                                     </div>
                                                 })}
                                             </div>
@@ -767,7 +760,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 {stepsList.map((step, index) => {
                                                     return <div key={index} className="step-div">
                                                         <div className="overlay-icon2">{step.number})</div>
-                                                        <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className={`step-input-box${darkMode ? "-dark" : ""}`} />
+                                                        <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className={`step-input-box${darkMode ? "-dark" : ""}`} autoComplete='off' />
                                                         <div className="closeBtn4 ml-1">
                                                             <span onClick={() => updateStepsList("remove", index)} className="material-symbols-outlined">
                                                                 close
@@ -777,7 +770,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                 })}
 
 
-                                                <div onClick={() => updateStepsList("add")} className={`addStep ${stepsList.length < 5 ? "pointer" : "faint-text"}`}>
+                                                <div onClick={() => updateStepsList("add")} className={`addStep ${stepsList.length < 5 ? "pointer" : darkMode ? "faint-text-dark" : "faint-text"}`}>
                                                     {stepsList.length < 5 &&
                                                         <span className="material-symbols-outlined large v-align">
                                                             add

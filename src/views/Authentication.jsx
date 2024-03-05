@@ -535,6 +535,7 @@ const Authentication = () => {
                                                     </span>
                                                 </div>
                                             </div>
+                                            <p className="m-0 gray-text">Click here to <span onClick={() => { loadDemoTasks(); navigateToDashboard(); setMissionsOn(false) }} className="hoverGraylight pointer"><u>Tour as a Guest</u></span></p>
                                             <p className="m-0 gray-text">Already have an account? <span onClick={() => goToSignIn()} className="hoverGraylight pointer"><u>Sign In</u></span></p>
                                         </div>
                                     </div>

@@ -4,10 +4,12 @@ import ReactDatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 import { DataContext } from '../context/DataProvider'
 
-const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal, openDatePickerModal, openDateAndTimePickerModal, deleteTaskFromDB }) => {
+const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal, openDatePickerModal, openDateAndTimePickerModal, selectedCategory, selectedForDump, dumpSelection, deleteTaskFromDB }) => {
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { firstTask, setFirstTask } = useContext(DataContext);
+    const { databaseOn } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
     // other functions
     function wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -111,7 +113,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
 
     let durationIconText = null
     if (task.duration === "Short") {
-        durationIconText = "clock_loader_20"
+        durationIconText = "clock_loader_10"
     } else if (task.duration === "Medium") {
         durationIconText = "clock_loader_40"
     } else if (task.duration === "Long") {
@@ -142,9 +144,19 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     // edit task name
     const editTaskName = () => {
         const editCopy = { ...edit }
+        let sendDataStandbyCopy = { ...sendDataStandby }
+        sendDataStandbyCopy.taskName = true;
         editCopy.taskName = true
         setEdit(editCopy)
+        setSendDataStandby(sendDataStandbyCopy)
     }
+    const [sendDataStandby, setSendDataStandby] = useState({
+        taskName: false,
+        steps: false,
+        location: false,
+        notes: false
+    });
+
     const resizeTaskNameInput = () => {
         // index is passed into this component as a prop
         const taskNameInput = document.getElementById(`taskNameInput-${index}`)
@@ -180,24 +192,22 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             editCopy.taskName = false
             setEdit(editCopy)
         }
-        // let task_e = document.getElementById(`taskNameInput-${index}`)
-        // completeTaskNameEdit(e)
-        // console.log(e)
     }
     const completeTaskNameEdit = (e) => {
-        let editCopy = {...edit}
+        let editCopy = { ...edit }
         editCopy.taskName = false
         setEdit(editCopy)
-        // send updated information to backend database
-        quickUpdate.updateTaskName(task.id, e, true)
     }
 
-    
-    
+
+
     // edit location
     const editLocation = () => {
         let editCopy = { ...edit }
         editCopy.location = true
+        let sendDataStandbyCopy = { ...sendDataStandby }
+        sendDataStandbyCopy.location = true;
+        setSendDataStandby(sendDataStandbyCopy)
         setEdit(editCopy)
     }
     const resizeLocationInput = () => {
@@ -209,21 +219,16 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     const refLocation = useRef(null)
     const hideOnClickOutsideLocation = (e) => {
         if (refLocation.current && !refLocation.current.contains(e.target)) {
-            let editCopy = {...edit}
-            console.log('ermm')
+            let editCopy = { ...edit }
             editCopy.location = false
             setEdit(editCopy)
-            // let locationE = document.getElementById(`locationInput-${index}`)
-            // completeLocationEdit(locationE)
         }
     }
-    const completeLocationEdit = (e) => {
-        console.log("hi")
-        let editCopy = {...edit}
+    const completeLocationEdit = () => {
+        // console.log("hi")
+        let editCopy = { ...edit }
         editCopy.location = false
         setEdit(editCopy)
-        // send updated information to backend database
-        quickUpdate.updateLocation(task.id, e, true)
     }
 
     const openLocationPopUp = () => {
@@ -250,6 +255,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     const editSteps = (stepIndex) => {
         let editCopy = { ...edit }
         editCopy.steps = stepIndex
+        let sendDataStandbyCopy = { ...sendDataStandby }
+        sendDataStandbyCopy.steps = stepIndex
+        setSendDataStandby(sendDataStandbyCopy)
         setEdit(editCopy)
     }
     const resizeStepInput = (stepIndex) => {
@@ -264,15 +272,12 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             let editCopy = { ...edit }
             editCopy.steps = null
             setEdit(editCopy)
-            completeStepEdit(e)
         }
     }
-    const completeStepEdit = (e) => {
-        let editCopy = {...edit}
+    const completeStepEdit = () => {
+        let editCopy = { ...edit }
         editCopy.steps = false
         setEdit(editCopy)
-        // send updated information to backend database
-        quickUpdate.updateStep(task.id, stepIndex, e, true)
     }
 
     // edit notes
@@ -285,6 +290,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
         //     editCopy.notes = true
         // }
         editCopy.notes = true
+        let sendDataStandbyCopy = { ...sendDataStandby }
+        sendDataStandbyCopy.notes = true;
+        setSendDataStandby(sendDataStandbyCopy)
         setEdit(editCopy)
     }
     const refNotes = useRef(null)
@@ -294,19 +302,53 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             let stepIndex = editCopy.notes
             editCopy.notes = false
             setEdit(editCopy)
-            completeNotesEdit(e, stepIndex)
         }
     }
-    const completeNotesEdit = (e, stepIndex) => {
-        let editCopy = {...edit}
-        if (!stepIndex) {
-            stepIndex = editCopy.notes
-        }
+    // not used because enter key while in notes edit is used to create a new line
+    const completeNotesEdit = () => {
+        let editCopy = { ...edit }
         editCopy.notes = false
         setEdit(editCopy)
-        // send updated information to backend database
-        quickUpdate.updateNotes(task.id, stepIndex, e, true)
-    }    
+    }
+    // send taskName, notes, steps or location to backend after complete edit
+    useEffect(() => {
+        // if edit taskName = false && standby taskName = true > send data to backend 
+        // set standby to false
+        if (edit.taskName === false && sendDataStandby.taskName === true) {
+            // console.log(`send taskName data now: ${task.taskName}`)
+            if (databaseOn) {
+                // send updated information to backend database
+                quickUpdate.updateTaskName(task.id, task.taskName, true)
+            }
+            let sendDataStandbyCopy = { ...sendDataStandby }
+            sendDataStandbyCopy.taskName = false;
+            setSendDataStandby(sendDataStandbyCopy)
+        }
+        if (edit.steps === false && sendDataStandby.steps !== false && sendDataStandby.steps !== true) {
+            if (databaseOn) {
+                // send step data
+                let stepIndex = sendDataStandby.steps
+                // console.log(stepIndex)
+                // console.log("step desc: " + task.steps[stepIndex].desc)
+                // send updated information to backend database
+                quickUpdate.updateStep(task.id, stepIndex, task.steps[stepIndex].desc, true)
+            }
+            let sendDataStandbyCopy = { ...sendDataStandby }
+            sendDataStandbyCopy.steps = false;
+            setSendDataStandby(sendDataStandbyCopy)
+        }
+        if (edit.location === false && sendDataStandby.location === true) {
+            console.log('update location now')
+            if (databaseOn) {
+                quickUpdate.updateLocation(task.id, task.location, true)
+            }
+        }
+        if (edit.notes === false && sendDataStandby.notes === true) {
+            console.log('send notes data now')
+            // send updated information to backend database
+            quickUpdate.updateNotes(task.id, task.notes, true)
+        }
+    }, [edit])
 
 
     const [selectedDate, setSelectedDate] = useState(task.endDate ? new Date(task.endDate) : null)
@@ -334,7 +376,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
 
     return (
         <>
-            <><div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className={`task-box-container${darkMode ? "-dark" : ""}`}>
+            <div key={index} onClick={() => toggleTaskBox(index)} id={`taskBoxContainer-${index}`} className={`task-box-container${darkMode ? "-dark" : ""}`}>
                 {/* priority indicator popup */}
                 <div id={`priorityIndicatorPopUp-${index}`} className="priority-indicator-popup hidden-o">
                     <p className="m-0 small font-jakarta black-text">Click<span className='material-symbols-outlined v-align largish red-text'>exclamation</span>to toggle task <span className="bold600">high priority</span></p>
@@ -384,21 +426,32 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                     </div>
                 </div>
                 {/* end taskbar options */}
-                <div className={`taskBox-overFlowLimit ${task.completed ? "faint-text" : null}`}>
+                <div className={`taskBox-overFlowLimit ${task.completed ? darkMode ? "faint-text-dark" : "faint-text" : null}`}>
                     <div className="task-box-content">
                         <div className="flx-r flx-1">
-                            <span onClick={(e) => { e.stopPropagation(); quickUpdate.toggleCompleteTask(task.id) }} className={`material-symbols-outlined o-90 pointer ${task.completed ? "green-text" : null}`}>
-                                {task.completed ? "check_circle" : "circle"}
-                            </span>
+                            {selectedCategory === "completed" ?
+                                selectedForDump.includes(task.id) ?
+                                    <span onClick={(e) => { e.stopPropagation(); dumpSelection.remove(task.id) }} className={`material-symbols-outlined o-90 pointer ${darkMode ? "lightblue-text" : "blue-text"}`}>
+                                        check_box
+                                    </span>
+                                    :
+                                    <span onClick={(e) => { e.stopPropagation(); dumpSelection.add(task.id) }} className={`material-symbols-outlined o-90 pointer ${darkMode ? "gray-text" : "dark-text"}`}>
+                                        check_box_outline_blank
+                                    </span>
+                                :
+                                <span onClick={(e) => { e.stopPropagation(); quickUpdate.toggleCompleteTask(task.id) }} className={`material-symbols-outlined o-90 pointer ${task.completed ? "green-text" : null}`}>
+                                    {task.completed ? "check_circle" : "circle"}
+                                </span>
+                            }
 
-                            <span onClick={(e) => { e.stopPropagation(); quickUpdate.togglePriority(task.id) }} className={`material-symbols-outlined darkred-text mr-1 pointer ${task.highPriority ? null : "faintishy-text"}`}>
+                            <span onClick={(e) => { e.stopPropagation(); quickUpdate.togglePriority(task.id) }} className={`material-symbols-outlined darkred-text mr-1 pointer ${task.highPriority ? null : darkMode ? "faintish-text-dark" : "faint-text"}`}>
                                 exclamation
                             </span>
 
                             {edit.taskName ?
-                                <input ref={refTaskName} id={`taskNameInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit(e) : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
+                                <input ref={refTaskName} id={`taskNameInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit(e) : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e.target.value); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
                                 :
-                                <p className={`task-name font-jakarta-strong m-0 ${task.completed ? "line-out faint-text" : null}`}>{task.taskName}
+                                <p className={`task-name font-jakarta-strong m-0 ${task.completed ? darkMode ? "line-out faint-text-dark" : "line-out faint-text" : null}`}>{task.taskName}
                                     <span onClick={(e) => { e.stopPropagation(e); editTaskName() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
                                 </p>
                             }
@@ -409,40 +462,44 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                     sunny
                                 </span>
                             </div>
-                            {task.endDate ?
+                            {!mobileWidth && task.endDate &&
                                 <>
                                     <div onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className="date-detail">{datify(task.endDate)}
                                         {/* <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={datifunc(selectedDate)} placeholderText='Set Date' className="datepicker-detail" withPortal/> */}
                                     </div>
                                 </>
-                                :
-                                <div onClick={(e) => { e.stopPropagation(); openDatePickerModal(task.id) }} className={`date-detail ${darkMode ? "darkgray-text" : "faint-text" } small pointer`}><u>Set Date</u></div>
                             }
-                            <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
-                                {durationIconText ?
-                                    <span className="material-symbols-outlined m-auto blue-text">
-                                        {durationIconText}
-                                    </span>
-                                    :
-                                    <p className="m-0 faint-text m-auto small">n/a</p>
-                                }
-                            </div>
-                            <div onClick={(e) => { e.stopPropagation() }} className="progress-detail">
-                                <div className="progress-box">
-                                    <CircularProgressBar width={24} height={24} percent={taskPercent} />
-                                </div>
-                            </div>
-                            <div className="participants-detail">
-                                <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
-                                    <div className="circle">
-                                        <span className="material-symbols-outlined medium">
-                                            add
-                                        </span>
+                            {!mobileWidth && !task.endDate &&
+                                <div onClick={(e) => { e.stopPropagation(); openDatePickerModal(task.id) }} className={`date-detail ${darkMode ? "darkgray-text" : "faint-text"} small pointer`}><u>Set Date</u></div>
+                            }
+                            {!mobileWidth &&
+                                <>
+                                    <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
+                                        {durationIconText ?
+                                            <span className={`material-symbols-outlined m-auto ${task.duration === "Short" && "lighterblue-text"} ${task.duration === "Medium" && "blue-text"} ${task.duration === "Long" && "darkerblue-text"}`}>
+                                                {durationIconText}
+                                            </span>
+                                            :
+                                            <p className="faint-text m-auto small">n/a</p>
+                                        }
                                     </div>
-                                </div>
-                            </div>
+                                    <div onClick={(e) => { e.stopPropagation() }} className="progress-detail">
+                                        <div className="progress-box">
+                                            <CircularProgressBar width={24} height={24} percent={taskPercent} />
+                                        </div>
+                                    </div>
+                                    <div className="participants-detail">
+                                        <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
+                                            <div className="circle">
+                                                <span className="material-symbols-outlined medium">
+                                                    add
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-
+                                </>
+                            }
                         </div>
                         <span ref={refMenu} onClick={(e) => { e.stopPropagation(); toggleTaskBoxToolTip(index) }} className="material-symbols-outlined o-50 pointer">
                             more_vert
@@ -461,9 +518,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         </span>
                                         <div className="step-text-line">
                                             {stepIndex === forEdit ?
-                                                <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onKeyDown={(e) => e.key === "Enter" ? completeStepEdit() : null}  onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e); resizeStepInput(stepIndex) }} type="text" className="input-style2" value={step.desc} />
+                                                <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onKeyDown={(e) => e.key === "Enter" ? completeStepEdit() : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e.target.value); resizeStepInput(stepIndex) }} type="text" className="input-style2" value={step.desc} />
                                                 :
-                                                <p className={`m-0 my-h small ${step.completed ? "line-out faint-text" : null}`}>{/*<strong>{step.number})</strong>*/} {step.desc}
+                                                <p className={`m-0 my-h small ${step.completed ? darkMode ? "line-out faint-text-dark" : "line-out faint-text" : null}`}>{/*<strong>{step.number})</strong>*/} {step.desc}
                                                     <span onClick={(e) => { e.stopPropagation(e); editSteps(stepIndex) }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
                                                 </p>
                                             }
@@ -476,7 +533,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         <span onClick={(e) => { e.stopPropagation(e); editNotes() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
                                     </p>
                                     {edit.notes ?
-                                        <textarea ref={refNotes} onClick={(e) => e.stopPropagation(e)} onChange={(e) => quickUpdate.updateNotes(task.id, e)} id='notesInput' className='textarea-boxflex' value={task.notes}></textarea>
+                                        <textarea ref={refNotes} onClick={(e) => e.stopPropagation(e)} onChange={(e) => quickUpdate.updateNotes(task.id, e.target.value)} id='notesInput' className='textarea-boxflex' value={task.notes}></textarea>
                                         :
                                         <p className="m-0 small gray-text">{task.notes}</p>
                                     }
@@ -491,21 +548,21 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         <p className={`m-0 ${task.endDate ? "xx-small" : "small"}`}>{task.endTime}</p>
                                     </div>
                                     :
-                                    <p onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className={`m-0 small ${darkMode ? "darkgray-text" : "faint-text" }`}><u>Set Date</u></p>
+                                    <p onClick={(e) => { e.stopPropagation(); openDateAndTimePickerModal(task.id) }} className={`m-0 small ${darkMode ? "darkgray-text" : "faint-text"}`}><u>Set Date</u></p>
                                 }
                             </div>
                             <div onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }} className="myDay-detail">
-                                <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : "faintish-text"}`}>
+                                <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : darkMode ? "faint-text-dark" : "faintish-text"}`}>
                                     sunny
                                 </span>
                             </div>
                             <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'duration', task.duration) }} className="duration-detail">
                                 {durationIconText ?
-                                    <span className="material-symbols-outlined m-auto blue-text">
+                                    <span className={`material-symbols-outlined m-auto ${task.duration === "Short" && "lighterblue-text"} ${task.duration === "Medium" && "blue-text"} ${task.duration === "Long" && "darkerblue-text"}`}>
                                         {durationIconText}
                                     </span>
                                     :
-                                    <p className="m-0 faint-text m-auto small">n/a</p>
+                                    <p className="faint-text m-auto small">n/a</p>
                                 }
                             </div>
                             <div onClick={(e) => { e.stopPropagation() }} className="progress-detail">
@@ -521,9 +578,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             <div onClick={(e) => { e.stopPropagation() }} className="location-detail position-relative">
                                 <div id={`location-popUp-${index}`} className="location-popUp hidden-o gap-2">
                                     {edit.location ?
-                                        <input ref={refLocation} id={`locationInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeLocationEdit(e) : null} onChange={(e) => { quickUpdate.updateLocation(task.id, e); resizeLocationInput() }} type="text" className="input-style4 font-jakarta" value={task.location} />
+                                        <input ref={refLocation} id={`locationInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeLocationEdit(e) : null} onChange={(e) => { quickUpdate.updateLocation(task.id, e.target.value); resizeLocationInput() }} type="text" className="input-style4 font-jakarta" value={task.location ? task.location : ""} />
                                         :
-                                        <p className="m-0 font-jakarta ws-nowrap">{task.location}</p>
+                                        <p className="m-0 font-jakarta ws-nowrap">{task.location ? task.location : ""}</p>
                                     }
                                     <span onClick={() => editLocation()} className="material-symbols-outlined medium o-50 hoverOpaque pointer">
                                         edit
@@ -534,17 +591,19 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 </span>
                             </div>
                             <div onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, 'frequency', task.frequency) }} className="frequency-detail">
-                                <p className="m-0 purple-text m-auto">{task.frequency}</p>
+                                <p className="purple-text m-auto">{task.frequency}</p>
                             </div>
-                            <div className="participants-detail">
-                                <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
-                                    <div className="circle">
-                                        <span className="material-symbols-outlined medium">
-                                            add
-                                        </span>
+                            {!mobileWidth &&
+                                <div className="participants-detail">
+                                    <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
+                                        <div className="circle">
+                                            <span className="material-symbols-outlined medium">
+                                                add
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                             <div className="remove-task-btn hoverSlightFade">
                                 <span onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete") }} className="material-symbols-outlined m-auto">
                                     delete
@@ -553,8 +612,8 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                         </div>
                     </div>
                 </div>
-            </div>
-            </>
+            </div >
+
         </>
     )
 }

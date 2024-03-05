@@ -280,14 +280,14 @@ const CreateCategoryModal = ({ open, onClose }) => {
     }
     return (
         <div className="overlay">
-            <div className="create-category-modal">
-                <p onClick={() => printNewCategory()} className="m-0 box-title">Create New Category</p>
+            <div className={`create-category-modal${darkMode ? "-dark" : ""}`}>
+                <p onClick={() => printNewCategory()} className={`m-0 box-title${darkMode ? "-dark" : ""}`}>Create New Category</p>
                 <hr className='w-100' />
 
 
                 <p className="m-0 ml-1">Category Name</p>
                 <div className="name-and-color flx-r">
-                    <input onChange={(e) => updateCategoryName(e)} type="text" className="input-box flx-1" placeholder='Enter category name' />
+                    <input onChange={(e) => updateCategoryName(e)} type="text" className={`input-box${darkMode ? "-dark" : "" } flx-1`} placeholder='Enter category name' />
                     {/* <select name="color" id="colorSelect">
                         <option></option>
                     </select> */}
@@ -297,7 +297,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
                 <div className="flx-r w-100 just-sb">
                     <div id='none' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('none'); updateColor('none')}} className="color-circle cc-none position-absolute abs-center">
-                            <span className="material-symbols-outlined large position-absolute abs-center">
+                            <span className="material-symbols-outlined large position-absolute abs-center dark-text">
                                 close
                             </span>
                         </div>
@@ -354,7 +354,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
                                 search
                             </span>
                         </div>
-                        <input onChange={(e) => setSearchQuery(e.target.value)} type="text" className="input-box padr" placeholder='Search' />
+                        <input onChange={(e) => setSearchQuery(e.target.value)} type="text" className={`input-box${darkMode ? "-dark" : ""} padr`} placeholder='Search' />
                     </div>
                 </div>
                 <div className="flx-r flx-wrap">
@@ -370,8 +370,8 @@ const CreateCategoryModal = ({ open, onClose }) => {
                 </div>
 
                 <div className="flx-r just-ce gap-4 position-bottom">
-                    <button onClick={() => addCategory()} className="btn-primary">Create Category</button>
-                    <button onClick={() => onClose()} className="btn-secondary">Cancel</button>
+                    <button onClick={() => addCategory()} className={`btn-primary${darkMode ? "-dark" :""}`}>Create Category</button>
+                    <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""}`}>Cancel</button>
                 </div>
             </div>
         </div>

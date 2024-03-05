@@ -76,9 +76,9 @@ const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }
 
     return (
         <div className="overlay">
-            <div className="timepicker-modal">
+            <div className={`timepicker-modal${darkMode ? "-dark" : ""}`}>
                 <div className="box-top position-top">
-                    <p className="m-0 box-title">Set Time of Task</p>
+                    <p className={`m-0 box-title${darkMode ? "-dark" : ""}`}>Set Time of Task</p>
                     <hr className='w-100' />
                 </div>
                 <div className="time-input-div">
@@ -87,7 +87,7 @@ const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }
                         <span className="material-symbols-outlined overlay-icon3">
                             schedule
                         </span>
-                        <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className='hour-input-box' placeholder="hh" required>
+                        <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className={`hour-input-box${darkMode ? "-dark" : ""}`} placeholder="hh" required>
                             <option value="" disabled selected hidden>hh</option>
                             <option value="01">1</option>
                             <option value="02">2</option>
@@ -103,7 +103,7 @@ const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }
                             <option value="12">12</option>
                         </select>
                         <div className="">&nbsp;:&nbsp;</div>
-                        <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className='minute-input-box' placeholder="mm" required>
+                        <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className={`minute-input-box${darkMode ? "-dark" : ""}`} placeholder="mm" required>
                             <option value="" disabled selected hidden>mm</option>
                             <option value="00">00</option>
                             <option value="05">05</option>
@@ -120,17 +120,17 @@ const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }
                         </select>
                     </div>
                     {selectedHour && selectedMinute && timeOfDay === "AM" &&
-                        <div onClick={() => setTimeOfDay("PM")} className="todPicker hoverSlighterFade ml-2 pointer">AM</div>
+                        <div onClick={() => setTimeOfDay("PM")} className={`todPicker${darkMode ? "-dark" : ""} hoverSlighterFade ml-2 pointer`}>AM</div>
                     }
                     {selectedHour && selectedMinute && timeOfDay === "PM" &&
-                        <div onClick={() => setTimeOfDay("AM")} className="todPicker hoverSlighterFade ml-2 pointer">PM</div>
+                        <div onClick={() => setTimeOfDay("AM")} className={`todPicker${darkMode ? "-dark" : ""} hoverSlighterFade ml-2 pointer`}>PM</div>
                     }
                 </div>
                 <p onClick={() => clearSelectedTime()} className={`m-0 small gray-text hoverFade pointer ${selectedHour ? null : "hidden-o"}`}>Clear</p>
 
                 <div className="flx-r gap-4 position-bottom">
-                    <button onClick={() => goBack(taskId)} className="btn-secondary">Go Back</button>
-                    <button onClick={() => { quickUpdate.updateEndTime(taskId, selectedHour ? selectedHour + ":" + selectedMinute : null, timeOfDay); onClose() }} className="btn-primary">Done</button>
+                    <button onClick={() => goBack(taskId)} className={`btn-secondary${darkMode ? "-dark" : ""}`}>Go Back</button>
+                    <button onClick={() => { quickUpdate.updateEndTime(taskId, selectedHour ? selectedHour + ":" + selectedMinute : null, timeOfDay); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""}`}>Done</button>
                 </div>
             </div>
         </div>

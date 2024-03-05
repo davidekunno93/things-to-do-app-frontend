@@ -3,6 +3,7 @@ import { DataContext } from '../context/DataProvider'
 import { Fade } from 'react-awesome-reveal'
 import { format } from 'date-fns'
 import ReactDatePicker from 'react-datepicker'
+import Loading from './Loading'
 
 const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     if (!open) return null
@@ -11,10 +12,13 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         categorySelected.innerHTML = task.category ? task.category : "None"
     }, [])
     const { userCategories, setUserCategories } = useContext(DataContext);
+    const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
+    const { databaseOn } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
     const [updatedTask, setUpdatedTask] = useState({
         id: task.id,
+        db_task_id: task.db_task_id ? task.db_task_id : "",
         myDay: task.myDay,
         taskName: task.taskName,
         category: task.category ? task.category : "None",
@@ -152,7 +156,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                 updatedTaskCopy.steps.push({
                     number: n,
                     desc: desc.charAt(0).toUpperCase() + desc.slice(1),
-                    completed: stepsList[i].completed
+                    completed: stepsList[i].completed ? stepsList[i].completed : false
                 })
                 n++
             }
@@ -169,9 +173,21 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     const updateTaskBridgeFunction = async () => {
         if (updatedTask.taskName) {
             let updatedTaskWithSteps = await updateTaskSteps()
+            console.log(updatedTaskWithSteps)
             // see comment in updateTaskSteps function for why the updatedTask state can't be passed through
-            await updateTask(updatedTaskWithSteps)
-            onClose()
+            if (databaseOn) {
+                setIsLoading(true);
+                await updateTask(updatedTaskWithSteps)
+                    .then(() => {
+                        onClose()
+                    }).catch(() => {
+                        setIsLoading(false)
+                        alert('Something went wrong. Please try again')
+                    })
+            } else {
+                await updateTask(updatedTaskWithSteps)
+                onClose()
+            }
         } else {
             alert("Enter a title for your task")
         }
@@ -411,39 +427,31 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     }, [])
 
     const toggleAdvancedSettingsOn = () => {
-        const toggleIcon = document.getElementById('advancedSettingsToggleIcon')
         const settingsAdvanced = document.getElementById('taskSettingsAdvanced')
         const modal = document.getElementById('editTaskModal')
 
         setAdvancedSettingsOn(true)
         // console.log('advanced settings turned on')
-        toggleIcon.innerHTML = "toggle_on"
         modal.style.width = "1024px"
-        // toggleIcon.classList.remove('faint-text')
         settingsAdvanced.classList.remove('d-none')
         wait(300).then(() => {
             settingsAdvanced.classList.remove('o-none')
         })
     }
     const toggleAdvancedSettingsOff = () => {
-        const toggleIcon = document.getElementById('advancedSettingsToggleIcon')
         const settingsAdvanced = document.getElementById('taskSettingsAdvanced')
         const modal = document.getElementById('editTaskModal')
 
         setAdvancedSettingsOn(false)
         // console.log('advanced settings turned off')
-        toggleIcon.innerHTML = "toggle_off"
         settingsAdvanced.classList.add('d-none')
         modal.style.width = "640px"
-        // toggleIcon.classList.add('faint-text')
         settingsAdvanced.classList.add('o-none')
     }
     const toggleAdvancedSettings = () => {
-        const toggleIcon = document.getElementById('advancedSettingsToggleIcon')
-
-        if (toggleIcon.innerHTML === "toggle_on") {
+        if (advancedSettingsOn) {
             toggleAdvancedSettingsOff()
-        } else if (toggleIcon.innerHTML === "toggle_off") {
+        } else {
             toggleAdvancedSettingsOn()
         }
     }
@@ -538,7 +546,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
     // close modal on click outside
     const refModal = useRef(null)
     useEffect(() => {
-        window.addEventListener('click', hideOnClickOutsideWindow, true)
+        // window.addEventListener('click', hideOnClickOutsideWindow, true)
         window.addEventListener('click', hideOnClickOutsideCategoryMenu, true)
     }, [])
     const hideOnClickOutsideWindow = (e) => {
@@ -547,6 +555,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         }
     }
 
+    const [isLoading, setIsLoading] = useState(false);
 
     // testing code
     const printUpdatedTask = () => {
@@ -560,22 +569,26 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
         console.log(tasks)
     }
 
+
     return (
         <>
             <div className="overlay-placeholder">
                 <Fade fraction={0} className='position-absolute z-1000' duration={200} triggerOnce>
                     <div className="overlay">
-                        <div ref={refModal} id='editTaskModal' className="edit-task-modal">
+                        <div ref={refModal} id='editTaskModal' className={`edit-task-modal${darkMode ? "-dark" : ""}`}>
+                            <div className={`loadingScreen ${isLoading ? "" : "hidden-o"}`}>
+                                <Loading open={isLoading} fillContainer={true} />
+                            </div>
                             <div className="toggleAdvancedSettings flx-r">
                                 <p className="m-0 mr-2">Advanced Settings {advancedSettingsOn ? "On" : "Off"} </p>
-                                <span id='advancedSettingsToggleIcon' onClick={() => toggleAdvancedSettings()} className="material-symbols-outlined pointer">
-                                    {/* {advancedSettingsOn ? "toggle_on" : "toggle_off"} */}
-                                    toggle_on
-                                </span>
+                                <div onClick={() => toggleAdvancedSettings()} className={`toggle-option2${darkMode ? "-dark" : ""}`}>
+                                    <div className={`bar${advancedSettingsOn ? "-on" : ""}`}></div>
+                                    <div className={`button${advancedSettingsOn ? "-on" : ""}`}></div>
+                                </div>
                             </div>
 
 
-                            <p className="box-title m-0">Edit Task</p>
+                            <p className={`box-title${darkMode ? "-dark" : ""} m-0`}>Edit Task</p>
                             <hr className='w-100' />
 
                             <div className="flx-r">
@@ -585,13 +598,13 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                     <div className="task-setting">
                                         <label htmlFor='taskTitleInput' className="m-0 ml-1">Task title<span className="red-text">*</span></label>
                                         <div className="input-div">
-                                            <div onClick={() => updateTaskPriority()} id='priorityBtn' className="priority-button overlay-icon-right4 flx-r font-jakarta pointer noPriority">
+                                            <div onClick={() => updateTaskPriority()} id='priorityBtn' className={`priority-button overlay-icon-right4${darkMode ? "-dark" : ""} flx-r font-jakarta pointer noPriority`}>
                                                 <p className="m-0 bold600">High Priority</p>
                                                 <span id='priorityIcon' className="material-symbols-outlined">
                                                     priority_high
                                                 </span>
                                             </div>
-                                            <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className="input-box" />
+                                            <input onChange={(e) => updateTaskName(e)} id='taskTitleInput' type="input" className={`input-box${darkMode ? "-dark" : ""}`} autoComplete='off' />
                                         </div>
                                     </div>
 
@@ -607,7 +620,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                         return <div key={index} onClick={(e) => updateTaskCategory(e)} value={category.categoryName} className='option'>{category.categoryName}</div>
                                                     }) : null}
                                                     {/* <hr className='w-95' /> */}
-                                                    <div value="add-new-category" className='option'>
+                                                    <div onClick={() => setCreateCategoryModalOpen(true)} value="add-new-category" className='option'>
                                                         <div className="align-all-items gap-2">
                                                             <span className="material-symbols-outlined">
                                                                 add
@@ -619,7 +632,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                 <p id="categorySelected" className="m-0">None</p>
                                                 <span className="material-symbols-outlined">expand_more</span>
                                             </div>
-                                            <button onClick={() => toggleMyDay()} id='myDayBtn' className="btn-tertiary my-day-button">
+                                            <button onClick={() => toggleMyDay()} id='myDayBtn' className={`btn-tertiary my-day-button${darkMode ? "-dark" : ""}`}>
                                                 <div className="align-all-items gap-2">
                                                     <p id='myDayText' className="m-0 font20 font-jakarta bold600">Add to My Day</p>
                                                     <span id='myDayIcon' className="material-symbols-outlined medium">
@@ -632,7 +645,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
 
                                     <div className="task-setting">
                                         <label htmlFor='notesInput' className="m-0 ml-1">Notes</label>
-                                        <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className="textarea-box2" />
+                                        <textarea onChange={(e) => updateTaskNotes(e)} id='notesInput' className={`textarea-box2${darkMode ? "-dark" : ""}`} placeholder='Add notes for your task...' />
                                     </div>
 
                                     <div className="task-setting">
@@ -646,7 +659,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                     <span className="material-symbols-outlined overlay-icon2">
                                                         event
                                                     </span>
-                                                    <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className="date-input-box" />
+                                                    <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className={`date-input-box${darkMode ? "-dark" : ""}`} />
                                                 </div>
                                             </div>
                                             <div className="task-time flx-c">
@@ -660,7 +673,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                     </span>
                                                     <div className="time-picker-box">
 
-                                                        <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className='hour-input-box' placeholder="hh" required>
+                                                        <select onChange={(e) => { setSelectedHour(e.target.value); wakeUpMinutes() }} name="time-picker" id="hourInput" className={`hour-input-box${darkMode ? "-dark" : ""}`} placeholder="hh" required>
                                                             <option value="" disabled selected hidden>hh</option>
                                                             <option value="01">1</option>
                                                             <option value="02">2</option>
@@ -676,7 +689,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                             <option value="12">12</option>
                                                         </select>
                                                         <div className="">&nbsp;:&nbsp;</div>
-                                                        <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className='minute-input-box' placeholder="mm" required>
+                                                        <select onChange={(e) => { setSelectedMinute(e.target.value); wakeUpHours() }} name="time-picker" id="minuteInput" className={`minute-input-box${darkMode ? "-dark" : ""}`} placeholder="mm" required>
                                                             <option value="" disabled selected hidden>mm</option>
                                                             <option value="00">00</option>
                                                             <option value="05">05</option>
@@ -693,10 +706,10 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                                         </select>
                                                     </div>
                                                     {selectedHour && selectedMinute && timeOfDay === "AM" &&
-                                                        <div onClick={() => setTimeOfDay("PM")} className="todPicker ml-2 hoverFade pointer">AM</div>
+                                                        <div onClick={() => setTimeOfDay("PM")} className={`todPicker${darkMode ? "-dark" : ""} ml-2 hoverFade pointer`}>AM</div>
                                                     }
                                                     {selectedHour && selectedMinute && timeOfDay === "PM" &&
-                                                        <div onClick={() => setTimeOfDay("AM")} className="todPicker ml-2 hoverFade pointer">PM</div>
+                                                        <div onClick={() => setTimeOfDay("AM")} className={`todPicker${darkMode ? "-dark" : ""} ml-2 hoverFade pointer`}>PM</div>
                                                     }
                                                 </div>
                                             </div>
@@ -711,18 +724,18 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                         <div className="frequencyOptions flx-r">
                                             {Object.keys(frequencySelection).map((option, index) => {
                                                 let selected = frequencySelection[option]
-                                                return <div key={index} onClick={() => { updateFrequencySelection(option); updateTaskFrequency(option) }} className={`${selected ? "underline-option-selected" : "underline-option-unselected"}`}>{option}</div>
+                                                return <div key={index} onClick={() => { updateFrequencySelection(option); updateTaskFrequency(option) }} className={`${selected ? "underline-option-selected" : "underline-option-unselected"} ${darkMode ? selected ? "underline-option-selected-dark" : "underline-option-unselected-dark" : null}`}>{option}</div>
                                             })}
                                         </div>
                                     </div>
 
                                     <div className="task-setting">
                                         <p className="m-0 ml-1">Duration <span onClick={() => { clearDurationSelection(); updateTaskDuration(null) }} className="clearBtn small">Clear</span> </p>
-                                        <div className="selection-box">
+                                        <div className={`selection-box${darkMode ? "-dark" : ""}`}>
                                             {Object.keys(durationSelection).map((option, index) => {
                                                 let selected = durationSelection[option]
-                                                return <div key={index} onClick={() => { updateDurationSelection(option); updateTaskDuration(option) }} className={`${selected ? "selection-selected" : "selection-unselected"}`}>
-                                                    <p className="m-0 m-auto">{option}</p>
+                                                return <div key={index} onClick={() => { updateDurationSelection(option); updateTaskDuration(option) }} className={`${selected ? "selection-selected" : "selection-unselected"} ${darkMode ? selected ? "selection-selected-dark" : "selection-unselected-dark" : ""}`}>
+                                                    <p className="m-auto">{option}</p>
                                                 </div>
                                             })}
                                         </div>
@@ -734,7 +747,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                             <span className="material-symbols-outlined overlay-icon">
                                                 location_on
                                             </span>
-                                            <input id='locationInput' onChange={(e) => updateTaskLocation(e)} type="text" className="location-input-box" placeholder='e.g. Home, 1722 Smith Ave. etc' />
+                                            <input id='locationInput' onChange={(e) => updateTaskLocation(e)} type="text" className={`location-input-box${darkMode ? "-dark" : ""}`} placeholder='e.g. Home, 1722 Smith Ave. etc' />
                                         </div>
                                     </div>
 
@@ -744,7 +757,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                             {stepsList.map((step, stepIndex) => {
                                                 return <div key={stepIndex} className="step-div">
                                                     <div className="overlay-icon2">{step.number})</div>
-                                                    <input onKeyDown={(e) => (e.key === "Enter" ? updateStepsList("add") : null)} id={`stepInput-${stepIndex}`} onChange={(e) => updateStep(e, stepIndex)} type='input' className="step-input-box" />
+                                                    <input onKeyDown={(e) => (e.key === "Enter" ? updateStepsList("add") : null)} id={`stepInput-${stepIndex}`} onChange={(e) => updateStep(e, stepIndex)} type='input' className={`step-input-box${darkMode ? "-dark" : ""}`} autoComplete='off' />
                                                     <div className="closeBtn4 ml-1">
                                                         <span onClick={() => updateStepsList("remove", stepIndex)} className="material-symbols-outlined">
                                                             close
@@ -754,7 +767,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                                             })}
 
 
-                                            <div onClick={() => updateStepsList("add")} className={`addStep ${stepsList.length < 5 ? "pointer" : "faint-text"}`}>
+                                            <div onClick={() => updateStepsList("add")} className={`addStep ${stepsList.length < 5 ? "pointer" : darkMode ? "faint-text-dark" : "faint-text"}`}>
                                                 {stepsList.length < 5 &&
                                                     <span className="material-symbols-outlined large v-align">
                                                         add
@@ -776,8 +789,8 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
                             </div>
 
                             <div className="completeBtns mt-3 flx-r">
-                                <button onClick={() => updateTaskBridgeFunction()} className='btn-primary mr-3'>Update</button>
-                                <button onClick={() => onClose()} className='btn-secondary'>Cancel</button>
+                                <button onClick={() => updateTaskBridgeFunction()} className={`btn-primary${darkMode ? "-dark" : ""} mr-3`}>Update</button>
+                                <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""}`}>Cancel</button>
                                 <div className="task-setting-participants position-right">
                                     <p className="m-0">Participants</p>
                                     <div className="participants-box">
