@@ -5371,6 +5371,7 @@ selection:hover .sub-selection-dark {
   .create-task-mobile,
   .create-task-mobile-empty {
     background-color: white;
+    color: black;
     width: 95%;
     height: 500px;
     margin: auto;
@@ -5380,6 +5381,7 @@ selection:hover .sub-selection-dark {
     padding: 16px 16px 24px 16px;
     box-sizing: border-box;
     transition: 0.2s;
+    
   }
   .welcome-modal {
     width: 95%;

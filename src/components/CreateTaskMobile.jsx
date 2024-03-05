@@ -182,7 +182,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                         <div className="box-content flx-c gap-3 h-100 w-100">
 
                                             <div className="taskTitle">
-                                                <label>Task Title</label>
+                                                <label>Task Title</label><span className="red-text">*</span>
                                                 <div className="flx-r">
                                                     <input type="text" className="input-box w-80" placeholder='What do you need to do?' />
                                                     <div className="select-btn position-right">
@@ -259,7 +259,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                             </div>
 
                                             <div className="task-setting duration">
-                                                <label>Duration <span onClick={() => { clearDurationSelection(); updateTaskDuration(null) }} className="clearBtn small">Clear</span> </label>
+                                                <label>Duration<span className="red-text">*</span> <span onClick={() => { clearDurationSelection(); updateTaskDuration(null) }} className="clearBtn small">Clear</span> </label>
                                                 <div className={`selection-box${darkMode ? "-dark" : ""}`}>
                                                     {Object.keys(durationSelection).map((option, index) => {
                                                         let selected = durationSelection[option]
