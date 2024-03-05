@@ -5,7 +5,7 @@ import { DataContext } from '../context/DataProvider';
 const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
-    
+
     let arr = [1, 2, 3, 4, 5]
     const itemCount = 3
     const dots = arr.slice(0, itemCount)
@@ -27,19 +27,25 @@ const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
                             <div className="box-title">We're so glad you're here!</div>
                             <hr className='w-100' />
 
-                            <div className="carousel-window">
+                            <div className="carousel-window h-100">
                                 <div className="inner" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
-                                    <div className="welcome-item">
-                                        <img src="https://i.imgur.com/x8RwrxS.png" alt="" className="img-blown-up h-center mt-2" />
-                                        <p className="m-0 font-jakarta large center-text mt-2 bold600">Thank you for being a test user of the <i>Things To-Do</i> web application!</p>
+                                    <div className="welcome-item h-100">
+                                        <div className="m-auto">
+                                            <img src="https://i.imgur.com/x8RwrxS.png" alt="" className="img-blown-up h-center mt-2" />
+                                            <p className="m-0 font-jakarta large center-text mt-2 bold600">Thank you for being a test user of the <i>Things To-Do</i> web application!</p>
+                                        </div>
                                     </div>
-                                    <div className="welcome-item">
-                                        <img src="https://i.imgur.com/sOm576g.png" alt="" className="img-blown-up h-center mt-2" />
-                                        <p className="m-0 font-jakarta large center-text mt-2">Feel free to explore, but first... you have <strong>3 missions</strong> to complete.</p>
+                                    <div className="welcome-item h-100">
+                                        <div className="m-auto">
+                                            <img src="https://i.imgur.com/sOm576g.png" alt="" className="img-blown-up h-center mt-2" />
+                                            <p className="m-0 font-jakarta large center-text mt-2 ws-normal">Feel free to explore, but first... you have <strong>3 missions</strong> to complete.</p>
+                                        </div>
                                     </div>
-                                    <div className="welcome-item">
-                                        <img src="https://i.imgur.com/rJWjBQh.png" alt="" className="img-blown-up h-center mt-2" />
-                                        <p className="m-0 font-jakarta large center-text mt-2">Start by hitting the <strong>mission button</strong> <img src="https://i.imgur.com/la8ZiXg.png" alt="" className="img-xsmall v-bott mx-1" /> at the <u>top of the dashboard</u>!</p>
+                                    <div className="welcome-item h-100">
+                                        <div className="m-auto">
+                                            <img src="https://i.imgur.com/rJWjBQh.png" alt="" className="img-blown-up h-center mt-2" />
+                                            <p className="m-0 font-jakarta large center-text mt-2">Start by hitting the <strong>mission button</strong> <img src="https://i.imgur.com/la8ZiXg.png" alt="" className="img-xsmall v-bott mx-1" /> at the <u>top of the dashboard</u>!</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +58,7 @@ const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
                             </div>
                             <div className="flx-r just-en">
                                 {activeIndex === itemCount - 1 ?
-                                    <button onClick={() => {onClose(); setCurrentMission(1)}} className={`btn-primaryflex${darkMode ? "-dark" : ""}`}>Ready!</button>
+                                    <button onClick={() => { onClose(); setCurrentMission(1) }} className={`btn-primaryflex${darkMode ? "-dark" : ""}`}>Ready!</button>
                                     :
                                     <div onClick={() => nextStep()} className="align-all-items pointer btn-match-height hoverFade">
                                         <p className="m-0 font-jakarta bold500">Next</p>

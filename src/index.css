@@ -5381,6 +5381,16 @@ selection:hover .sub-selection-dark {
     box-sizing: border-box;
     transition: 0.2s;
   }
+  .welcome-modal {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .img-blown-up {
+    width: 160px;
+  height: 160px;
+  object-fit: contain;
+  }
 
   .select-btn {
     border-radius: 8px;
@@ -5421,5 +5431,10 @@ selection:hover .sub-selection-dark {
   /* buttons */
   .btn-tertiary {
     padding: 0.6em 0.9em;
+  }
+
+  .box-title {
+    font-size: 20px;
+    text-align: center;
   }
 }
