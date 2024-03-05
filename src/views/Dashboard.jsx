@@ -1230,7 +1230,7 @@ const Dashboard = () => {
                     </div>
                     {/* end mission reminder */}
                     {/* mission reminder button */}
-                    <button onClick={() => toggleMissionReminder()} className="missionReminderButton">
+                    <button onClick={() => toggleMissionReminder()} className="missionReminderButton" style={{ transform: `translateY(${mobileWidth ? "-80px":"0px"})` }}>
                         <span className="material-symbols-outlined lift">
                             rocket_launch
                         </span>
