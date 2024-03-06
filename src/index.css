@@ -3472,6 +3472,7 @@ selection:hover .sub-selection-dark {
   transform: translateY(36px);
   overflow: hidden;
   transition: 0.2s;
+  z-index: 1;
 }
 
 .categorySelections .menu .option {
@@ -5381,18 +5382,9 @@ selection:hover .sub-selection-dark {
     padding: 16px 16px 24px 16px;
     box-sizing: border-box;
     transition: 0.2s;
-    
-  }
-  .welcome-modal {
-    width: 95%;
-    padding: 16px;
+
   }
 
-  .img-blown-up {
-    width: 160px;
-  height: 160px;
-  object-fit: contain;
-  }
 
   .select-btn {
     border-radius: 8px;
@@ -5420,23 +5412,270 @@ selection:hover .sub-selection-dark {
   }
 
   /* inputs */
-  .date-input-box, .hour-input-box, .minute-input-box {
+  .date-input-box,
+  .hour-input-box,
+  .minute-input-box {
     width: 100%;
+    outline: none;
   }
+
   .textarea-box {
     height: 100px;
   }
+
   .step-input-box {
     height: 32px;
   }
 
   /* buttons */
   .btn-tertiary {
-    padding: 0.6em 0.9em;
+    padding: 0.65em 0.9em;
   }
 
   .box-title {
     font-size: 20px;
     text-align: center;
+  }
+
+  .select-btn.noPriority {
+    color: #242424;
+  }
+
+  .select-btn.highPriority {
+    background-color: rgba(255, 0, 0, 0.25);
+    color: red;
+  }
+
+  /* mission elements */
+  .missionReminderBox {
+    width: 280px;
+    right: 32px;
+    bottom: 115px;
+    font-size: small;
+    padding: 16px;
+    z-index: 100;
+  }
+
+  .missionReminderButton:hover .lift {
+    filter: brightness(100%);
+    transform: translateY(-0px);
+    transition: 0.2s;
+  }
+
+  .welcome-modal {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .img-blown-up {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+  }
+
+  .mission-modal {
+    width: 95%;
+    font-size: 14px;
+  }
+
+  .categorySelections .menu {
+    left: 0px;
+    width: 200px;
+  }
+
+  .time-picker {
+    width: 250px;
+    height: 285px;
+    position: absolute;
+    background-color: white;
+    border-radius: 8px;
+    transform: translateX(-120px);
+    border: 1px solid gainsboro;
+    box-shadow: -6px 0 6px rgba(0, 0, 0, 0.07);
+    left: 0;
+    bottom: 38px;
+    padding: 10px 16px 16px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+  .backBtn {
+    position: absolute;
+    bottom: 8px;
+    z-index: 10;
+  }
+  .confirmBtn, .cancelBtn {
+    position: absolute;
+    bottom: 8px;
+    right: 14px;
+    z-index: 10;
+  }
+  .hour-picker-div, .minute-picker-div {
+    margin: auto;
+  }
+  .hour-picker, .minute-picker {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin: auto;
+  }
+  .hour-one, .hour-two, .hour-three, .hour-four, .hour-five, .hour-six, .hour-seven, .hour-eight, .hour-nine, 
+  .hour-ten, .hour-eleven, .hour-twelve, .minute-zero, .minute-five, .minute-ten, .minute-fifteen, .minute-twenty, 
+  .minute-twentyfive, .minute-thirty, .minute-thirtyfive, .minute-fourty, .minute-fourtyfive, .minute-fifty, 
+  .minute-fiftyfive {
+    /* background-color: rgba(0, 0, 255, 0.4); */
+    position: absolute;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+  }
+  .hour-twelve, .minute-zero {
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .hour-one, .minute-five {
+    top: 18px;
+    right: 46px;
+  }
+  .hour-two, .minute-ten {
+    top: 46px;
+    right: 17px;
+  }
+  .hour-three, .minute-fifteen {
+    top: 85px;
+    right: 8px;
+  }
+  .hour-four, .minute-twenty {
+    top: 125px;
+    right: 17px;
+  }
+  .hour-five, .minute-twentyfive {
+    bottom: 22px;
+    right: 46px;
+  }
+  .hour-six, .minute-thirty {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .hour-seven, .minute-thirtyfive {
+    bottom: 22px;
+    left: 46px;
+  }
+  .hour-eight, .minute-fourty {
+    top: 125px;
+    left: 18px;
+  }
+  .hour-nine, .minute-fourtyfive {
+    top: 85px;
+    left: 7px;
+  }
+  .hour-ten, .minute-fifty {
+    top: 46px;
+    left: 19px;
+  }
+  .hour-eleven, .minute-fiftyfive {
+    top: 18px;
+    left: 47px;
+  }
+  
+  .todPicker {
+    width: 24px;
+    height: 28px;
+  }
+
+
+
+
+
+  /* text color shorthands */
+  .dark-text {
+    color: #242424;
+  }
+  .black-text {
+    color: black;
+  }
+  .lightgray-text {
+    color: gainsboro;
+  }
+  .mediumgray-text {
+    color: rgb(160, 160, 160);
+  }
+  .gray-text {
+    color: gray;
+  }
+  .darkgray-text {
+    color: rgb(85, 85, 85);
+  }
+  .darkergray-text {
+    color: rgb(50, 50, 50);
+  }
+  .red-text {
+    color: red;
+  }
+  .darkred-text {
+    color: rgb(200, 0, 0);
+  }
+  .lightred-text {
+    color: rgb(255, 90, 90);
+  }
+  .purple-text {
+    color: rgb(170, 0, 170);
+  }
+  .blue-text {
+    color: rgb(27, 99, 216);
+  }
+  .lightblue-text {
+    color: rgb(95, 156, 255);
+  }
+  .lighterblue-text {
+    color: rgb(150, 188, 255);
+  }
+  .darkblue-text {
+    color: rgb(0, 60, 156);
+  }
+  .darkerblue-text {
+    color: rgb(0, 46, 120);
+  }
+  .green-text {
+    color: #55d400;
+  }
+  .deepgreen-text {
+    color: rgb(0, 150, 0);
+  }
+  .yellow-text {
+    color: #ffd12d;
+  }
+  .darkyellow-text {
+    color: #eab700;
+  }
+  .orange-text {
+    color: #ff7700;
+  }
+  .white-text {
+    color: rgb(255, 255, 255);
+  }
+  .faint-text {
+    color: rgba(0, 0, 0, 0.2);
+  }
+  .faint-text-dark {
+    color: rgba(255, 255, 255, 0.2);
+  }
+  .faintish-text-dark {
+    color: rgba(255, 255, 255, 0.1);
+  }
+  .faintishy-text {
+    color: rgba(0, 0, 0, 0.15);
+  }
+  .faintish-text {
+    color: rgba(0, 0, 0, 0.1);
+  }
+  .fainter-text {
+    color: rgba(0, 0, 0, 0.05);
+  }
+
+  .d-none {
+    display: none;
   }
 }

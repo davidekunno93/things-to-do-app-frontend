@@ -37,7 +37,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                     {/* <img src="https://i.imgur.com/XW1LyNm.png" alt="" className="img-xsmall" /> */}
                                 </div>
                                 <div className="flx just-en">
-                                    <button onClick={() => onClose()} className="btn-primaryflex mt-4">Got it!</button>
+                                    <button onClick={() => onClose()} className="btn-primaryflex mt-4 medium">Got it!</button>
                                 </div>
                             </>
                         }
@@ -62,7 +62,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                 </div>
                                 <p className="m-0 position-bottom small"><strong className='red-text'>IMPORTANT:</strong> Keep these settings in view by clicking the mission reminder button at the <u>bottom right</u> of the page. <img src="https://i.imgur.com/XW1LyNm.png" alt="" className="img-xsmall v-top mx-1" /> </p>
                                 <div className="flx just-en">
-                                    <button onClick={() => onClose()} className="btn-primaryflex mt-4">Got it!</button>
+                                    <button onClick={() => onClose()} className="btn-primaryflex mt-4 medium">Got it!</button>
                                 </div>
                             </>
                         }
@@ -77,7 +77,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                 <img src="https://i.imgur.com/PpnVOqb.png" alt="" className="img-fitWidth" />
                                 <p className="m-0 position-bottom">Select <strong>dump completed tasks</strong> to trade in your task for points. Take note of <strong>how many points</strong> you are awarded at the <u>top of the navbar</u>.</p>
                                 <div className="flx just-en">
-                                    <button onClick={() => onClose()} className="btn-primaryflex mt-4">Got it!</button>
+                                    <button onClick={() => onClose()} className="btn-primaryflex mt-4 medium">Got it!</button>
                                 </div>
                             </>
                         }
