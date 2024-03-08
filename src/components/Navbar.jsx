@@ -14,6 +14,7 @@ const Navbar = () => {
     const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
     const { showDumped, setShowDumped } = useContext(DataContext);
     const { darkMode, setDarkMode } = useContext(DataContext);
+    const { mobileWidth, mobileNavbarOpen, setMobileNavbarOpen } = useContext(DataContext);
 
     // other functions
     function wait(ms) {
@@ -103,10 +104,10 @@ const Navbar = () => {
     return (
         <>
             <MyProfile open={profileOpen} photoURL={user.photoURL ? user.photoURL : "https://i.imgur.com/MacUxKa.png"} onClose={() => setProfileOpen(false)} />
-            <div className={`navbar-holder${darkMode ? "-dark" : ""}`}>
+            <div className={`navbar-holder${darkMode ? "-dark" : ""}`} style={{ transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : "" }%)` }}>
 
 
-                <div className={`native-nav navbar${darkMode ? "-dark" : "-black"}`} style={{ transform: `translateX(-${showNavbar ? "0" : "101"}%)` }}>
+                <div className={`native-nav navbar${darkMode ? "-dark" : "-black"}`} style={{ transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : showNavbar ? "0" : "101"}%)` }}>
 
 
                     <div className="nav-option-cold">

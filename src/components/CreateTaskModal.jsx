@@ -10,21 +10,15 @@ import ToolTip from './ToolTip';
 
 const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
     if (!open) return null
-    // making sure the dashboard page loads the category into the task being created unless it's a sytem category
-    const [taskCategory, setTaskCategory] = useState(category)
+    // category is taking from group which is defined in the dataprovider as any selected category that is a userCategories
     useEffect(() => {
-        let newTaskCopy = { ...newTask }
-        newTaskCopy.category = taskCategory
-        setNewTask(newTaskCopy)
-    }, [taskCategory])
-    useEffect(() => {
+        // upon page mount make the category selected the same as the current user Category on dashboard
         let categorySelected = document.getElementById('categorySelected')
-        if (category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" || category === "No Category") {
-            category = null
-            setTaskCategory(null)
+        if (category) {
+            categorySelected.innerHTML = category
         }
-        categorySelected.value = category ? category : "No Category"
     }, [])
+    
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
@@ -35,7 +29,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
         id: taskLastInArr[0] ? parseInt(taskLastInArr[0]) + 1 : 1,
         myDay: false,
         taskName: "",
-        category: taskCategory ? taskCategory : null,
+        category: category,
         notes: null,
         highPriority: false,
         endDate: null,
@@ -612,14 +606,7 @@ const CreateTaskModal = ({ open, category, tasks, setTasks, onClose }) => {
                                                     <p id="categorySelected" className="m-0">None</p>
                                                     <span className="material-symbols-outlined">expand_more</span>
                                                 </div>
-                                                {/* <select onChange={(e) => updateTaskCategory(e)} name="categories" className={`categorySelection${darkMode ? "-dark" : ""}`} id="categorySelected">
-                                                    <option value="No Category">No Category</option>
-                                                    {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
-                                                        let category = userCategories.categories[categoryName]
-                                                        return <option key={index} value={category.categoryName}>{category.categoryName}</option>
-                                                    }) : null}
-                                                    <option value="CreateNew">-- Create New Category --</option> 
-                                                </select> */}
+                                        
                                                 <button onClick={() => toggleMyDay()} id='myDayBtn' className={`btn-tertiary my-day-button${darkMode ? "-dark" : ""}`}>
                                                     <div className="align-all-items gap-2">
                                                         <p id='myDayText' className="m-0 font20 font-jakarta bold600">Add to My Day</p>

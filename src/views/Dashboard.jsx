@@ -23,9 +23,10 @@ import CreateTaskMobile from '../components/CreateTaskMobile';
 
 
 const Dashboard = () => {
-    const { mobileWidth, showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories, missionsOn, setMissionsOn, databaseOn } = useContext(DataContext);
+    const { mobileWidth, showNavbar, setShowNavbar, tasks, setTasks, user, setUser, users, categories, selectedCategory, setSelectedCategory, userCategories, setUserCategories, group, setGroup, missionsOn, setMissionsOn, databaseOn } = useContext(DataContext);
     const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
     const { showDumped, setShowDumped } = useContext(DataContext);
+    const { mobileNavbarOpen, setMobileNavbarOpen } = useContext(DataContext);
     const { levelUpModalOpen, setLevelUpModalOpen } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
@@ -91,8 +92,8 @@ const Dashboard = () => {
     // create new task modal
     const openCreateNewTask = () => {
         if (mobileWidth) {
-            setCreateTaskMobileOpen(true) 
-        } else {    
+            setCreateTaskMobileOpen(true)
+        } else {
             setNewTaskModalOpen(true)
         }
     }
@@ -176,7 +177,7 @@ const Dashboard = () => {
         if (refMenu.current && !refMenu.current.contains(e.target)) {
             closeTaskBoxToolTip()
             hideCategoryPopUp()
-            hideCompletedPopUp()
+            // hideCompletedPopUp()
         }
     }
     const closeTaskBoxToolTip = () => {
@@ -691,18 +692,18 @@ const Dashboard = () => {
         let popUp = document.getElementById('categoryPopUp')
         popUp.classList.toggle('hidden-o')
     }
-    const showCompletedPopUp = () => {
-        let popUp = document.getElementById('completedPopUp')
-        popUp.classList.remove('hidden-o')
-    }
-    const hideCompletedPopUp = () => {
-        let popUp = document.getElementById('completedPopUp')
-        popUp.classList.add('hidden-o')
-    }
-    const toggleCompletedPopUp = () => {
-        let popUp = document.getElementById('completedPopUp')
-        popUp.classList.toggle('hidden-o')
-    }
+    // const showCompletedPopUp = () => {
+    //     let popUp = document.getElementById('completedPopUp')
+    //     popUp.classList.remove('hidden-o')
+    // }
+    // const hideCompletedPopUp = () => {
+    //     let popUp = document.getElementById('completedPopUp')
+    //     popUp.classList.add('hidden-o')
+    // }
+    // const toggleCompletedPopUp = () => {
+    //     let popUp = document.getElementById('completedPopUp')
+    //     popUp.classList.toggle('hidden-o')
+    // }
     const clearCategory = (categoryName) => {
         // remove category from all tasks currently assigned to this category
         let tasksArr = Object.values(tasks)
@@ -1186,8 +1187,8 @@ const Dashboard = () => {
             <MissionCompletedModal open={missionCompletedModalOpen} currentMission={currentMission} setCurrentMission={setCurrentMission} closeMissionReminder={() => setMissionReminderOpen(false)} onClose={closeMissionCompletedModal} />
             <MissionModal open={missionModalOpen} currentMission={currentMission} missionProgress={missionProgress} checkMissionCompleted={checkMissionCompleted} activateFeedbackAlert={() => setFeedbackAlert(true)} onClose={closeMissionModal} />
             <WelcomeModal open={welcomeModalOpen} setCurrentMission={setCurrentMission} onClose={() => setWelcomeModalOpen(false)} />
-            <CreateTaskMobile open={createTaskMobileOpen} category={selectedCategory} tasks={tasks} setTasks={setTasks} onClose={() => setCreateTaskMobileOpen(false)} />
-            <CreateTaskModal open={newTaskModalOpen} category={selectedCategory} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
+            <CreateTaskMobile open={createTaskMobileOpen} category={group} tasks={tasks} setTasks={setTasks} onClose={() => setCreateTaskMobileOpen(false)} />
+            <CreateTaskModal open={newTaskModalOpen} category={group} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
             <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} db_task_id={quickUpdateSettings.db_task_id} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} dumpCompletedTasks={dumpCompletedTasks} />
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
             <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
@@ -1230,7 +1231,7 @@ const Dashboard = () => {
                     </div>
                     {/* end mission reminder */}
                     {/* mission reminder button */}
-                    <button onClick={() => toggleMissionReminder()} className="missionReminderButton" style={{ transform: `translateY(${mobileWidth ? "-80px":"0px"})`, zIndex: `${mobileWidth ? "10" : "100000"}` }}>
+                    <button onClick={() => toggleMissionReminder()} className="missionReminderButton" style={{ transform: `translateY(${mobileWidth ? "-80px" : "0px"})`, zIndex: `${mobileWidth ? "10" : "100000"}` }}>
                         <span className="material-symbols-outlined lift">
                             rocket_launch
                         </span>
@@ -1296,7 +1297,10 @@ const Dashboard = () => {
 
                     {/* Page body starts here */}
                     {/* Page sub-title section */}
-                    <div className="carousel-window">
+                    <div className="carousel-window position-relative">
+                        <div onClick={() => setMobileNavbarOpen(mobileNavbarOpen => !mobileNavbarOpen)} className={`hamburger-icon${darkMode ? "-dark" : ""} ${mobileWidth ? "" : "d-none"}`}>
+                            <span className="material-symbols-outlined">menu</span>
+                        </div>
                         <div className="inner" style={{ transform: `translateX(${showDumped ? "-100%" : "0%"})` }}>
                             {/* Normal Tasks carousel item */}
                             <div className="carousel-item3">
@@ -1455,7 +1459,10 @@ const Dashboard = () => {
                                                 </div>
                                             }
                                             {!mobileWidth &&
-                                                <div className="rightHandSide flx-r flx- just-sb">
+                                                <div className="rightHandSide flx-r just-sb">
+                                                    <div className="category">
+                                                        <p className="m-0">Category</p>
+                                                    </div>
                                                     <div className="myDay">
                                                         <p className="m-0">My Day</p>
                                                     </div>
@@ -1489,6 +1496,12 @@ const Dashboard = () => {
                                                     return <TaskBox task={task} index={index} quickTaskUpdates={quickTaskUpdates} openQuickUpdateModal={openQuickUpdateModal} openEditTaskModal={openEditTaskModal} openDatePickerModal={openDatePickerModal} openDateAndTimePickerModal={openDateAndTimePickerModal} deleteTaskFromDB={deleteTaskFromDB} selectedCategory={selectedCategory} selectedForDump={selectedForDump} dumpSelection={dumpSelection} />
                                                 }
                                             })}
+                                            {selectedCategory !== "completed" && categories[selectedCategory + "Completed"].length > 0 ?
+                                                <div className="flx-r align-c gray-text">
+                                                    <p className="m-0 font-jakarta">Completed</p>
+                                                    <hr className='w-90 dash-border' />
+                                                </div>
+                                                : null}
                                             {Object.values(tasks).map((task, index) => {
                                                 if (categories[selectedCategory + "Completed"]) {
                                                     if (categories[selectedCategory + "Completed"].includes(task.id)) {

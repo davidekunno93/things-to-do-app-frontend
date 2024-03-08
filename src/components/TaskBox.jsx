@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import { DataContext } from '../context/DataProvider'
 
 const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEditTaskModal, openDatePickerModal, openDateAndTimePickerModal, selectedCategory, selectedForDump, dumpSelection, deleteTaskFromDB }) => {
-    const { userCategories, setUserCategories } = useContext(DataContext);
+    const { userCategories, setUserCategories, group } = useContext(DataContext);
     const { firstTask, setFirstTask } = useContext(DataContext);
     const { databaseOn } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
@@ -383,7 +383,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                 </div>
                 {/* end priority indicator popup */}
                 {/* taskbar options */}
-                <div className="section">
+                <div className="taskbar-options section">
                     <div id={`taskBox-toolTip-${index}`} className={`taskBox-toolTip d-none ${darkMode ? "taskBox-toolTip-dark" : null}`} style={{ width: task.myDay ? 216 : 174 }}>
                         <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id) }}>
                             <span className={`material-symbols-outlined ${darkMode ? "blue-text" : null}`}>
@@ -414,6 +414,12 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         </span>
                                     </div>
                                 }) : null}
+                                {task.category && task.category !== "None" &&
+                                <div onClick={() => quickUpdate.updateCategory(task.id, "None")} className="option">
+                                    <span className="material-symbols-outlined large catTinyIcon mr-1">block</span>
+                                    <p className="m-0">None</p>
+                                </div>
+                                }
 
                             </div>
                         </selection>
@@ -457,6 +463,13 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             }
                         </div>
                         <div id={`simpleIconsTray-${index}`} className="simple-icons-tray flx-r gap-2 just-sb">
+                            {!mobileWidth && task.category && task.category !== "None" && !group &&
+                            <div className="group-detail-holder">
+                                <div className={`group-detail group-detail${userCategories.categories[task.category].color ? "-" + userCategories.categories[task.category].color : ""}`}>
+                                    <p className="m-auto">{task.category}</p>
+                                </div>
+                            </div>
+                            }
                             <div onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }} className="myDay-detail">
                                 <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : darkMode ? "darkgray-text" : "faintish-text"}`}>
                                     sunny

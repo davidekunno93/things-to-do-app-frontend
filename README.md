@@ -66,6 +66,7 @@ Host backend (on render?)
 *******
 **MVP ONE**
 *******
+limit category dropdown list's height in task modals
 *create category gives new category next order index/del category reshuffles order indexes*
 edit category - name, color, icon
 upon creation of 5th category tell popup for user to scroll categories to see more - add scroll indicators that disappear if you get to the end of the scroll

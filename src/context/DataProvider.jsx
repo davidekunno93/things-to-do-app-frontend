@@ -21,8 +21,8 @@ const DataProvider = (props) => {
     })
     useEffect(() => {
         if (user.points >= user.pointsForLevelUp) {
-            let userCopy = {...user}
-            userCopy.level ++
+            let userCopy = { ...user }
+            userCopy.level++
             userCopy.points = userCopy.points - userCopy.pointsForLevelUp
             userCopy.pointsForLevelUp = userCopy.pointsForLevelUp + 15
             // if auth save changes to database
@@ -31,10 +31,10 @@ const DataProvider = (props) => {
             // open level up modal
             setLevelUpModalOpen(true);
         } else if (user.points < 0) {
-            let userCopy = {...user}
+            let userCopy = { ...user }
             userCopy.pointsForLevelUp = userCopy.pointsForLevelUp - 15
             userCopy.points = userCopy.points + userCopy.pointsForLevelUp
-            userCopy.level --
+            userCopy.level--
             setUser(userCopy)
         }
     }, [user])
@@ -260,6 +260,15 @@ const DataProvider = (props) => {
         categoryOrder: ["Car", "Home", "Health"]
     })
     const [selectedCategory, setSelectedCategory] = useState("allTasks")
+    const [group, setGroup] = useState(null)
+    useEffect(() => {
+        if (userCategories.categoryOrder.includes(selectedCategory)) {
+            setGroup(selectedCategory)
+        } else {
+            setGroup(null)
+        }
+    }, [selectedCategory])
+    // sorting the categories
     useEffect(() => {
         let allTasksArr = []
         // count # of tasks in My Day
@@ -270,6 +279,7 @@ const DataProvider = (props) => {
         let priorityCompletedArr = []
         // count # of tasks with end dates that are earlier than today - overdue
         let overdueArr = []
+        let overdueCompletedArr =[]
         // count # of completed tasks
         let completedArr = []
         // count # of tasks with end dates equal to or later than today - upcoming
@@ -282,7 +292,6 @@ const DataProvider = (props) => {
         const tasksArr = Object.values(tasks)
         for (let i = 0; i < tasksArr.length; i++) {
             if (!tasksArr[i].dumped) {
-                allTasksArr.push(tasksArr[i].id)
                 if (tasksArr[i].completed) {
                     completedArr.push(tasksArr[i].id)
                     if (tasksArr[i].myDay) {
@@ -295,9 +304,12 @@ const DataProvider = (props) => {
                         // at 11:32PM a task w/ end date on the same day was put in over due, I'm comparing end date to yesterday in order to get around that
                         if (new Date(tasksArr[i].endDate) > new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24)) {
                             upcomingCompletedArr.push(tasksArr[i].id)
+                        } else {
+                            overdueCompletedArr.push(tasksArr[i].id)
                         }
                     }
                 } else {
+                    allTasksArr.push(tasksArr[i].id)
                     if (tasksArr[i].myDay) {
                         myDayArr.push(tasksArr[i].id)
                     }
@@ -327,7 +339,7 @@ const DataProvider = (props) => {
         }
         let finalCategories = {
             allTasks: allTasksArr,
-            allTasksCompleted: [],
+            allTasksCompleted: completedArr,
             myDay: myDayArr,
             myDayCompleted: myDayCompletedArr,
             upcoming: upcomingArr,
@@ -335,6 +347,7 @@ const DataProvider = (props) => {
             priority: priorityArr,
             priorityCompleted: priorityCompletedArr,
             overdue: overdueArr,
+            overdueCompleted: overdueCompletedArr,
             completed: completedArr,
             dumped: dumpedArr
         }
@@ -346,13 +359,15 @@ const DataProvider = (props) => {
                 let categoryArr = []
                 let categoryCompletedArr = []
                 for (let i = 0; i < tasksArr.length; i++) {
-                    if (tasksArr[i].completed) {
-                        if (tasksArr[i].category === category.categoryName) {
-                            categoryCompletedArr.push(tasksArr[i].id)
-                        }
-                    } else {
-                        if (tasksArr[i].category === category.categoryName) {
-                            categoryArr.push(tasksArr[i].id)
+                    if (!tasksArr[i].dumped) {
+                        if (tasksArr[i].completed) {
+                            if (tasksArr[i].category === category.categoryName) {
+                                categoryCompletedArr.push(tasksArr[i].id)
+                            }
+                        } else {
+                            if (tasksArr[i].category === category.categoryName) {
+                                categoryArr.push(tasksArr[i].id)
+                            }
                         }
                     }
                 }
@@ -402,34 +417,49 @@ const DataProvider = (props) => {
     ]
     const [showDumped, setShowDumped] = useState(false);
     const levelKey = {
-        "Level 1" : 45,
-        "Level 2" : 60,
-        "Level 3" : 75,
-        "Level 4" : 90,
-        "Level 5" : 105,
-        "Level 6" : 120,
-        "Level 7" : 135,
-        "Level 8" : 150,
-        "Level 9" : 165,
-        "Level 10" : 180,
-        "Level 11" : 195,
-        "Level 12" : 210,
-        "Level 13" : 225,
-        "Level 14" : 240,
-        "Level 15" : 255,
-        "Level 16" : 270,
-        "Level 17" : 285,
-        "Level 18" : 300,
-        "Level 19" : 315,
-        "Level 20" : 330,
-        "Level 21" : 345,
-        "Level 22" : 360,
-        "Level 23" : 375,
-        "Level 24" : 390,
-        "Level 25" : 405,
+        "Level 1": 45,
+        "Level 2": 60,
+        "Level 3": 75,
+        "Level 4": 90,
+        "Level 5": 105,
+        "Level 6": 120,
+        "Level 7": 135,
+        "Level 8": 150,
+        "Level 9": 165,
+        "Level 10": 180,
+        "Level 11": 195,
+        "Level 12": 210,
+        "Level 13": 225,
+        "Level 14": 240,
+        "Level 15": 255,
+        "Level 16": 270,
+        "Level 17": 285,
+        "Level 18": 300,
+        "Level 19": 315,
+        "Level 20": 330,
+        "Level 21": 345,
+        "Level 22": 360,
+        "Level 23": 375,
+        "Level 24": 390,
+        "Level 25": 405,
     }
 
+    // mobile code
     const [mobileWidth, setMobileWidth] = useState(false);
+    const [mobileNavbarOpen, setMobileNavbarOpen] = useState(false);
+    const mobileShowNavbar = () => {
+        setMobileNavbarOpen(true)
+    }
+    const mobileHideNavbar = () => {
+        setMobileNavbarOpen(false)
+    }
+    const mobileToggleNavbar = () => {
+        if (mobileNavbarOpen) {
+            mobileHideNavbar()
+        } else {
+            mobileShowNavbar()
+        }
+    }
     const handleResize = () => {
         if (document.body.clientWidth < 375) {
             setMobileWidth(true)
@@ -438,7 +468,7 @@ const DataProvider = (props) => {
             setMobileWidth(false)
             // console.log('false')
         }
-        console.log(document.body.clientWidth)
+        // console.log(document.body.clientWidth)
     }
     useEffect(() => {
         handleResize()
@@ -451,7 +481,7 @@ const DataProvider = (props) => {
     const [missionsOn, setMissionsOn] = useState(true);
 
     return (
-        <DataContext.Provider value={{ 'mobileWidth': mobileWidth, 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask' : firstTask, 'setFirstTask' : setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'createCategoryModalOpen': createCategoryModalOpen, 'setCreateCategoryModalOpen': setCreateCategoryModalOpen, 'setUserCategories': setUserCategories, 'showDumped': showDumped, 'setShowDumped': setShowDumped, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode' : setDarkMode, 'levelUpModalOpen': levelUpModalOpen, 'setLevelUpModalOpen': setLevelUpModalOpen }}>
+        <DataContext.Provider value={{ 'mobileWidth': mobileWidth, 'mobileNavbarOpen': mobileNavbarOpen, 'setMobileNavbarOpen': setMobileNavbarOpen, 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask': firstTask, 'setFirstTask': setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'group': group, 'setGroup': setGroup, 'createCategoryModalOpen': createCategoryModalOpen, 'setCreateCategoryModalOpen': setCreateCategoryModalOpen, 'setUserCategories': setUserCategories, 'showDumped': showDumped, 'setShowDumped': setShowDumped, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode': setDarkMode, 'levelUpModalOpen': levelUpModalOpen, 'setLevelUpModalOpen': setLevelUpModalOpen }}>
             {props.children}
         </DataContext.Provider>
     )

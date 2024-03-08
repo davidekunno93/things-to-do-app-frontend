@@ -10,19 +10,19 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
     const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
 
-
-    const [taskCategory, setTaskCategory] = useState(category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" ? null : category)
-
     useEffect(() => {
+        // upon page mount make the category selected the same as the current user Category on dashboard
         let categorySelected = document.getElementById('categorySelected')
-        categorySelected.value = category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" ? "None" : category
+        if (category) {
+            categorySelected.innerHTML = category
+        }
     }, [])
     let taskLastInArr = Object.keys(tasks).slice(-1)
     const [newTask, setNewTask] = useState({
         id: taskLastInArr[0] ? parseInt(taskLastInArr[0]) + 1 : 1,
         myDay: false,
         taskName: "",
-        category: category === "allTasks" || category === "myDay" || category === "upcoming" || category === "priority" || category === "overdue" || category === "completed" ? null : category,
+        category: category,
         notes: null,
         highPriority: false,
         endDate: null,
@@ -484,7 +484,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                             <div className="taskTitle taskPriorirty">
                                                 <label>Task Title</label><span className="red-text">*</span>
                                                 <div className="flx-r">
-                                                    <input onChange={(e) => updateTaskName(e)} type="text" className="input-box w-80" placeholder='What do you need to do?' />
+                                                    <input onChange={(e) => updateTaskName(e)} type="text" className="input-box w-82" placeholder='What do you need to do?' />
                                                     <div id='priorityBtn' onClick={() => updateTaskPriority()} className="select-btn position-right noPriority">
                                                         <span className="material-symbols-outlined m-auto">
                                                             exclamation
