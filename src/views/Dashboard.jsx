@@ -1312,64 +1312,72 @@ const Dashboard = () => {
                                             <>
                                                 <div className="tab-container tb-myDay mb-2">
                                                     <div className="align-all-items gap-2">
-                                                        <span className="material-symbols-outlined xx-large bold700">
+                                                        <span className={`material-symbols-outlined xx-large bold700 ${mobileWidth && "mt-2"}`}>
                                                             sunny
                                                         </span>
-                                                        <p className={`m-0 xx-large ${darkMode ? "white-text" : "dark-text"} `}><strong>My Day</strong></p>
+                                                        <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"} ${darkMode ? "white-text" : "dark-text"} `}><strong>My Day</strong></p>
                                                     </div>
                                                 </div>
-                                                <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
+                                                <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
+                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
+                                                </div>
                                             </>
                                         }
                                         {selectedCategory === "upcoming" &&
                                             <>
                                                 <div className={`tab-container ${darkMode ? "tb-upcoming-dark lightblue-text" : "tb-upcoming darkblue-text"} mb-2`}>
                                                     <div className="align-all-items gap-2">
-                                                        <span className="material-symbols-outlined xx-large">
+                                                        <span className={`material-symbols-outlined xx-large ${mobileWidth && "mt-2"}`}>
                                                             event_upcoming
                                                         </span>
-                                                        <p className="m-0 xx-large">Upcoming Tasks</p>
+                                                        <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"}`}>Upcoming Tasks</p>
                                                     </div>
                                                 </div>
-                                                <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> In order to incentive users to add an end date/deadline to their tasks, you'll get an extra offering point for completing and dumping these!</p>
+                                                <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
+                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> In order to incentive users to add an end date/deadline to their tasks, you'll get an extra offering point for completing and dumping these!</p>
+                                                </div>
                                             </>
                                         }
                                         {selectedCategory === "priority" &&
                                             <>
                                                 <div className={`tab-container ${darkMode ? "tb-priority-dark lightred-text" : "tb-priority darkred-text"} mb-2`}>
                                                     <div className="align-all-items gap-2">
-                                                        <span className="material-symbols-outlined xx-large">
+                                                        <span className={`material-symbols-outlined xx-large ${mobileWidth && "mt-2"}`}>
                                                             priority_high
                                                         </span>
-                                                        <p className="m-0 xx-large">Priority Tasks</p>
+                                                        <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"}`}>Priority Tasks</p>
                                                     </div>
                                                 </div>
-                                                <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Priority tasks will earn you 1 extra offering point when you dump them. Unless of course they're overdue then they're worth even less than a non-priority task.</p>
+                                                <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
+                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Priority tasks will earn you 1 extra offering point when you dump them. Unless of course they're overdue then they're worth even less than a non-priority task.</p>
+                                                </div>
                                             </>
                                         }
                                         {selectedCategory === "overdue" &&
                                             <>
                                                 <div className="tab-container tb-overdue darkyellow-text mb-2">
                                                     <div className="align-all-items gap-2">
-                                                        <span className="material-symbols-outlined xx-large">
+                                                        <span className={`material-symbols-outlined xx-large ${mobileWidth && "mt-2"}`}>
                                                             calendar_clock
                                                         </span>
-                                                        <p className="m-0 xx-large">Overdue Tasks</p>
+                                                        <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"}`}>Overdue Tasks</p>
                                                     </div>
                                                 </div>
-                                                <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> We don't have to tell you to try and complete tasks before they're overdue because you know that already. But did you know overdue tasks earn you less points when you dump them?</p>
+                                                <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
+                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> We don't have to tell you to try and complete tasks before they're overdue because you know that already. But did you know overdue tasks earn you less points when you dump them?</p>
+                                                </div>
                                             </>
                                         }
                                         {selectedCategory === "completed" &&
                                             <>
-                                                <div className="flx-r w-100">
+                                                <div className={`${mobileWidth ? "flx-c" : "flx-r"} w-100`}>
 
                                                     <div className="tab-container position-relative tb-completed green-text mb-2">
                                                         <div className="align-all-items gap-2">
-                                                            <span className="material-symbols-outlined xx-large">
+                                                            <span className={`material-symbols-outlined xx-large ${mobileWidth && "mt-2"}`}>
                                                                 done
                                                             </span>
-                                                            <p className="m-0 xx-large">Completed Tasks</p>
+                                                            <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"}`}>Completed Tasks</p>
                                                         </div>
                                                     </div>
                                                     <div className="align-all-items gap-2 position-right">
@@ -1377,20 +1385,29 @@ const Dashboard = () => {
                                                         <span className="material-symbols-outlined large">arrow_forward</span>
                                                     </div>
                                                 </div>
-                                                <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> After completing tasks, click the <strong>Dump Completed Tasks</strong> button to trade them in for points!</p>
+                                                <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
+                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> After completing tasks, select tasks and click the <strong>Dump Selected Tasks</strong> button to trade them in for points!</p>
+                                                </div>
                                             </>
                                         }
                                         {selectedCategory === "allTasks" &&
                                             <>
                                                 <div className="tab-container tb-none mb-2">
                                                     <div className="align-all-items gap-2">
-                                                        <span className={`material-symbols-outlined xx-large ${darkMode ? "gray-text" : "dark-text"}`}>
+                                                        <span className={`material-symbols-outlined ${mobileWidth && "mt-2"} xx-large ${darkMode ? "gray-text" : "dark-text"}`}>
                                                             list
                                                         </span>
-                                                        <p className={`m-0 xx-large ${darkMode ? "white-text" : "dark-text"}`}>All Tasks</p>
+                                                        <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"} ${darkMode ? "white-text" : "dark-text"}`}>All Tasks</p>
                                                     </div>
                                                 </div>
-                                                <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these deatils on the fly.</p>
+
+                                                <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
+                                                    {!mobileWidth ?
+                                                        <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these details on the fly.</p>
+                                                        :
+                                                        <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Tap to the right of the task title, step description, or notes heading to edit the item and change these deatils on the fly.</p>
+                                                    }
+                                                </div>
                                             </>
                                         }
                                         {selectedCategory !== 'myDay' && selectedCategory !== 'upcoming' && selectedCategory !== 'priority' && selectedCategory !== 'overdue' && selectedCategory !== 'completed' && selectedCategory !== 'allTasks' &&
@@ -1410,8 +1427,8 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="align-all-items gap-2">
-                                                    <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className="img-iconh mr-2" />
-                                                    <p className={`m-0 xx-large ${darkMode ? "white-text" : "dark-text"}`}>{userCategories.categories[selectedCategory].categoryName}</p>
+                                                    <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className={`img-iconh${mobileWidth && "-smaller mt-2"} mr-2`} />
+                                                    <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"} ${darkMode ? "white-text" : "dark-text"}`}>{userCategories.categories[selectedCategory].categoryName}</p>
                                                     <span onClick={() => toggleCategoryPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 pointer">
                                                         more_vert
                                                     </span>
@@ -1423,7 +1440,7 @@ const Dashboard = () => {
                                         {selectedCategory === "completed" ?
                                             <button onClick={() => openConfirmationModal("dump")} className={`${selectedForDump.length > 0 ? "btn-primaryflex-green" : "btn-primaryflex-disabled"} position-right`}>
                                                 <div className="align-all-items">
-                                                    <span className="material-symbols-outlined v-bott mr-2 mt-h large">
+                                                    <span className={`material-symbols-outlined v-bott mr-2 mt-h large`}>
                                                         delete
                                                     </span>
                                                     <p className="m-0">Dump Selected Tasks</p>
@@ -1544,20 +1561,21 @@ const Dashboard = () => {
                                     <div className={`sub-title-section${darkMode ? "-dark" : ""} sticky-top page-container96-byPadding`}>
 
                                         <div className="w-100">
-                                            <div className="flx-r">
+                                            <div className={`${mobileWidth ? "flx-c-reverse" : "flx-r"}`}>
                                                 <div className="align-all-items gap-2">
                                                     <span className="material-symbols-outlined large">arrow_back</span>
                                                     <p onClick={() => setShowDumped(false)} className={`hoverBottomLine${darkMode ? "-white" : "-black"} m-0 pointer`}>View Completed Tasks</p>
                                                 </div>
                                                 <div className="tab-container position-relative tb-completed green-text mb-2 position-right">
                                                     <div className="align-all-items gap-2">
-                                                        <span className="material-symbols-outlined xx-large">
+                                                        <span className={`material-symbols-outlined xx-large ${mobileWidth && "mt-2"}`}>
                                                             delete
                                                         </span>
-                                                        <p className="m-0 xx-large">Dumped Tasks</p>
+                                                        <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"}`}>Dumped Tasks</p>
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Dumped tasks are automatically <strong>deleted after 30 days</strong> from the time they are dumped.</p>
                                         </div>
 

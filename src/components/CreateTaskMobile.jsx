@@ -465,6 +465,15 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         backToHourPicker()
     }
 
+    // other functions
+    const [isLoading, setIsLoading] = useState(false);
+    const startLoading = () => {
+        setIsLoading(true)
+    }
+    const stopLoading = () => {
+        setIsLoading(false)
+    }
+
 
 
     return (
@@ -472,7 +481,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
             <Fade delay={100} duration={200} triggerOnce>
                 <div className="overlay">
                     <Slide direction='up' duration={200} className='w-100 flx' triggerOnce>
-                        <div id='create-task-mobile' className="create-task-mobile">
+                        <div id='create-task-mobile' className={`create-task-mobile${darkMode ? "-dark" : ""}`}>
                             <div className="box-title">Create New Task</div>
                             <hr className='w-100' />
 
@@ -484,8 +493,8 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                             <div className="taskTitle taskPriorirty">
                                                 <label>Task Title</label><span className="red-text">*</span>
                                                 <div className="flx-r">
-                                                    <input onChange={(e) => updateTaskName(e)} type="text" className="input-box w-82" placeholder='What do you need to do?' />
-                                                    <div id='priorityBtn' onClick={() => updateTaskPriority()} className="select-btn position-right noPriority">
+                                                    <input onChange={(e) => updateTaskName(e)} type="text" className={`input-box${darkMode ? "-dark" : ""} w-82`} placeholder='What do you need to do?' />
+                                                    <div id='priorityBtn' onClick={() => updateTaskPriority()} className={`select-btn${darkMode ? "-dark" : ""} position-right noPriority`}>
                                                         <span className="material-symbols-outlined m-auto">
                                                             exclamation
                                                         </span>
@@ -496,7 +505,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                             <div className="taskCategory taskMyDay flx-r gap-2">
                                                 <div className="flx-c flx-1">
                                                     <label>Category</label>
-                                                    <div onClick={() => toggleCategoryMenu()} className="categorySelections">
+                                                    <div onClick={() => toggleCategoryMenu()} className={`categorySelections${darkMode ? "-dark" : ""}`}>
                                                         <div id='categoryMenu' className="menu hidden-o">
                                                             <div onClick={(e) => updateTaskCategory(e)} className="option"><p className="m-0 gray-text">None</p></div>
                                                             {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
@@ -519,13 +528,13 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                 </div>
                                                 <div className="flx-c flx-1">
                                                     <label>My Day</label>
-                                                    <button id='myDayText' onClick={() => toggleMyDay()} className="btn-tertiary small gray-text">Add to My Day</button>
+                                                    <button id='myDayText' onClick={() => toggleMyDay()} className={`btn-tertiary${darkMode ? "-dark" : ""} small gray-text`}>Add to My Day</button>
                                                 </div>
                                             </div>
 
                                             <div className="taskNotes flx-c">
                                                 <label>Notes</label>
-                                                <textarea onChange={(e) => updateTaskNotes(e)} name="" id="task-notes" cols="30" rows="10" className="textarea-box" placeholder='Describe your task...'></textarea>
+                                                <textarea onChange={(e) => updateTaskNotes(e)} name="" id="task-notes" cols="30" rows="10" className={`textarea-box${darkMode ? "-dark" : ""}`} placeholder='Describe your task...'></textarea>
                                             </div>
 
                                             <div className="taskDate advancedSettings flx-c">
@@ -544,11 +553,11 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                     <div className="flx-c flx-1">
                                                         <label>Time</label>
                                                         <div className="time-input-div position-relative">
-                                                            <div id='timePicker' className="time-picker d-none">
+                                                            <div id='timePicker' className={`time-picker d-none`}>
                                                                 <div id='backBtn' onClick={() => backToHourPicker()} className="backBtn blue-text font-jakarta small d-none">Back</div>
                                                                 <div id='confirmBtn' onClick={() => confirmTimePicked()} className="confirmBtn blue-text font-jakarta small d-none">Confirm</div>
                                                                 <div id='cancelBtn' onClick={() => closeTimePicker()} className="cancelBtn blue-text font-jakarta small">Cancel</div>
-                                                                <div className="time-input x-large font-jakarta flx-r m-auto">{hourPicked ? hourPicked : "00"}:{minutePicked ? minutePicked : "00"}
+                                                                <div className={`time-input x-large font-jakarta flx-r m-auto ${!hourPicked ? "faint-text" : darkMode ? "white-text" : "dark-text"}`}>{hourPicked ? hourPicked : "00"}:{minutePicked ? minutePicked : "00"}
                                                                     {hourPicked && timeOfDay === "AM" &&
                                                                         <div onClick={() => setTimeOfDay("PM")} className={`todPicker${darkMode ? "-dark" : ""} ml-2 hoverFade pointer medium`}>AM</div>
                                                                     }
@@ -570,7 +579,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                                     <div onClick={() => pickHour("9")} className="hour-nine"></div>
                                                                     <div onClick={() => pickHour("10")} className="hour-ten"></div>
                                                                     <div onClick={() => pickHour("11")} className="hour-eleven"></div>
-                                                                    <img src="https://i.imgur.com/RGRBIoK.png" alt="" className="hour-picker" />
+                                                                    <img src={`${darkMode ? "https://i.imgur.com/YFmWqd6.png" : "https://i.imgur.com/RGRBIoK.png"}`} alt="" className="hour-picker" />
                                                                 </div>
                                                                 <div id='minutePicker' className="minute-picker-div position-relative d-none">
                                                                     <div onClick={() => pickMinute("00")} className="minute-zero"></div>
@@ -585,13 +594,13 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                                     <div onClick={() => pickMinute("45")} className="minute-fourtyfive"></div>
                                                                     <div onClick={() => pickMinute("50")} className="minute-fifty"></div>
                                                                     <div onClick={() => pickMinute("55")} className="minute-fiftyfive"></div>
-                                                                    <img src="https://i.imgur.com/bgc1fFT.png" alt="" className="minute-picker" />
+                                                                    <img src={`${darkMode ? "https://i.imgur.com/Bf4Gkye.png" : "https://i.imgur.com/bgc1fFT.png"}`} alt="" className="minute-picker" />
                                                                 </div>
                                                             </div>
                                                             <span className="material-symbols-outlined overlay-icon3">
                                                                 schedule
                                                             </span>
-                                                            <input onClick={() => toggleTimePicker()} id='timeInput' className="hour-input-box flx-1" placeholder='hh:mm' readOnly></input>
+                                                            <input onClick={() => toggleTimePicker()} id='timeInput' className={`hour-input-box${darkMode ? "-dark" : ""} flx-1`} placeholder='hh:mm' readOnly></input>
 
                                                         </div>
                                                     </div>

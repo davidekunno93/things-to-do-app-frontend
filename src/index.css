@@ -107,6 +107,10 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
 }
+.flx-c-reverse {
+  display: flex;
+  flex-direction: column-reverse;
+}
 
 .flx-1 {
   flex: 1;
@@ -253,6 +257,10 @@ button:focus-visible {
 
 .img-iconh {
   height: 48px;
+  object-fit: contain;
+}
+.img-iconh-smaller {
+  height: 32px;
   object-fit: contain;
 }
 
@@ -5483,7 +5491,20 @@ selection:hover .sub-selection-dark {
     padding: 16px 16px 24px 16px;
     box-sizing: border-box;
     transition: 0.2s;
-
+  }
+  .create-task-mobile-dark,
+  .create-task-mobile-empty-dark {
+    background-color: #2B2B2B;
+    color: gainsboro;
+    width: 95%;
+    height: 500px;
+    margin: auto;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 24px 16px;
+    box-sizing: border-box;
+    transition: 0.2s;
   }
 
 
@@ -5500,8 +5521,21 @@ selection:hover .sub-selection-dark {
     transition: 0.2s;
     color: black;
   }
+  .select-btn-dark {
+    border-radius: 8px;
+    font-size: medium;
+    height: 36px;
+    width: 36px;
+    /* padding: 8px; */
+    display: flex;
+    box-sizing: border-box;
+    border: none;
+    background-color: #313131;
+    transition: 0.2s;
+    color: black;
+  }
 
-  .categorySelections {
+  .categorySelections, .categorySelections-dark {
     width: 100%;
   }
 
@@ -5519,8 +5553,16 @@ selection:hover .sub-selection-dark {
     width: 100%;
     outline: none;
   }
+  .date-input-box-dark,
+  .hour-input-box-dark,
+  .minute-input-box-dark {
+    background-color: #1C1C1E;
+    color: white;
+    width: 100%;
+    outline: none;
+  }
 
-  .textarea-box {
+  .textarea-box, .textarea-box-dark {
     height: 100px;
   }
 
@@ -5532,17 +5574,21 @@ selection:hover .sub-selection-dark {
   .btn-tertiary {
     padding: 0.65em 0.9em;
   }
+  .btn-tertiary-dark {
+    padding: 0.65em 0.9em;
+    
+  }
 
   .box-title {
     font-size: 20px;
     text-align: center;
   }
 
-  .select-btn.noPriority {
+  .select-btn.noPriority, .select-btn-dark.noPriority {
     color: #242424;
   }
 
-  .select-btn.highPriority {
+  .select-btn.highPriority, .select-btn-dark.highPriority {
     background-color: rgba(255, 0, 0, 0.25);
     color: red;
   }
@@ -5584,7 +5630,7 @@ selection:hover .sub-selection-dark {
   .mission-completed-modal .content {
   }
 
-  .categorySelections .menu {
+  .categorySelections .menu, .categorySelections-dark .menu {
     left: 0px;
     width: 200px;
   }
@@ -5604,7 +5650,26 @@ selection:hover .sub-selection-dark {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    z-index: 1;
   }
+  .time-picker {
+    width: 250px;
+    height: 285px;
+    position: absolute;
+    background-color: #313131;
+    border-radius: 8px;
+    transform: translateX(-120px);
+    border: 1px solid transparent;
+    box-shadow: -6px 0 6px rgba(0, 0, 0, 0.07);
+    left: 0;
+    bottom: 38px;
+    padding: 10px 16px 16px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+  }
+  
   .backBtn {
     position: absolute;
     bottom: 8px;
