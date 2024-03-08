@@ -5506,6 +5506,9 @@ selection:hover .sub-selection-dark {
     box-sizing: border-box;
     transition: 0.2s;
   }
+  .confirmation-modal, .confirmation-modal-dark {
+    width: 94vw;
+  }
 
 
   .select-btn {

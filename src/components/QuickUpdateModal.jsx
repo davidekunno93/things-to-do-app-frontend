@@ -6,6 +6,7 @@ import { DataContext } from '../context/DataProvider'
 const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, db_task_id, detail, option, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
 
     // useEffect(() => {
     //     console.log("detail: " + detail + ", option: " + option)
@@ -60,7 +61,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
 
 
     const [modal, setModal] = useState({
-        width: 500,
+        width: mobileWidth ? "94vw" : 500,
         height: detail === "frequency" || detail === "delete" || detail === "restore" ? 150 : 250
     })
 
@@ -133,7 +134,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                                 <div className="frequencyOptions flx-r">
                                                     {Object.keys(frequencySelection).map((option, index) => {
                                                         let selected = frequencySelection[option]
-                                                        return <div key={index} onClick={() => { updateFrequencySelection(option) }} className={`${selected ? darkMode ? "underline-option-selected-dark" : "underline-option-selected" : darkMode ? "underline-option-unselected-dark" : "underline-option-unselected"}`}>{option}</div>
+                                                        return <div key={index} onClick={() => { updateFrequencySelection(option) }} className={`${selected ? darkMode ? "underline-option-selected-dark" : "underline-option-selected" : darkMode ? "underline-option-unselected-dark" : "underline-option-unselected"} ${mobileWidth && "small"}`}>{option}</div>
                                                     })}
                                                 </div>
                                             </div>
@@ -143,7 +144,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
 
                                     {/* Delete task */}
                                     {detail === 'delete' &&
-                                        <div className="flx-r gap-8 m-auto">
+                                        <div className={`flx-r ${mobileWidth ? "gap-4" : "gap-8"} m-auto`}>
                                             <button onClick={() => { quickUpdate.remove(taskId, db_task_id); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""} wide`}>Yes</button>
                                             <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""} wide`}>No</button>
                                         </div>
@@ -151,7 +152,7 @@ const QuickUpdateModal = ({ open, quickTaskUpdates, dumpCompletedTasks, taskId, 
                                     {/* End delete task */}
                                     {/* Restore task */}
                                     {detail === 'restore' &&
-                                        <div className="flx-r gap-8 m-auto">
+                                        <div className={`flx-r ${mobileWidth ? "gap-4" : "gap-8"} m-auto`}>
                                             <button onClick={() => { quickUpdate.restoreTask(taskId, db_task_id); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""} wide`}>Yes</button>
                                             <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""} wide`}>No</button>
                                         </div>
