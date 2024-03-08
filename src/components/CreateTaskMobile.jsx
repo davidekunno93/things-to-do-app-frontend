@@ -479,7 +479,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                             <div className="carousel-window">
                                 <div className="inner" style={{ transform: `translateX(${advancedSettingsOn ? "-100%" : "0%"})` }}>
                                     <div className="carousel-item3 h-100">
-                                        <div className="box-content flx-c gap-3 h-100 w-100">
+                                        <div className="box-content flx-c gap-3 h-100 w-100 px-1">
 
                                             <div className="taskTitle taskPriorirty">
                                                 <label>Task Title</label><span className="red-text">*</span>
@@ -607,7 +607,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                         </div>
                                     </div>
                                     <div className="carousel-item3 h-100">
-                                        <div className="box-content advancedSettings flx-c h-100 w-100">
+                                        <div className="box-content advancedSettings flx-c h-100 w-100 px-1">
 
                                             <div className="task-setting frequency">
                                                 <label>Frequency<span className="red-text">*</span></label>
