@@ -5576,7 +5576,7 @@ selection:hover .sub-selection-dark {
   }
   .btn-tertiary-dark {
     padding: 0.65em 0.9em;
-    background-color: white;
+    background-color: gainsboro;
   }
 
   .box-title {
