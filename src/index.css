@@ -4571,8 +4571,8 @@ selection:hover .sub-selection-dark {
   width: 30px;
   height: 30px;
   position: relative;
-  border: 2px solid rgba(0, 0, 0, 0.75);
-  border-radius: 50%;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.75);
+  /* border-radius: 50%; */
   transition: 0.3s;
 }
 

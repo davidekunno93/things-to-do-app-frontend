@@ -296,11 +296,12 @@ const CreateCategoryModal = ({ open, onClose }) => {
 
                 <p className="m-0 ml-1 mt-2">Color</p>
                 <div className="flx-r w-100 just-sb">
-                    <div id='none' className="color-circle-container">
+                    <div id='none' className="color-circle-container-selected">
                         <div onClick={() => { updateCategoryColor('none'); updateColor('none') }} className="color-circle cc-none position-absolute abs-center">
-                            <span className="material-symbols-outlined large position-absolute abs-center dark-text">
+                            {/* <span className="material-symbols-outlined large position-absolute abs-center dark-text">
                                 close
-                            </span>
+                            </span> */}
+                            <p className="m-0 xx-small position-absolute abs-center dark-text">None</p>
                         </div>
                     </div>
                     <div id='red' className="color-circle-container">
