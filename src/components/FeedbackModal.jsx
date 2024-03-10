@@ -61,8 +61,8 @@ const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
                                         <img src="https://i.imgur.com/YIcdeNr.png" alt="" className="img-xsmall ml-2" />
                                     </div>
                                     <hr className='w-100'/>
-                                    <p className={`m-0 font-jakarta center-text ${mobileWidth ? "medium" : "x-large"}`}>Click the link to take the feedback Survey!</p>
-                                    <Link to='https://forms.gle/iVciH9gSEX2eQKAVA' target='_blank'>
+                                    <p className={`m-0 font-jakarta center-text ${mobileWidth ? "medium" : "large"}`}>Click the link to take the feedback Survey!</p>
+                                    <Link to='https://forms.gle/pyW3FSzaXkpfvFBE7' target='_blank'>
                                         <div className="align-all-items gap-1 just-ce my-2">
                                             <p className="m-0 ml-2 large">Feedback Survey</p>
                                             <span className="material-symbols-outlined large mt-h">

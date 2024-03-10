@@ -93,7 +93,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                 <div className="flx-c align-c font-jakarta center-text">
                                     <p className="m-0 bold600">Your participation as a test user is greatly appreciated!</p>
                                     <img src="https://i.imgur.com/LELWYjJ.png" alt="" className="img-medium" />
-                                    <p className='m-0'>Please <strong>complete</strong> the <Link to='https://forms.gle/iVciH9gSEX2eQKAVA' target='_blank'>User feedback survey
+                                    <p className='m-0'>Please <strong>complete</strong> the <Link to='https://forms.gle/pyW3FSzaXkpfvFBE7' target='_blank'>User feedback survey
                                     <span className="material-symbols-outlined large v-bott mr-1">
                                                 open_in_new
                                             </span></Link>
