@@ -28,12 +28,12 @@ Currently, two official plugins are available:
   db.session.commit() -->
 <!-- *Welcome to Demo mode - w instructions on what you can do* -->
 <!-- *category of newly created tasks = allTasks??* -->
-change no category to none
+<!-- change no category to none -->
 *attribute <a href="https://www.freepik.com/free-vector/trophy-flat-style_73897148.htm#query=trophy%20png&position=3&from_view=keyword&track=ais&uuid=007cb5db-57b1-420e-a773-9e90c9bd46a0">Image by juicy_fish</a> on Freepik for the trophy img in missionCompleted modal*
 <!-- *add my day to full tray icons* -->
 <!-- **Theme settings - Dark mode toggle** -->
 <!-- open create category from task modals -->
-only show priority popup when create task not when log in - cut off by carousel window (title section + tasks need to go in carousel window)
+<!-- only show priority popup when create task not when log in - cut off by carousel window (title section + tasks need to go in carousel window) -->
 **Deep navbar will have my profile, my friends, achievements (change username, password, photoURL), account settings, Sign out**
 <!-- **create dumped key and arr for dumped tasks* - *dump folder that you can restore tasks from-remove myDay, remove progress, add completed date, add points earned** -->
 <!-- *create level key* -->
@@ -50,7 +50,11 @@ Level 9 165/1055
 Level 10 180/1235
 
 Finally...
-clear am pm when clearing time (make timeOfDay > "AM" or "PM")
+<!-- clear am pm when clearing time (make timeOfDay > "AM" or "PM") - not needed. Time updated problem solved -->
+<!-- update dump task screenshot in mission modal to dump selected tasks -->
+<!-- 810 sunrise not responding with completion -->
+dark blue of long duration doesn't pop well in dark mode.. later
+<!-- when updating task from edit modal - if nothing is changed, when hitting update the time delivered back to the task is messed up -->
 Create get tasks & user categories routes
 complete login error handling
 Host backend (on render?)

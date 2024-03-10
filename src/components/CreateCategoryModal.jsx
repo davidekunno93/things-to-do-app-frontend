@@ -6,6 +6,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
     if (!open) return null
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
     const [newCategory, setNewCategory] = useState({
         categoryName: "",
         color: "none",
@@ -41,7 +42,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
 
     const addCategory = () => {
         if (newCategory.categoryName) {
-            let userCategoriesCopy = {...userCategories}
+            let userCategoriesCopy = { ...userCategories }
             userCategoriesCopy.categories[newCategory.categoryName] = (newCategory)
             userCategoriesCopy.categoryOrder.push(newCategory.categoryName)
             setUserCategories(userCategoriesCopy)
@@ -260,7 +261,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
     const updateColor = (color) => {
         let currentSelected = document.getElementsByClassName('color-circle-container-selected')
         if (currentSelected.length > 0) {
-            for (let i=0;i<currentSelected.length;i++) {
+            for (let i = 0; i < currentSelected.length; i++) {
                 currentSelected[i].classList.replace('color-circle-container-selected', 'color-circle-container')
             }
         }
@@ -287,7 +288,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
 
                 <p className="m-0 ml-1">Category Name</p>
                 <div className="name-and-color flx-r">
-                    <input onChange={(e) => updateCategoryName(e)} type="text" className={`input-box${darkMode ? "-dark" : "" } flx-1`} placeholder='Enter category name' />
+                    <input onChange={(e) => updateCategoryName(e)} type="text" className={`input-box${darkMode ? "-dark" : ""} flx-1`} placeholder='Enter category name' />
                     {/* <select name="color" id="colorSelect">
                         <option></option>
                     </select> */}
@@ -296,65 +297,72 @@ const CreateCategoryModal = ({ open, onClose }) => {
                 <p className="m-0 ml-1 mt-2">Color</p>
                 <div className="flx-r w-100 just-sb">
                     <div id='none' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('none'); updateColor('none')}} className="color-circle cc-none position-absolute abs-center">
+                        <div onClick={() => { updateCategoryColor('none'); updateColor('none') }} className="color-circle cc-none position-absolute abs-center">
                             <span className="material-symbols-outlined large position-absolute abs-center dark-text">
                                 close
                             </span>
                         </div>
                     </div>
                     <div id='red' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('red'); updateColor('red')}} className="color-circle cc-red position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('red'); updateColor('red') }} className="color-circle cc-red position-absolute abs-center"></div>
                     </div>
 
                     <div id='blue' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('blue'); updateColor('blue')}} className="color-circle cc-blue position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('blue'); updateColor('blue') }} className="color-circle cc-blue position-absolute abs-center"></div>
                     </div>
                     <div id='green' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('green'); updateColor('green')}} className="color-circle cc-green position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('green'); updateColor('green') }} className="color-circle cc-green position-absolute abs-center"></div>
                     </div>
                     <div id='yellow' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('yellow'); updateColor('yellow')}} className="color-circle cc-yellow position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('yellow'); updateColor('yellow') }} className="color-circle cc-yellow position-absolute abs-center"></div>
                     </div>
                     {/* <div id='purple' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('purple'); updateColor('purple')}} className="color-circle cc-purple position-absolute abs-center"></div>
                     </div> */}
                     <div id='purple' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('purple'); updateColor('purple')}} className="color-circle cc-purple position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('purple'); updateColor('purple') }} className="color-circle cc-purple position-absolute abs-center"></div>
                     </div>
                     <div id='white' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('white'); updateColor('white')}} className="color-circle cc-white position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('white'); updateColor('white') }} className="color-circle cc-white position-absolute abs-center"></div>
                     </div>
                     {/* <div id='black' className="color-circle-container">
                         <div onClick={() => {updateCategoryColor('black'); updateColor('black')}} className="color-circle cc-black position-absolute abs-center"></div>
                     </div> */}
                     <div id='navy' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('navy'); updateColor('navy')}} className="color-circle cc-navy position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('navy'); updateColor('navy') }} className="color-circle cc-navy position-absolute abs-center"></div>
                     </div>
                     <div id='orange' className="color-circle-container">
-                        <div onClick={() => {updateCategoryColor('orange'); updateColor('orange')}} className="color-circle cc-orange position-absolute abs-center"></div>
+                        <div onClick={() => { updateCategoryColor('orange'); updateColor('orange') }} className="color-circle cc-orange position-absolute abs-center"></div>
                     </div>
                 </div>
 
-                <div className="flx-r mt-3 align-r mb-2">
-                    <p className="m-0">Choose Icon:</p>
-                    <div className="selectedImg-div ml-3 flx">
-                        {selectedIcon &&
-                        <img src={selectedIcon} alt="" className="img-small" />
-                        }
-                    </div>
-                    {selectedIcon &&
-                        <div className="removeIcon ml-1h">
-                            <p onClick={() => setSelectedIcon(null)} className="m-0 small hoverFade pointer gray-text">Clear</p>
-                        </div>
+                <div className="flx-c mt-3">
+                    {mobileWidth &&
+                        <p className="m-0">Choose Icon:</p>
                     }
-
-                    <div className="inputBox position-right">
-                        <div className="overlay-icon-right2">
-                            <span className="material-symbols-outlined">
-                                search
-                            </span>
+                    <div className="flx-r align-r mb-2">
+                        {!mobileWidth &&
+                            <p className="m-0">Choose Icon:</p>
+                        }
+                        <div className="selectedImg-div ml-3 flx">
+                            {selectedIcon &&
+                                <img src={selectedIcon} alt="" className={`${mobileWidth ? "catIcon" : "img-small"}`} />
+                            }
                         </div>
-                        <input onChange={(e) => setSearchQuery(e.target.value)} type="text" className={`input-box${darkMode ? "-dark" : ""} padr`} placeholder='Search' />
+                        {selectedIcon &&
+                            <div className="removeIcon ml-1h">
+                                <p onClick={() => setSelectedIcon(null)} className="m-0 small hoverFade pointer gray-text">Clear</p>
+                            </div>
+                        }
+
+                        <div className="inputBox position-right">
+                            <div className="overlay-icon-right2">
+                                <span className="material-symbols-outlined">
+                                    search
+                                </span>
+                            </div>
+                            <input onChange={(e) => setSearchQuery(e.target.value)} type="text" className={`${mobileWidth ? "input-search-box" : "input-box"}${darkMode ? "-dark" : ""} padr`} placeholder='Search' />
+                        </div>
                     </div>
                 </div>
                 <div className="flx-r flx-wrap">
@@ -362,16 +370,16 @@ const CreateCategoryModal = ({ open, onClose }) => {
                         {icons.map((icon, index) => {
                             let tagString = icon.iconTags.join("")
                             let filteredIn = searchQuery ? tagString.includes(searchQuery) : true
-                            return filteredIn ? <img key={index} onClick={() => {updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl)}} src={icon.iconUrl} alt="" className="catIcon img-small" />
-                            : null
+                            return filteredIn ? <img key={index} onClick={() => { updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl) }} src={icon.iconUrl} alt="" className="catIcon img-small" />
+                                : null
                         })}
 
                     </Scrollbars>
                 </div>
 
                 <div className="flx-r just-ce gap-4 position-bottom">
-                    <button onClick={() => addCategory()} className={`btn-primary${darkMode ? "-dark" :""}`}>Create Category</button>
-                    <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""}`}>Cancel</button>
+                    <button onClick={() => addCategory()} className={`btn-primary${darkMode ? "-dark" : ""} medium`}>Create {!mobileWidth && "Category"}</button>
+                    <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""} medium`}>Cancel</button>
                 </div>
             </div>
         </div>

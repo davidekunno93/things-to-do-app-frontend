@@ -5,6 +5,7 @@ import { DataContext } from '../context/DataProvider';
 const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
 
     let arr = [1, 2, 3, 4, 5]
     const itemCount = 3
@@ -60,7 +61,7 @@ const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
                                 {activeIndex === itemCount - 1 ?
                                     <button onClick={() => { onClose(); setCurrentMission(1) }} className={`btn-primaryflex${darkMode ? "-dark" : ""}`}>Ready!</button>
                                     :
-                                    <div onClick={() => nextStep()} className="align-all-items pointer btn-match-height hoverFade">
+                                    <div onClick={() => nextStep()} className={`align-all-items pointer btn-match-height ${!mobileWidth && "hoverFade"}`}>
                                         <p className="m-0 font-jakarta bold500">Next</p>
                                         <span className="material-symbols-outlined medium ml-2">
                                             arrow_forward

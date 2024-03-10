@@ -119,18 +119,18 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
         setUpdatedTask(taskCopy)
     }
     const updateTaskEndTime = () => {
-        let taskCopy = { ...updatedTask }
+        let updatedTaskCopy = { ...updatedTask }
         if (hourPicked) {
             let minutes = minutePicked
             if (!minutes) {
                 minutes = "00"
             }
-            taskCopy.endTime = hourPicked+":"+minutes+" "+timeOfDay
+            updatedTaskCopy.endTime = hourPicked+":"+minutes+" "+timeOfDay
         } else {
-            taskCopy.endTime = null
+            updatedTaskCopy.endTime = null
         }
         // console.log(taskCopy.endTime)
-        setUpdatedTask(taskCopy)
+        setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskFrequency = (option) => {
         let updatedTaskCopy = { ...updatedTask }
@@ -189,7 +189,7 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
     const updateTaskBridgeFunction = async () => {
         if (updatedTask.taskName) {
             let updatedTaskWithSteps = await updateTaskSteps()
-            console.log(updatedTaskWithSteps)
+            console.log("updatedTaskWithSteps", updatedTaskWithSteps)
             // see comment in updateTaskSteps function for why the updatedTask state can't be passed through
             if (databaseOn) {
                 setIsLoading(true);
@@ -235,9 +235,7 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
             setSelectedHour("12")
         }
     }
-    useEffect(() => {
-        updateTaskEndTime()
-    }, [selectedHour, selectedMinute, timeOfDay])
+    
 
 
     // category code
@@ -363,7 +361,18 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
     }
 
     // set to task time if exists
-    const [hourPicked, setHourPicked] = useState(updatedTask.endTime ? updatedTask.endTime.slice(0, 2) : null);
+    const [hourPicked, setHourPicked] = useState(null);
+    useEffect(() => {
+        if (task.endTime) {
+            let timeValues = task.endTime.split(':')
+            let hour = timeValues[0]
+            let minutes = timeValues[1].slice(0, 2)
+            let tod = timeValues[1].slice(-2)
+            console.log("original task end time is: "+hour+":"+minutes+" "+tod)
+            setHourPicked(hour)
+            setMinutePicked(minutes)
+        }
+    }, [])
     const pickHour = (hour) => {
         let hourPicker = document.getElementById('hourPicker')
         let minutePicker = document.getElementById('minutePicker')
@@ -380,7 +389,7 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
         clearBtn.classList.add('d-none')
     }
     // set to task time if exists
-    const [minutePicked, setMinutePicked] = useState(updatedTask.endTime ? updatedTask.endTime.slice(3, 5) : null);
+    const [minutePicked, setMinutePicked] = useState(null);
     const pickMinute = (minute) => {
         setMinutePicked(minute)
     }
@@ -489,6 +498,8 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
             let timeValues = task.endTime.split(':')
             let hour = timeValues[0]
             let minutes = timeValues[1].slice(0, 2)
+            let tod = timeValues[1].slice(-2)
+            console.log("original task end time is: "+hour+":"+minutes+" "+tod)
             setHourPicked(hour)
             setMinutePicked(minutes)
             // setTimeOfDay(task.endTime.slice(-2))

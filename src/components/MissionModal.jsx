@@ -76,7 +76,7 @@ const MissionModal = ({ open, currentMission, missionProgress, activateFeedbackA
                                 </div>
                                 <hr className='w-100' />
                                 <p className="m-0 my-2">Mark your task as completed. Then navigate to <i>Completed tasks</i> <u>in the navbar</u>.</p>
-                                <img src="https://i.imgur.com/PpnVOqb.png" alt="" className="img-fitWidth" />
+                                <img src="https://i.imgur.com/o6Dd1Ti.png" alt="" className="img-fitWidth" />
                                 <p className="position-bottom"><strong>Dump tasks</strong> to trade them in for points. Take note of <strong>how many points</strong> you are awarded at the <u>top of the navbar</u>.</p>
                                 <div className="flx just-en position-bottom">
                                     <button onClick={() => onClose()} className="btn-primaryflex mt-4 medium">Got it!</button>

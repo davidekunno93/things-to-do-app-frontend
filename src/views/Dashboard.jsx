@@ -35,21 +35,28 @@ const Dashboard = () => {
     const refHamburger = useRef(false);
     useEffect(() => {
         setShowNavbar(true);
-        document.addEventListener('click', closeMobileNavbar, true);
-        return document.removeEventListener('click', closeMobileNavbar, true)
+        // document.addEventListener('click', hideMobileNavbar, true);
+        // return document.removeEventListener('click', hideMobileNavbar, true)
     }, [])
-    const closeMobileNavbar = (e) => {
+    const hideMobileNavbar = (e) => {
         if (refHamburger.current && !refHamburger.current.contains(e.target)) {
             setMobileNavbarOpen(false)
         }
+        // console.log("e value", e)
+        // console.log("e target", e.target)
+        // console.log("ref", refHamburger.current)
     }
     const openHamburgerMenu = () => {
         let menu = document.getElementById('hamburgerMenu')
+        let menu2 = document.getElementById('hamburgerMenu2')
         menu.classList.add('open-menu')
+        menu2.classList.add('open-menu')
     }
     const closeHamburgerMenu = () => {
         let menu = document.getElementById('hamburgerMenu')
+        let menu2 = document.getElementById('hamburgerMenu2')
         menu.classList.remove('open-menu')
+        menu2.classList.remove('open-menu')
     }
     const toggleHamburgerMenu = () => {
         if (mobileNavbarOpen) {
@@ -935,7 +942,7 @@ const Dashboard = () => {
                 tasks: [
                     {
                         taskKey: "Deadline",
-                        taskValue: "1st March 2024 at 8:45PM",
+                        taskValue: "1st April 2024 at 8:45PM",
                         completed: false
                     },
                     {
@@ -979,7 +986,7 @@ const Dashboard = () => {
                     },
                     {
                         taskKey: "Deadline",
-                        taskValue: "4th March 2024 at 10:00AM",
+                        taskValue: "4th April 2024 at 10:00AM",
                         completed: false
                     },
                     {
@@ -1040,7 +1047,7 @@ const Dashboard = () => {
             let task = tasksArr[i]
             tasksCompleted = 0
             // console.log(task.endDate)
-            if (task.endDate === "03/01/2024" && task.endTime === "8:45 PM") {
+            if (task.endDate === "04/01/2024" && task.endTime === "8:45 PM") {
                 missionProgressCopy["mission-1"].tasks[0].completed = true
                 tasksCompleted++
             } else {
@@ -1104,7 +1111,7 @@ const Dashboard = () => {
             } else {
                 missionProgressCopy["mission-2"].tasks[1].completed = false
             }
-            if (task.endDate === "03/04/2024" && task.endTime === "10:00 AM") {
+            if (task.endDate === "04/04/2024" && task.endTime === "10:00 AM") {
                 missionProgressCopy["mission-2"].tasks[2].completed = true
                 tasksCompleted++
             } else {
@@ -1118,11 +1125,11 @@ const Dashboard = () => {
             }
             if (task.location) {
                 if (task.location.toLowerCase().trim() === "810 sunrise drive") {
-                    missionProgressCopy["mission-1"].tasks[3].completed = true
+                    missionProgressCopy["mission-2"].tasks[4].completed = true
                     tasksCompleted++
                 }
             } else {
-                missionProgressCopy["mission-1"].tasks[3].completed = false
+                missionProgressCopy["mission-1"].tasks[4].completed = false
             }
             missionProgressCopy["mission-2"].tasksCompleted = tasksCompleted
             if (tasksCompleted === missionProgressCopy["mission-1"].numberOfTasks) {
@@ -1339,23 +1346,36 @@ const Dashboard = () => {
                     </div>
 
                     {/* Page body starts here */}
+
+                    {/* hamburger tray won't stick for some reason
+                    <div className="flx-c w-100">
+                    <div className="white-bar sticky-top">
+                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
+                            <span className='line-1'></span>
+                            <span className='line-2'></span>
+                            <span className='line-3'></span>
+                        </div>
+                    </div>
+                        </div>                 */}
+
                     {/* Page sub-title section */}
                     <div className="carousel-window position-relative">
                         {/* <div onClick={() => setMobileNavbarOpen(mobileNavbarOpen => !mobileNavbarOpen)} className={`hamburger-icon${darkMode ? "-dark" : ""} ${mobileWidth ? "" : "d-none"}`}>
                             <span className="material-symbols-outlined">menu</span>
 
                         </div> */}
-                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
-                            <span className='line-1'></span>
-                            <span className='line-2'></span>
-                            <span className='line-3'></span>
-                        </div>
+
                         <div className="inner" style={{ transform: `translateX(${showDumped ? "-100%" : "0%"})` }}>
                             {/* Normal Tasks carousel item */}
                             <div className="carousel-item3">
                                 <div className="flx-c w-100">
 
                                     <div className={`sub-title-section${darkMode ? "-dark" : ""} sticky-top page-container96-byPadding`}>
+                                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
+                                            <span className='line-1'></span>
+                                            <span className='line-2'></span>
+                                            <span className='line-3'></span>
+                                        </div>
 
                                         {selectedCategory === "myDay" &&
                                             <>
@@ -1609,6 +1629,13 @@ const Dashboard = () => {
 
                                     <div className={`sub-title-section${darkMode ? "-dark" : ""} sticky-top page-container96-byPadding`}>
 
+                                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu2' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
+                                            <span className='line-1'></span>
+                                            <span className='line-2'></span>
+                                            <span className='line-3'></span>
+                                        </div>
+
+
                                         <div className="w-100">
                                             <div className={`${mobileWidth ? "flx-c-reverse" : "flx-r"}`}>
                                                 <div className="align-all-items gap-2">
@@ -1718,6 +1745,7 @@ const Dashboard = () => {
 
                         </div>
                     </div>
+
                 </Fade>
             </div>
         </>

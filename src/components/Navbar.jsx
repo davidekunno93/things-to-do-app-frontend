@@ -112,7 +112,7 @@ const Navbar = () => {
 
                     <div className="nav-option-cold">
                         <img src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
-                        <div onClick={() => toggleTheme()} className="toggle-theme">
+                        <div onClick={() => {toggleTheme(); setMobileNavbarOpen(false) }} className="toggle-theme">
                             <div className={`button${darkMode ? "-dark" : ""}`} style={{ left: darkMode ? '12px' : '0px', right: darkMode ? '0px' : '12px' }}>
                                 <img src={darkMode ? "https://i.imgur.com/Ya1NVA5.png" : "https://i.imgur.com/oZuiPMP.png"} alt="" className="toggle-button-img" />
                             </div>
@@ -169,7 +169,7 @@ const Navbar = () => {
                     {/* end deep navbar */}
 
                     {/* predefined categories */}
-                    <div onClick={() => { setSelectedCategory("myDay"); setShowDumped(false); setSelectedNavOption('myDay'); goToDashboard() }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
+                    <div onClick={() => { setSelectedCategory("myDay"); setShowDumped(false); setSelectedNavOption('myDay'); goToDashboard(); setMobileNavbarOpen(false) }} className={`${selectedNavOption === 'myDay' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined yellow-text">
                             sunny
                         </span>
@@ -178,7 +178,7 @@ const Navbar = () => {
                             {categories.myDay.length}
                         </div>
                     </div>
-                    <div onClick={() => { setSelectedCategory("upcoming"); setShowDumped(false); setSelectedNavOption('upcoming'); goToDashboard() }} className={`${selectedNavOption === 'upcoming' ? "nav-option-selected" : "nav-option"}`}>
+                    <div onClick={() => { setSelectedCategory("upcoming"); setShowDumped(false); setSelectedNavOption('upcoming'); goToDashboard(); setMobileNavbarOpen(false) }} className={`${selectedNavOption === 'upcoming' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined blue-text">
                             event_upcoming
                         </span>
@@ -189,7 +189,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
-                    <div onClick={() => { setSelectedCategory("priority"); setShowDumped(false); setSelectedNavOption('priority'); goToDashboard() }} className={`${selectedNavOption === 'priority' ? "nav-option-selected" : "nav-option"}`}>
+                    <div onClick={() => { setSelectedCategory("priority"); setShowDumped(false); setSelectedNavOption('priority'); goToDashboard(); setMobileNavbarOpen(false) }} className={`${selectedNavOption === 'priority' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined red-text">
                             priority_high
                         </span>
@@ -200,7 +200,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
-                    <div onClick={() => { setSelectedCategory("overdue"); setShowDumped(false); setSelectedNavOption('overdue'); goToDashboard() }} className={`${selectedNavOption === 'overdue' ? "nav-option-selected" : "nav-option"}`}>
+                    <div onClick={() => { setSelectedCategory("overdue"); setShowDumped(false); setSelectedNavOption('overdue'); goToDashboard(); setMobileNavbarOpen(false) }} className={`${selectedNavOption === 'overdue' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined orange-text">
                             calendar_clock
                             {/* assignment_late */}
@@ -212,7 +212,7 @@ const Navbar = () => {
                             </div>
                         }
                     </div>
-                    <div onClick={() => { setSelectedCategory("completed"); setShowDumped(false); setSelectedNavOption('completed'); goToDashboard() }} className={`${selectedNavOption === 'completed' ? "nav-option-selected" : "nav-option"}`}>
+                    <div onClick={() => { setSelectedCategory("completed"); setShowDumped(false); setSelectedNavOption('completed'); goToDashboard(); setMobileNavbarOpen(false) }} className={`${selectedNavOption === 'completed' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined green-text">
                             done
                             {/* assignment_late */}
@@ -228,7 +228,7 @@ const Navbar = () => {
 
                     <hr className='w-80 my-2 border-darkgray' />
 
-                    <div onClick={() => { setSelectedCategory("allTasks"); setShowDumped(false); setSelectedNavOption('allTasks'); goToDashboard() }} className={`${selectedNavOption === 'allTasks' ? "nav-option-selected" : "nav-option"}`}>
+                    <div onClick={() => { setSelectedCategory("allTasks"); setShowDumped(false); setSelectedNavOption('allTasks'); goToDashboard(); setMobileNavbarOpen(false) }} className={`${selectedNavOption === 'allTasks' ? "nav-option-selected" : "nav-option"}`}>
                         <span className="material-symbols-outlined">
                             list
                         </span>
@@ -244,7 +244,7 @@ const Navbar = () => {
                             userCategories.categoryOrder.map((categoryName, index) => {
                                 let userCategory = userCategories.categories[categoryName]
                                 if (userCategory) {
-                                    return <div onClick={() => { setSelectedCategory(userCategory.categoryName); setShowDumped(false); setSelectedNavOption(userCategory.categoryName); goToDashboard() }} key={index} className={`${selectedNavOption === userCategory.categoryName ? "nav-option-selected" : "nav-option"}`}>
+                                    return <div onClick={() => { setSelectedCategory(userCategory.categoryName); setShowDumped(false); setSelectedNavOption(userCategory.categoryName); goToDashboard(); setMobileNavbarOpen(false) }} key={index} className={`${selectedNavOption === userCategory.categoryName ? "nav-option-selected" : "nav-option"}`}>
                                         <img src={userCategory.iconUrl} alt="" className="navBar-categoryIcon" />
                                         <p className="inline ml-1">{userCategory.categoryName}</p>
                                         {categories[categoryName] ? categories[categoryName].length > 0 &&
@@ -261,7 +261,7 @@ const Navbar = () => {
                     </div>
                     {/* end user categories */}
 
-                    <div onClick={() => setCreateCategoryModalOpen(true)} className="nav-option-bottom">
+                    <div onClick={() => {setCreateCategoryModalOpen(true); setMobileNavbarOpen(false) }} className="nav-option-bottom">
                         <span className="material-symbols-outlined">
                             add
                         </span>
