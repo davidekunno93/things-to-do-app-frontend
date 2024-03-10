@@ -36,6 +36,7 @@ const Dashboard = () => {
     useEffect(() => {
         setShowNavbar(true);
         document.addEventListener('click', closeMobileNavbar, true);
+        return document.removeEventListener('click', closeMobileNavbar, true)
     }, [])
     const closeMobileNavbar = (e) => {
         if (refHamburger.current && !refHamburger.current.contains(e.target)) {
@@ -1344,7 +1345,7 @@ const Dashboard = () => {
                             <span className="material-symbols-outlined">menu</span>
 
                         </div> */}
-                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className="hamburger-menu">
+                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
                             <span className='line-1'></span>
                             <span className='line-2'></span>
                             <span className='line-3'></span>

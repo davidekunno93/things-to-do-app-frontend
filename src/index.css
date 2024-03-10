@@ -5793,8 +5793,18 @@ selection:hover .sub-selection-dark {
   }
   .hamburger-menu {
     position: absolute;
-    background-color: white;
-    border: 2px solid black;
+    /* background-color: white; */
+    border-radius: 50%;
+    padding: 5px;
+    height: 26px;
+    width: 26px;
+    top: 16px;
+    right: 26px;
+    z-index: 1;
+  }
+  .hamburger-menu-dark {
+    position: absolute;
+    /* background-color: white; */
     border-radius: 50%;
     padding: 5px;
     height: 26px;
@@ -5813,6 +5823,23 @@ selection:hover .sub-selection-dark {
     left: 50%;
     transform: translate(-50%, -50%);
     transition: 0.5s;
+  }
+  .hamburger-menu-dark span {
+    position: absolute;
+    width: 60%;
+    height: 2px;
+    background-color: white;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+  }
+  .hamburger-menu-dark .line-1 {
+    transform: translate(-50%, -8px);
+  }
+  .hamburger-menu-dark .line-3 {
+    transform: translate(-50%, 6px);
   }
   .hamburger-menu .line-1 {
     transform: translate(-50%, -8px);
