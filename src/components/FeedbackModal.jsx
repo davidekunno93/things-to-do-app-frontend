@@ -6,6 +6,7 @@ import { DataContext } from '../context/DataProvider'
 const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
     const [text, setText] = useState("");
     const [sentFeedback, setSentFeedback] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +61,7 @@ const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
                                         <img src="https://i.imgur.com/YIcdeNr.png" alt="" className="img-xsmall ml-2" />
                                     </div>
                                     <hr className='w-100'/>
-                                    <p className="m-0 mt- font-jakarta x-large center-text">Click the link to take the feedback Survey!</p>
+                                    <p className={`m-0 font-jakarta center-text ${mobileWidth ? "medium" : "x-large"}`}>Click the link to take the feedback Survey!</p>
                                     <Link to='https://forms.gle/iVciH9gSEX2eQKAVA' target='_blank'>
                                         <div className="align-all-items gap-1 just-ce my-2">
                                             <p className="m-0 ml-2 large">Feedback Survey</p>

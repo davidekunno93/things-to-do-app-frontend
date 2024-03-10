@@ -4,229 +4,215 @@ import { DataContext } from '../context/DataProvider';
 import ReactDatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 
-const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
+const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
     if (!open) return null
     const { darkMode, databaseOn, userCategories } = useContext(DataContext);
     const { advancedSettingsOn, setAdvancedSettingsOn } = useContext(DataContext);
     const { createCategoryModalOpen, setCreateCategoryModalOpen } = useContext(DataContext);
-
     useEffect(() => {
-        // upon page mount make the category selected the same as the current user Category on dashboard
         let categorySelected = document.getElementById('categorySelected')
-        if (category) {
-            categorySelected.innerHTML = category
-        }
+        categorySelected.innerHTML = task.category ? task.category : "None"
     }, [])
-    let taskLastInArr = Object.keys(tasks).slice(-1)
-    const [newTask, setNewTask] = useState({
-        id: taskLastInArr[0] ? parseInt(taskLastInArr[0]) + 1 : 1,
-        myDay: false,
-        taskName: "",
-        category: category,
-        notes: null,
-        highPriority: false,
-        endDate: null,
-        endTime: null,
-        frequency: "Once",
-        duration: "Medium",
-        outdoors: false,
-        location: null,
-        participants: [], // [{uid: "", displayName: "", photoURL: ""}]
-        steps: [], // [{number: "", desc: "", completed: ""}]
-        progress: 0,
-        completed: false,
-        completionDate: null,
-        dumped: false,
-        pointsAwarded: null,
-    })
 
+    const [updatedTask, setUpdatedTask] = useState({
+        id: task.id,
+        db_task_id: task.db_task_id ? task.db_task_id : "",
+        myDay: task.myDay,
+        taskName: task.taskName,
+        category: task.category ? task.category : "None",
+        notes: task.notes,
+        highPriority: task.highPriority,
+        endDate: task.endDate,
+        endTime: task.endTime,
+        frequency: task.frequency,
+        duration: task.duration,
+        outdoors: task.outdoors,
+        location: task.location,
+        participants: task.participants, // [{uid: "", displayName: "", photoURL: ""}]
+        steps: task.steps, // [{number: "", desc: "", completed: ""}]
+        progress: task.progress,
+        completed: task.completed
+    })
     const updateTaskName = (e) => {
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
         let taskName = e.target.value.trim()
-        newTaskCopy.taskName = taskName.charAt(0).toUpperCase() + taskName.slice(1)
-        setNewTask(newTaskCopy)
+        updatedTaskCopy.taskName = taskName.charAt(0).toUpperCase() + taskName.slice(1)
+        setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskCategory = (e) => {
         // console.log(e.target.innerHTML)
         let categorySelected = document.getElementById('categorySelected')
         categorySelected.innerHTML = e.target.innerHTML
-        let newTaskCopy = { ...newTask }
-        newTaskCopy.category = e.target.innerHTML
-        setNewTask(newTaskCopy)
+        let updatedTaskCopy = { ...updatedTask }
+        updatedTaskCopy.category = e.target.innerHTML
+        setUpdatedTask(updatedTaskCopy)
     }
     // my day button code
-    const toggleMyDay = () => {
-        const myDayBtn = document.getElementById('myDayBtn')
+    const addToMyDay = () => {
         const myDayText = document.getElementById('myDayText')
-        const myDayIcon = document.getElementById('myDayIcon')
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
+        myDayText.innerHTML = "Added to My Day"
+        myDayText.classList.replace("gray-text", "green-text")
+        updatedTaskCopy.myDay = true
+        setUpdatedTask(updatedTaskCopy)
+    }
+    const removeFromMyDay = () => {
+        const myDayText = document.getElementById('myDayText')
+        let updatedTaskCopy = { ...updatedTask }
+        myDayText.innerHTML = "Add to My Day"
+        myDayText.classList.replace("green-text", "gray-text")
+        updatedTaskCopy.myDay = false
+        setUpdatedTask(updatedTaskCopy)
+    }
+    const toggleMyDay = () => {
+        // const myDayBtn = document.getElementById('myDayBtn')
+        const myDayText = document.getElementById('myDayText')
+        // const myDayIcon = document.getElementById('myDayIcon')
+        // let updatedTaskCopy = { ...updatedTask }
 
         if (myDayText.innerHTML === "Add to My Day") {
-            myDayText.innerHTML = "Added to My Day"
-            myDayText.classList.replace("gray-text", "green-text")
-            // myDayIcon.classList.add("deepgreen-text")
-            // myDayIcon.innerHTML = "done"
-            newTaskCopy.myDay = true
+            // myDayText.innerHTML = "Added to My Day"
+            // myDayText.classList.replace("gray-text", "green-text")
+            // updatedTaskCopy.myDay = true
+            addToMyDay()
         } else {
-            myDayText.innerHTML = "Add to My Day"
-            myDayText.classList.replace("green-text", "gray-text")
-            // myDayIcon.classList.remove("deepgreen-text")
-            // myDayIcon.innerHTML = "sunny"
-            newTaskCopy.myDay = false
+            // myDayText.innerHTML = "Add to My Day"
+            // myDayText.classList.replace("green-text", "gray-text")
+            removeFromMyDay()
         }
-        setNewTask(newTaskCopy)
+        // setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskPriority = () => {
         let priorityBtn = document.getElementById('priorityBtn')
         // let priorityIcon = document.getElementById('priorityIcon')
 
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
         if (priorityBtn.classList.contains('noPriority')) {
             // priorityIcon.classList.replace('noPriority', 'highPriority')
             priorityBtn.classList.replace('noPriority', 'highPriority')
-            newTaskCopy.highPriority = true;
+            updatedTaskCopy.highPriority = true;
         } else if (priorityBtn.classList.contains('highPriority')) {
             // priorityIcon.classList.replace('highPriority', 'noPriority')
             priorityBtn.classList.replace('highPriority', 'noPriority')
-            newTaskCopy.highPriority = false;
+            updatedTaskCopy.highPriority = false;
         }
-        setNewTask(newTaskCopy);
+        setUpdatedTask(updatedTaskCopy);
     }
     const updateTaskNotes = (e) => {
-        let newTaskCopy = { ...newTask }
-        newTaskCopy.notes = e.target.value
-        setNewTask(newTaskCopy)
+        let updatedTaskCopy = { ...updatedTask }
+        updatedTaskCopy.notes = e.target.value
+        setUpdatedTask(updatedTaskCopy)
     }
-    const [selectedDate, setSelectedDate] = useState(null)
+    // date code
+    const [selectedDate, setSelectedDate] = useState(task.endDate ? new Date(task.endDate) : null)
     const clearEndDate = () => {
         setSelectedDate(null)
         updateTaskEndDate(null)
     }
     const updateTaskEndDate = (date) => {
-        let taskCopy = { ...newTask }
+        let taskCopy = { ...updatedTask }
         if (date) {
             taskCopy.endDate = format(date, "MM/dd/yyyy")
         } else {
             taskCopy.endDate = null
         }
-        setNewTask(taskCopy)
+        setUpdatedTask(taskCopy)
     }
     const updateTaskEndTime = () => {
-        let taskCopy = { ...newTask }
-        if (selectedHour && selectedMinute) {
-            taskCopy.endTime = timify(selectedHour + ":" + selectedMinute) + " " + timeOfDay
+        let taskCopy = { ...updatedTask }
+        if (hourPicked) {
+            let minutes = minutePicked
+            if (!minutes) {
+                minutes = "00"
+            }
+            taskCopy.endTime = hourPicked+":"+minutes+" "+timeOfDay
         } else {
             taskCopy.endTime = null
         }
         // console.log(taskCopy.endTime)
-        setNewTask(taskCopy)
+        setUpdatedTask(taskCopy)
     }
     const updateTaskFrequency = (option) => {
-        let newTaskCopy = { ...newTask }
-        newTaskCopy.frequency = option
-        setNewTask(newTaskCopy)
+        let updatedTaskCopy = { ...updatedTask }
+        updatedTaskCopy.frequency = option
+        setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskDuration = (option) => {
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
         if (option === null) {
-            newTaskCopy.duration = null
+            updatedTaskCopy.duration = null
         } else {
-            newTaskCopy.duration = option
+            updatedTaskCopy.duration = option
         }
-        setNewTask(newTaskCopy)
+        setUpdatedTask(updatedTaskCopy)
     }
     const updateTaskLocation = (e) => {
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
         if (e.target.value.trim() === "") {
-            newTaskCopy.location = null
+            updatedTaskCopy.location = null
         } else {
             let location = e.target.value.trim()
-            newTaskCopy.location = location.charAt(0).toUpperCase() + location.slice(1)
+            updatedTaskCopy.location = location.charAt(0).toUpperCase() + location.slice(1)
         }
-        // console.log(newTaskCopy.location)
-        setNewTask(newTaskCopy)
+        // console.log(updatedTaskCopy.location)
+        setUpdatedTask(updatedTaskCopy)
     }
-    // add steps that aren't empty to newTask state
+    // add steps that aren't empty to updatedTask state
     const updateTaskSteps = () => {
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
+        // n = step number
         let n = 1
-        console.log(newTaskCopy.steps)
+        // console.log(updatedTaskCopy.steps)
+        // start w/ empty steps list
+        updatedTaskCopy.steps = []
         for (let i = 0; i < stepsList.length; i++) {
+            // condition that step isn't empty or filled with white spaces w/ no chars
             if (stepsList[i].desc.replace(/ /g, "") != "") {
+                // trim leading and trailing white spaces
                 let desc = stepsList[i].desc.trim()
-                newTaskCopy.steps.push({
+                updatedTaskCopy.steps.push({
                     number: n,
                     desc: desc.charAt(0).toUpperCase() + desc.slice(1),
-                    completed: false
+                    completed: stepsList[i].completed ? stepsList[i].completed : false
                 })
                 n++
             }
         }
-        setNewTask(newTaskCopy)
+        setUpdatedTask(updatedTaskCopy)
+        // console.log(updatedTaskCopy)
+        // The state change does not complete before the function has finished so the updated Task
+        // is being transferred to the updateTask(bridged function) via return instead to circumvent the
+        // latency - the updatedTask state doesn't mutate before firing the updateTask function in the bridge function
+        return updatedTaskCopy
     }
-    const addTask = async () => {
-        if (newTask.taskName) {
-            console.log(newTask)
-            // put the steps on the task
-            await updateTaskSteps()
-            // open loader
-            startLoading()
-
+    // update task function bridges from this component to updateTask in parent outside component 
+    const updateTaskBridgeFunction = async () => {
+        if (updatedTask.taskName) {
+            let updatedTaskWithSteps = await updateTaskSteps()
+            console.log(updatedTaskWithSteps)
+            // see comment in updateTaskSteps function for why the updatedTask state can't be passed through
             if (databaseOn) {
-                // add task to database code
-                let data = {
-                    uid: "KJ0XtgHmO0dIeCU6KYZp9k3Hl0i1",
-                    ...newTask
-                }
-                let url = "http://localhost:5000/add_task"
-                const response = await axios.post(url, JSON.stringify(data), {
-                    headers: { "Content-Type": "application/json" }
-                })
-                    .then((response) => {
-                        console.log(response)
-                        let db_task_id = response.data.data
-
-
-                        // complete adding the task in front end
-                        let tasksCopy = Object.values(tasks)
-                        tasksCopy.push({
-                            ...newTask,
-                            db_task_id: db_task_id
-                        })
-                        let newTasksObj = {}
-                        for (let i = 0; i < tasksCopy.length; i++) {
-                            newTasksObj[i + 1] = tasksCopy[i]
-                        }
-                        setTasks(newTasksObj)
-                        // close loader
-                        stopLoading()
+                setIsLoading(true);
+                await updateTask(updatedTaskWithSteps)
+                    .then(() => {
                         onClose()
+                    }).catch(() => {
+                        setIsLoading(false)
+                        alert('Something went wrong. Please try again')
                     })
             } else {
-                // complete adding the task in front end
-                console.log(newTask)
-                let tasksCopy = Object.values(tasks)
-                tasksCopy.push({
-                    ...newTask,
-                })
-                let newTasksObj = {}
-                for (let i = 0; i < tasksCopy.length; i++) {
-                    newTasksObj[i + 1] = tasksCopy[i]
-                }
-                setTasks(newTasksObj)
-                // close loader
-                stopLoading()
+                await updateTask(updatedTaskWithSteps)
                 onClose()
             }
-
         } else {
             alert("Enter a title for your task")
         }
     }
+
     // time code
     const [selectedHour, setSelectedHour] = useState(null)
     const [selectedMinute, setSelectedMinute] = useState(null)
-    const [timeOfDay, setTimeOfDay] = useState("PM")
+    const [timeOfDay, setTimeOfDay] = useState(task.endTime ? task.endTime.slice(-2) : "PM")
     const clearSelectedTime = () => {
         let hour = document.getElementById('hourInput')
         let minute = document.getElementById('minuteInput')
@@ -319,13 +305,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         "Long": false
     })
     // steps code
-    const [stepsList, setStepsList] = useState([
-        {
-            number: 1,
-            desc: "",
-            completed: false
-        }
-    ])
+    const [stepsList, setStepsList] = useState(task.steps)
     const updateStep = (e, index) => {
         let stepsListCopy = [...stepsList]
         stepsListCopy[index].desc = e.target.value
@@ -333,7 +313,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
     }
     const updateStepsList = (action, index) => {
         let stepsListCopy = [...stepsList]
-        let modal = document.getElementById('create-task-mobile')
+        let modal = document.getElementById('edit-task-mobile')
         let notes = document.getElementById('task-notes')
         if (action == "remove") {
             stepsListCopy.splice(index, 1)
@@ -359,7 +339,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                 notes.style.height = newNotesHeight + "px"
             }
         }
-        console.log(modal.offsetHeight)
+        // console.log(modal.offsetHeight)
         setStepsList(stepsListCopy)
         resetStepInputValues(stepsListCopy)
 
@@ -382,8 +362,8 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         }
     }
 
-    // time code
-    const [hourPicked, setHourPicked] = useState(null);
+    // set to task time if exists
+    const [hourPicked, setHourPicked] = useState(updatedTask.endTime ? updatedTask.endTime.slice(0, 2) : null);
     const pickHour = (hour) => {
         let hourPicker = document.getElementById('hourPicker')
         let minutePicker = document.getElementById('minutePicker')
@@ -400,7 +380,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         clearBtn.classList.add('d-none')
     }
     // set to task time if exists
-    const [minutePicked, setMinutePicked] = useState(null);
+    const [minutePicked, setMinutePicked] = useState(updatedTask.endTime ? updatedTask.endTime.slice(3, 5) : null);
     const pickMinute = (minute) => {
         setMinutePicked(minute)
     }
@@ -420,17 +400,17 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
     }
     const confirmTimePicked = () => {
         // send hourPicked, minutePicked and timeOfDay to task and time input box
-        let newTaskCopy = { ...newTask }
+        let updatedTaskCopy = { ...updatedTask }
         let minutes = minutePicked ? minutePicked : "00"
-        newTaskCopy.endTime = hourPicked + ":" + minutes + " " + timeOfDay
-        setNewTask(newTaskCopy)
-        console.log(newTaskCopy)
+        updatedTaskCopy.endTime = hourPicked + ":" + minutes + " " + timeOfDay
+        setUpdatedTask(updatedTaskCopy)
+        console.log(updatedTaskCopy)
         let timeInput = document.getElementById('timeInput')
-        timeInput.value = newTaskCopy.endTime
+        timeInput.value = updatedTaskCopy.endTime
         // close timepicker
         let timePicker = document.getElementById('timePicker')
         timePicker.classList.add('d-none')
-        // resetTime()
+        resetTime()
         resetTimePicker()
     }
     const openTimePicker = () => {
@@ -452,9 +432,9 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         }
     }
     const resetTime = () => {
-        console.log(newTask)
-        if (newTask.endTime) {
-            let timeValues = newTask.endTime.split(':')
+        console.log(updatedTask)
+        if (updatedTask.endTime) {
+            let timeValues = updatedTask.endTime.split(':')
             console.log(timeValues)
             let minutesAndAM = timeValues[1].split(' ')
             setHourPicked(timeValues[0])
@@ -469,16 +449,100 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         backToHourPicker()
     }
     const clearTime = () => {
-        let newTaskCopy = { ...newTask }
-        newTaskCopy.endTime = null
+        let updatedTaskCopy = { ...updatedTask }
+        updatedTaskCopy.endTime = null
         setHourPicked(null)
         setMinutePicked(null)
-        setNewTask(newTaskCopy)
-        // console.log(newTaskCopy)
+        setUpdatedTask(updatedTaskCopy)
+        // console.log(updatedTaskCopy)
         let timeInput = document.getElementById('timeInput')
         timeInput.value = ""
         resetTimePicker()
     }
+
+    // load task details
+    const loadTaskTitle = () => {
+        const taskTitleInput = document.getElementById('taskTitleInput')
+        taskTitleInput.value = task.taskName
+    }
+    const loadMyDay = () => {
+        if (task.myDay) {
+            addToMyDay()
+        }
+    }
+    const loadTaskNotes = () => {
+        const notesInput = document.getElementById('task-notes')
+        notesInput.value = task.notes
+    }
+    // load priority
+    const loadPriority = () => {
+        const priorityBtn = document.getElementById('priorityBtn')
+        if (task.highPriority) {
+            priorityBtn.classList.replace('noPriority', 'highPriority')
+        }
+    }
+    // load time
+    const loadEndTime = () => {
+        const timeInput = document.getElementById('timeInput')
+        if (task.endTime) {
+            timeInput.value = task.endTime
+            let timeValues = task.endTime.split(':')
+            let hour = timeValues[0]
+            let minutes = timeValues[1].slice(0, 2)
+            setHourPicked(hour)
+            setMinutePicked(minutes)
+            // setTimeOfDay(task.endTime.slice(-2))
+        }
+    }
+    // load duration
+    const loadDuration = () => {
+        updateDurationSelection(task.duration)
+    }
+    // load frequency
+    const loadFrequency = () => {
+        updateFrequencySelection(task.frequency)
+    }
+    // load location
+    const loadLocation = () => {
+        if (task.location) {
+            let locationInput = document.getElementById('locationInput')
+            locationInput.value = task.location
+        }
+    }
+    // load steps
+    const loadSteps = () => {
+        for (let i = 0; i < task.steps.length; i++) {
+            let stepInput = document.getElementById(`stepInput-${i}`)
+            stepInput.value = task.steps[i].desc
+        }
+    }
+    // load modal height (based on number of steps)
+    const loadModalHeight = () => {
+        let modal = document.getElementById('edit-task-mobile')
+        if (task.steps.length > 1) {
+            let newModalHeight = 500 + 25 * (task.steps.length - 1)
+            modal.style.height = newModalHeight + "px"
+            let notes = document.getElementById('task-notes')
+            let notesHeight = 100 + 25 * (task.steps.length - 1)
+            notes.style.height = notesHeight + "px"
+        }
+    }
+
+
+    useEffect(() => {
+        loadTaskTitle()
+        loadMyDay()
+        loadTaskNotes()
+        loadPriority()
+        // endDate loaded via selectedDate state
+        loadEndTime()
+        loadDuration()
+        loadFrequency()
+        // loadOutdoors()
+        loadLocation()
+        loadSteps()
+        loadModalHeight()
+    }, [])
 
     // other functions
     const [isLoading, setIsLoading] = useState(false);
@@ -496,8 +560,8 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
             <Fade delay={100} duration={200} triggerOnce>
                 <div className="overlay">
                     <Slide direction='up' duration={200} className='w-100 flx' triggerOnce>
-                        <div id='create-task-mobile' className={`create-task-mobile${darkMode ? "-dark" : ""}`}>
-                            <div className="box-title">Create New Task</div>
+                        <div id='edit-task-mobile' className={`edit-task-mobile${darkMode ? "-dark" : ""}`}>
+                            <div className="box-title">Edit Task</div>
                             <hr className='w-100' />
 
                             <div className="carousel-window">
@@ -508,7 +572,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                             <div className="taskTitle taskPriorirty">
                                                 <label>Task Title</label><span className="red-text">*</span>
                                                 <div className="flx-r">
-                                                    <input onChange={(e) => updateTaskName(e)} type="text" className={`input-box${darkMode ? "-dark" : ""} w-82`} placeholder='What do you need to do?' />
+                                                    <input id='taskTitleInput' onChange={(e) => updateTaskName(e)} type="text" className={`input-box${darkMode ? "-dark" : ""} w-82`} placeholder='What do you need to do?' autoComplete='off' />
                                                     <div id='priorityBtn' onClick={() => updateTaskPriority()} className={`select-btn${darkMode ? "-dark" : ""} position-right noPriority`}>
                                                         <span className="material-symbols-outlined m-auto">
                                                             exclamation
@@ -665,7 +729,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                     <span className="material-symbols-outlined overlay-icon">
                                                         location_on
                                                     </span>
-                                                    <input onChange={(e) => updateTaskLocation(e)} type="text" className={`location-input-box${darkMode ? "-dark" : ""}`} placeholder='e.g. Home, 1722 Smith Ave. etc' />
+                                                    <input id='locationInput' onChange={(e) => updateTaskLocation(e)} type="text" className={`location-input-box${darkMode ? "-dark" : ""}`} placeholder='e.g. Home, 1722 Smith Ave. etc' />
                                                 </div>
                                             </div>
 
@@ -715,7 +779,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                             </div>
 
                             <div className="completeBtns flx-r gap-3 just-ce position-bottom">
-                                <button onClick={() => { addTask() }} className={`btn-primary${darkMode ? "-dark" : ""}`}>Add Task</button>
+                                <button onClick={() => { updateTaskBridgeFunction() }} className={`btn-primary${darkMode ? "-dark" : ""}`}>Update</button>
                                 <button onClick={() => onClose()} className={`btn-secondary${darkMode ? "-dark" : ""}`}>Cancel</button>
                             </div>
 
@@ -726,4 +790,4 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
         </div>
     )
 }
-export default CreateTaskMobile;
+export default EditTaskMobile;

@@ -524,8 +524,7 @@ const EditTaskModal = ({ open, task, updateTask, onClose }) => {
             stepInput.value = task.steps[i].desc
         }
     }
-    // load time and date
-    // ...
+    
 
     useEffect(() => {
         loadTaskTitle()

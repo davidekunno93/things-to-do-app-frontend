@@ -8,7 +8,7 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
     const { userCategories, setUserCategories } = useContext(DataContext);
     const { firstTask, setFirstTask } = useContext(DataContext);
     const { databaseOn } = useContext(DataContext);
-    const { darkMode } = useContext(DataContext);
+    const { darkMode, mobileWidth } = useContext(DataContext);
     // other functions
     function wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -232,11 +232,15 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
 
     const openLocationPopUp = () => {
         let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        let locationPopUpAfter = document.getElementById(`location-popUp-after-${index}`)
         locationPopUp.classList.remove('hidden-o')
+        locationPopUpAfter.classList.remove('hidden-o')
     }
     const closeLocationPopUp = () => {
         let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        let locationPopUpAfter = document.getElementById(`location-popUp-after-${index}`)
         locationPopUp.classList.add('hidden-o')
+        locationPopUpAfter.classList.add('hidden-o')
     }
     const toggleLocationPopUp = () => {
         let locationPopUp = document.getElementById(`location-popUp-${index}`)
@@ -384,7 +388,7 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                 {/* taskbar options */}
                 <div className="section">
                     <div id={`taskBox-toolTip-${index}`} className={`taskBox-toolTip d-none ${darkMode ? "taskBox-toolTip-dark" : null}`} style={{ width: task.myDay ? 216 : 174 }}>
-                        <selection onClick={(e) => {e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, "restore")}}>
+                        <selection onClick={(e) => { e.stopPropagation(); openQuickUpdateModal(task.id, task.db_task_id, "restore") }}>
                             <span className={`material-symbols-outlined ${darkMode ? "green-text" : null}`}>
                                 restore_from_trash
                             </span>
@@ -428,38 +432,42 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                             <div onClick={(e) => { e.stopPropagation(e) }} className="points-detail">
                                 <p className="m-0 green-text">+{task.pointsAwarded}</p>
                             </div>
+                            {!mobileWidth &&
+                                <>
                             <div onClick={(e) => { e.stopPropagation(e) }} className="completionDate-detail">
                                 <p className="m-0 small">{datify(task.completionDate)}</p>
                             </div>
-                            {task.endDate ?
-                                <>
-                                    <div onClick={(e) => e.stopPropagation()} className="date-detail small">{datify(task.endDate)}
-                                        {/* <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={datifunc(selectedDate)} placeholderText='Set Date' className="datepicker-detail" withPortal/> */}
+                                    {task.endDate ?
+                                        <>
+                                            <div onClick={(e) => e.stopPropagation()} className="date-detail small">{datify(task.endDate)}
+                                                {/* <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={datifunc(selectedDate)} placeholderText='Set Date' className="datepicker-detail" withPortal/> */}
+                                            </div>
+                                        </>
+                                        :
+                                        <div onClick={(e) => e.stopPropagation()} className={`date-detail ${darkMode ? "darkgray-text" : "faint-text"} small pointer`}>No Date</div>
+                                    }
+                                    <div onClick={(e) => e.stopPropagation()} className="duration-detail">
+                                        {durationIconText ?
+                                            <span className={`material-symbols-outlined m-auto ${task.duration === "Short" && "lighterblue-text"} ${task.duration === "Medium" && "blue-text"} ${task.duration === "Long" && "darkerblue-text"}`}>
+                                                {durationIconText}
+                                            </span>
+                                            :
+                                            <p className="faint-text m-auto small">n/a</p>
+                                        }
                                     </div>
+                                    <div className="participants-detail">
+                                        <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
+                                            <div className="circle">
+                                                <span className="material-symbols-outlined medium">
+                                                    add
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </>
-                                :
-                                <div onClick={(e) => e.stopPropagation()} className={`date-detail ${darkMode ? "darkgray-text" : "faint-text"} small pointer`}>No Date</div>
                             }
-                            <div onClick={(e) => e.stopPropagation()} className="duration-detail">
-                                {durationIconText ?
-                                    <span className={`material-symbols-outlined m-auto ${task.duration === "Short" && "lighterblue-text"} ${task.duration === "Medium" && "blue-text"} ${task.duration === "Long" && "darkerblue-text"}`}>
-                                        {durationIconText}
-                                    </span>
-                                    :
-                                    <p className="faint-text m-auto small">n/a</p>
-                                }
-                            </div>
-                            <div className="participants-detail">
-                                <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
-                                    <div className="circle">
-                                        <span className="material-symbols-outlined medium">
-                                            add
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-
                         </div>
                         <span ref={refMenu} onClick={(e) => { e.stopPropagation(); toggleTaskBoxToolTip(index) }} className="material-symbols-outlined o-50 pointer">
                             more_vert
@@ -483,7 +491,7 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                             {task.notes &&
                                 <div className="task-notes pt-2">
                                     <p className="m-0 small"><strong>Notes:</strong></p>
-                                        <p className="m-0 small gray-text">{task.notes}</p>
+                                    <p className="m-0 small gray-text">{task.notes}</p>
                                 </div>}
 
                         </div>
@@ -507,13 +515,14 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                                     <p className="faint-text m-auto small">n/a</p>
                                 }
                             </div>
-                            
-                            <div onClick={(e) => { e.stopPropagation() }} className="location-detail position-relative">
+
+                            <div onClick={(e) => { e.stopPropagation(); toggleLocationPopUp() }} className="location-detail position-relative">
                                 <div id={`location-popUp-${index}`} className="location-popUp hidden-o gap-2">
 
-                                        <p className="m-0 font-jakarta ws-nowrap">{task.location ? task.location : ""}</p>
-                    
+                                    <p className={`m-0 font-jakarta ws-nowrap ${mobileWidth && "small"}`}>{task.location ? task.location : ""}</p>
+
                                 </div>
+                                <div id={`location-popUp-after-${index}`} className="location-popUp-after hidden-o"></div>
                                 <span className={`material-symbols-outlined m-auto ${task.location ? darkMode ? "white-text" : null : darkMode ? "darkgray-text" : "faint-text"}`}>
                                     location_on
                                 </span>
@@ -521,6 +530,7 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                             <div onClick={(e) => e.stopPropagation()} className="frequency-detail">
                                 <p className="purple-text m-auto">{task.frequency}</p>
                             </div>
+                            {!mobileWidth ?
                             <div className="participants-detail">
                                 <div onClick={(e) => e.stopPropagation(e)} className="add-participant m-auto">
                                     <div className="circle">
@@ -530,6 +540,12 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                                     </div>
                                 </div>
                             </div>
+                            :
+                            <div onClick={(e) => { e.stopPropagation(e) }} className="completionDate-detail flx-c">
+                                <p className="m-0 x-small">Completed</p>
+                                <p className="m-0 x-small">{datify(task.completionDate)}</p>
+                            </div>
+                            }
                             <div className="remove-task-btn hoverSlightFade">
                                 <span onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete") }} className="material-symbols-outlined m-auto">
                                     delete_forever

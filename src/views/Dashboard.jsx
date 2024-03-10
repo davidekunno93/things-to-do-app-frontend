@@ -19,6 +19,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import TaskBoxDumped from '../components/TaskBoxDumped';
 import LevelUpModal from '../components/LevelUpModal';
 import CreateTaskMobile from '../components/CreateTaskMobile';
+import EditTaskMobile from '../components/EditTaskMobile';
 
 
 
@@ -28,11 +29,43 @@ const Dashboard = () => {
     const { showDumped, setShowDumped } = useContext(DataContext);
     const { mobileNavbarOpen, setMobileNavbarOpen } = useContext(DataContext);
     const { levelUpModalOpen, setLevelUpModalOpen } = useContext(DataContext);
+    const { advancedSettings, setAdvancedSettingsOn } = useContext(DataContext);
     const { darkMode } = useContext(DataContext);
     const [newTaskModalOpen, setNewTaskModalOpen] = useState(false)
+    const refHamburger = useRef(false);
     useEffect(() => {
-        setShowNavbar(true)
+        setShowNavbar(true);
+        document.addEventListener('click', closeMobileNavbar, true);
     }, [])
+    const closeMobileNavbar = (e) => {
+        if (refHamburger.current && !refHamburger.current.contains(e.target)) {
+            setMobileNavbarOpen(false)
+        }
+    }
+    const openHamburgerMenu = () => {
+        let menu = document.getElementById('hamburgerMenu')
+        menu.classList.add('open-menu')
+    }
+    const closeHamburgerMenu = () => {
+        let menu = document.getElementById('hamburgerMenu')
+        menu.classList.remove('open-menu')
+    }
+    const toggleHamburgerMenu = () => {
+        if (mobileNavbarOpen) {
+            setMobileNavbarOpen(false);
+            closeHamburgerMenu()
+        } else {
+            setMobileNavbarOpen(true);
+            openHamburgerMenu()
+        }
+    }
+    useEffect(() => {
+        if (mobileNavbarOpen) {
+            openHamburgerMenu()
+        } else {
+            closeHamburgerMenu()
+        }
+    }, [mobileNavbarOpen])
     const taskObj = {
         myDay: false,
         taskName: "",
@@ -92,6 +125,8 @@ const Dashboard = () => {
     // create new task modal
     const openCreateNewTask = () => {
         if (mobileWidth) {
+            // set advanced settings false to show basic options for create task mobile modal
+            setAdvancedSettingsOn(false)
             setCreateTaskMobileOpen(true)
         } else {
             setNewTaskModalOpen(true)
@@ -562,10 +597,16 @@ const Dashboard = () => {
 
     // edit task code
     const [editTaskModalOpen, setEditTaskModalOpen] = useState(false)
+    const [editTaskMobileOpen, setEditTaskMobileOpen] = useState(false)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const openEditTaskModal = (taskId) => {
         setTaskToEdit(tasks[taskId])
-        setEditTaskModalOpen(true);
+        if (mobileWidth) {
+            setAdvancedSettingsOn(false)
+            setEditTaskMobileOpen(true);
+        } else {
+            setEditTaskModalOpen(true);
+        }
     }
 
     // update task code
@@ -1190,6 +1231,7 @@ const Dashboard = () => {
             <CreateTaskMobile open={createTaskMobileOpen} category={group} tasks={tasks} setTasks={setTasks} onClose={() => setCreateTaskMobileOpen(false)} />
             <CreateTaskModal open={newTaskModalOpen} category={group} tasks={tasks} setTasks={setTasks} onClose={closeCreateNewTask} />
             <QuickUpdateModal open={quickUpdateModalOpen} quickTaskUpdates={quickTaskUpdates} taskId={quickUpdateSettings.taskId} detail={quickUpdateSettings.detail} db_task_id={quickUpdateSettings.db_task_id} option={quickUpdateSettings.option} onClose={() => setQuickUpdateModalOpen(false)} dumpCompletedTasks={dumpCompletedTasks} />
+            <EditTaskMobile open={editTaskMobileOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskMobileOpen(false)} />
             <EditTaskModal open={editTaskModalOpen} task={taskToEdit} updateTask={updateTask} onClose={() => setEditTaskModalOpen(false)} />
             <DatePickerModal open={datePickerModalOpen} taskId={changeDate ? changeDate.taskId : null} endDate={changeDate ? changeDate.endDate : null} quickUpdate={quickTaskUpdates} onClose={closeDatePickerModal} />
             <TimePickerModal open={timePickerModalOpen} taskId={changeTime ? changeTime.taskId : null} endTime={changeTime ? changeTime.endTime : null} quickUpdate={quickTaskUpdates} goBack={goBack} onClose={closeTimePickerModal} />
@@ -1298,8 +1340,14 @@ const Dashboard = () => {
                     {/* Page body starts here */}
                     {/* Page sub-title section */}
                     <div className="carousel-window position-relative">
-                        <div onClick={() => setMobileNavbarOpen(mobileNavbarOpen => !mobileNavbarOpen)} className={`hamburger-icon${darkMode ? "-dark" : ""} ${mobileWidth ? "" : "d-none"}`}>
+                        {/* <div onClick={() => setMobileNavbarOpen(mobileNavbarOpen => !mobileNavbarOpen)} className={`hamburger-icon${darkMode ? "-dark" : ""} ${mobileWidth ? "" : "d-none"}`}>
                             <span className="material-symbols-outlined">menu</span>
+
+                        </div> */}
+                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className="hamburger-menu">
+                            <span className='line-1'></span>
+                            <span className='line-2'></span>
+                            <span className='line-3'></span>
                         </div>
                         <div className="inner" style={{ transform: `translateX(${showDumped ? "-100%" : "0%"})` }}>
                             {/* Normal Tasks carousel item */}
@@ -1607,23 +1655,30 @@ const Dashboard = () => {
                                             <div className="taskName">
                                                 <p className="m-0">Task Title</p>
                                             </div>
-                                            <div className="rightHandSide-dumped flx-r flx- just-sb">
-                                                <div className="pointsAwarded">
-                                                    <p className="m-0">Points</p>
-                                                </div>
-                                                <div className="completionDate">
-                                                    <p className="m-0">Completion Date</p>
-                                                </div>
-                                                <div className="date">
-                                                    <p className="m-0">End Date</p>
-                                                </div>
-                                                <div className="duration">
-                                                    <p className="m-0">Length</p>
-                                                </div>
-                                                <div className="participants">
-                                                    <p className="m-0">Participants</p>
-                                                </div>
+                                            <div className="pointsAwarded mr-4">
+                                                <p className="m-0">Points</p>
                                             </div>
+                                            {!mobileWidth &&
+                                                <>
+                                                    <div className="rightHandSide-dumped flx-r flx- just-sb">
+                                                        <div className="pointsAwarded">
+                                                            <p className="m-0">Points</p>
+                                                        </div>
+                                                        <div className="completionDate">
+                                                            <p className="m-0">Completed</p>
+                                                        </div>
+                                                        <div className="date">
+                                                            <p className="m-0">End Date</p>
+                                                        </div>
+                                                        <div className="duration">
+                                                            <p className="m-0">Length</p>
+                                                        </div>
+                                                        <div className="participants">
+                                                            <p className="m-0">Participants</p>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            }
 
 
 

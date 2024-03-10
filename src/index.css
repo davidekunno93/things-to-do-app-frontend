@@ -1981,21 +1981,8 @@ input:-webkit-autofill {
   transition: 0.2s;
 }
 
-.time-input-box-long {
-  border-radius: 8px;
-  height: 240px;
-  width: 140px;
-  padding: 8px;
-  padding-left: 32px;
-  /* overflow: hidden; */
-  font-size: medium;
-  box-sizing: border-box;
-  border: none;
-  background-color: rgb(235, 235, 235);
-  transition: 0.2s;
-}
 
-.hour-input-box {
+.hour-input-box, .time-input-box {
   border-radius: 8px;
   height: 36px;
   width: 80px;
@@ -2009,7 +1996,7 @@ input:-webkit-autofill {
   transition: 0.2s;
 }
 
-.hour-input-box-dark {
+.hour-input-box-dark, .time-input-box-dark {
   border-radius: 8px;
   height: 36px;
   width: 80px;
@@ -2061,18 +2048,6 @@ input:-webkit-autofill {
   transition: 0.2s;
 }
 
-.time-input-box {
-  border-radius: 8px;
-  height: 36px;
-  width: 112px;
-  padding: 8px;
-  padding-left: 32px;
-  font-size: medium;
-  box-sizing: border-box;
-  border: none;
-  background-color: rgb(235, 235, 235);
-  transition: 0.2s;
-}
 
 #timeInput:invalid {
   color: gray;
@@ -2797,6 +2772,7 @@ input:-webkit-autofill {
 
 .timepicker-modal {
   background-color: white;
+  color: #242424;
   width: 320px;
   height: 240px;
   margin: auto;
@@ -2864,7 +2840,7 @@ input:-webkit-autofill {
   cursor: auto;
 }
 
-.location-popUp::after {
+/* .location-popUp::after {
   content: "";
   position: absolute;
   height: 0;
@@ -2876,6 +2852,18 @@ input:-webkit-autofill {
   border-top: 10px solid gainsboro;
   transform: translateY(-10px);
   transition: 0.2s;
+} */
+.location-popUp-after {
+  /* content: ""; */
+  position: absolute;
+  height: 0;
+  width: 0;
+  left: 20.5px;
+  bottom: 12px;
+  display: block;
+  border: 5px solid transparent;
+  border-top: 10px solid gainsboro;
+  transform: translateY(-10px);
 }
 
 .frequency-detail {
@@ -3069,6 +3057,7 @@ selection .sub-selection {
   visibility: hidden;
   transition: 0.2s;
   opacity: 0;
+  z-index: 1;
 }
 
 selection:hover .sub-selection {
@@ -3123,6 +3112,7 @@ selection .sub-selection-dark {
   visibility: hidden;
   transition: 0.2s;
   opacity: 0;
+  z-index: 1;
 }
 
 selection:hover .sub-selection-dark {
@@ -5479,7 +5469,7 @@ selection:hover .sub-selection-dark {
 
   /* modals */
   .create-task-mobile,
-  .create-task-mobile-empty {
+  .create-task-mobile-empty, .edit-task-mobile {
     background-color: white;
     color: black;
     width: 95%;
@@ -5493,7 +5483,7 @@ selection:hover .sub-selection-dark {
     transition: 0.2s;
   }
   .create-task-mobile-dark,
-  .create-task-mobile-empty-dark {
+  .create-task-mobile-empty-dark, .edit-task-mobile-dark {
     background-color: #2B2B2B;
     color: gainsboro;
     width: 95%;
@@ -5507,6 +5497,9 @@ selection:hover .sub-selection-dark {
     transition: 0.2s;
   }
   .confirmation-modal, .confirmation-modal-dark {
+    width: 94vw;
+  }
+  .timepicker-modal, .timepicker-modal-dark {
     width: 94vw;
   }
 
@@ -5552,24 +5545,29 @@ selection:hover .sub-selection-dark {
   /* inputs */
   .date-input-box,
   .hour-input-box,
+  .time-input-box,
   .minute-input-box {
     width: 100%;
     outline: none;
   }
   .date-input-box-dark,
   .hour-input-box-dark,
+  .time-input-box-dark,
   .minute-input-box-dark {
     background-color: #1C1C1E;
     color: white;
     width: 100%;
     outline: none;
   }
+  .input-style4 {
+    font-size: small;
+  }
 
   .textarea-box, .textarea-box-dark {
     height: 100px;
   }
 
-  .step-input-box {
+  .step-input-box, .step-input-box-dark {
     height: 32px;
   }
 
@@ -5632,6 +5630,10 @@ selection:hover .sub-selection-dark {
   }
   .mission-completed-modal .content {
   }
+  .feedback-modal {
+    width: 94vw;
+    height: 440px;
+  }
 
   .categorySelections .menu, .categorySelections-dark .menu {
     left: 0px;
@@ -5655,7 +5657,7 @@ selection:hover .sub-selection-dark {
     flex-direction: column;
     z-index: 1;
   }
-  .time-picker {
+  .time-picker-dark {
     width: 250px;
     height: 285px;
     position: absolute;
@@ -5673,7 +5675,7 @@ selection:hover .sub-selection-dark {
     z-index: 1;
   }
   
-  .backBtn {
+  .backBtn, .clearBtn2 {
     position: absolute;
     bottom: 8px;
     z-index: 10;
@@ -5758,7 +5760,7 @@ selection:hover .sub-selection-dark {
     width: 24px;
     height: 28px;
   }
-
+  /* no longer using */
   .hamburger-icon {
     position: absolute;
     right: 24px;
@@ -5789,7 +5791,53 @@ selection:hover .sub-selection-dark {
     align-items: center;
     transition: 0.2s;
   }
-
+  .hamburger-menu {
+    position: absolute;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding: 5px;
+    height: 26px;
+    width: 26px;
+    top: 16px;
+    right: 26px;
+    z-index: 1;
+  }
+  .hamburger-menu span {
+    position: absolute;
+    width: 60%;
+    height: 2px;
+    background-color: black;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+  }
+  .hamburger-menu .line-1 {
+    transform: translate(-50%, -8px);
+  }
+  .hamburger-menu .line-3 {
+    transform: translate(-50%, 6px);
+  }
+  .open-menu .line-1 {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  .open-menu .line-3 {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  .open-menu .line-2 {
+    width: 0;
+  }
+  .location-popUp {
+    transform: translateX(-10px);
+  }
+  .location-popUp::after {
+    left: 22.5px;
+  }
+  .location-popUp-after {
+    left: 13px;
+  }
 
 
   /* text color shorthands */

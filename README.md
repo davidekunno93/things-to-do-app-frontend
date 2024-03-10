@@ -50,6 +50,7 @@ Level 9 165/1055
 Level 10 180/1235
 
 Finally...
+clear am pm when clearing time (make timeOfDay > "AM" or "PM")
 Create get tasks & user categories routes
 complete login error handling
 Host backend (on render?)
@@ -74,7 +75,7 @@ upon creation of 5th category tell popup for user to scroll categories to see mo
 **User sign in and out with Firebase - catch login errors**
 **Earn pts for completing and deleting tasks (will need tooltip explaining)**
 *enable leveling up*
-*character limits on task title, notes, steps
+*character limits on task title, notes, steps, location (30)
 *Are you sure clear category/delete category modals
 *"..." if task name is longer than available width
 Search bar to search tasks

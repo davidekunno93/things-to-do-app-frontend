@@ -94,15 +94,20 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
         }
     }
     const toggleTaskBoxToolTip = (index) => {
-        const toolTip = document.getElementById(`taskBox-toolTip-${index}`)
+        let toolTip = document.getElementById(`taskBox-toolTip-${index}`)
         if (toolTip.classList.contains('d-none')) {
             toolTip.classList.remove('d-none')
+            // console.log('1')
         } else {
+            // specialized for ref purposes.
             toolTip.classList.add('d-none')
+            // console.log('2')
         }
     }
     const closeTaskBoxToolTip = () => {
-        const toolTips = document.getElementsByClassName('taskBox-toolTip')
+        let toolTips = document.getElementsByClassName('taskBox-toolTip')
+        // const toolTip = document.getElementsByClassName(`taskBox-toolTip-${index}`)
+        // toolTip.classList.add('d-none')
 
         for (let i = 0; i < toolTips.length; i++) {
             toolTips[i].classList.add('d-none')
@@ -213,7 +218,21 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
     const resizeLocationInput = () => {
         // index is passed into this component as a prop
         const locationInput = document.getElementById(`locationInput-${index}`)
-        let offset = Math.floor(locationInput.value.length / 6) - 1
+        let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        let offset = 0
+        if (mobileWidth) {
+            offset = Math.floor(locationInput.value.length / 6) - 1
+            // after 10 chars, for every char I need the popUp and after to slide __px to the left (translateX -__ more px, )
+            if (locationInput.value.length > 9) {
+                // console.log('> 10')
+                let leftTransform = 10 + 7.5*(locationInput.value.length - 9)
+                locationPopUp.style.transform = `translateX(-${leftTransform}px)`
+            } else {
+                locationPopUp.style.transform = `translateX(-10px)`
+            }
+        } else {
+            offset = Math.floor(locationInput.value.length / 6) - 1
+        }
         locationInput.style.width = locationInput.value.length - offset + "ch";
     }
     const refLocation = useRef(null)
@@ -233,11 +252,15 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
 
     const openLocationPopUp = () => {
         let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        let locationPopUpAfter = document.getElementById(`location-popUp-after-${index}`)
         locationPopUp.classList.remove('hidden-o')
+        locationPopUpAfter.classList.remove('hidden-o')
     }
     const closeLocationPopUp = () => {
         let locationPopUp = document.getElementById(`location-popUp-${index}`)
+        let locationPopUpAfter = document.getElementById(`location-popUp-after-${index}`)
         locationPopUp.classList.add('hidden-o')
+        locationPopUpAfter.classList.add('hidden-o')
     }
     const toggleLocationPopUp = () => {
         let locationPopUp = document.getElementById(`location-popUp-${index}`)
@@ -338,7 +361,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
             setSendDataStandby(sendDataStandbyCopy)
         }
         if (edit.location === false && sendDataStandby.location === true) {
-            console.log('update location now')
+            // console.log('update location now')
             if (databaseOn) {
                 quickUpdate.updateLocation(task.id, task.location, true)
             }
@@ -384,14 +407,14 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                 {/* end priority indicator popup */}
                 {/* taskbar options */}
                 <div className="taskbar-options section">
-                    <div id={`taskBox-toolTip-${index}`} className={`taskBox-toolTip d-none ${darkMode ? "taskBox-toolTip-dark" : null}`} style={{ width: task.myDay ? 216 : 174 }}>
-                        <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id) }}>
+                    <div ref={refMenu} id={`taskBox-toolTip-${index}`} className={`taskBox-toolTip d-none ${darkMode ? "taskBox-toolTip-dark" : null}`} style={{ width: task.myDay ? 216 : 174 }}>
+                        <selection onClick={(e) => { e.stopPropagation(e); openEditTaskModal(task.id); closeTaskBoxToolTip() }}>
                             <span className={`material-symbols-outlined ${darkMode ? "blue-text" : null}`}>
                                 edit
                             </span>
                             <p className="m-0">Edit</p>
                         </selection>
-                        <selection onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }}>
+                        <selection onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id); closeTaskBoxToolTip() }}>
                             <span className={`material-symbols-outlined ${darkMode ? "yellow-text" : null}`}>
                                 sunny
                             </span>
@@ -402,11 +425,11 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 folder_open
                             </span>
                             <p className="m-0">Move to ...</p>
-                            <div className={`sub-selection${darkMode ? "-dark" : ""}`} style={{ right: task.myDay ? 228 : 186 }}>
+                            <div className={`sub-selection${darkMode ? "-dark" : ""}`} style={{ right: mobileWidth ? 12 : task.myDay ? 228 : 186, top: mobileWidth? 120 : "" }}>
 
                                 {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
                                     let category = userCategories.categories[categoryName]
-                                    return <div key={index} onClick={(e) => { e.stopPropagation(); quickUpdate.updateCategory(task.id, category.categoryName) }} className="option">
+                                    return <div key={index} onClick={(e) => { e.stopPropagation(); quickUpdate.updateCategory(task.id, category.categoryName); closeTaskBoxToolTip() }} className="option">
                                         <img src={category.iconUrl} alt="" className="catTinyIcon mr-1" />
                                         <p className="m-0">{category.categoryName}</p>
                                         <span className={`material-symbols-outlined medium position-right ${category.categoryName === task.category ? null : "d-none"}`}>
@@ -415,15 +438,15 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                     </div>
                                 }) : null}
                                 {task.category && task.category !== "None" &&
-                                <div onClick={() => quickUpdate.updateCategory(task.id, "None")} className="option">
-                                    <span className="material-symbols-outlined large catTinyIcon mr-1">block</span>
-                                    <p className="m-0">None</p>
-                                </div>
+                                    <div onClick={() => {quickUpdate.updateCategory(task.id, "None"); closeTaskBoxToolTip()}} className="option red-text">
+                                        <span className="material-symbols-outlined large catTinyIcon mr-1">block</span>
+                                        <p className="m-0">None</p>
+                                    </div>
                                 }
 
                             </div>
                         </selection>
-                        <selection onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete") }}>
+                        <selection onClick={(e) => { e.stopPropagation(e); openQuickUpdateModal(task.id, task.db_task_id, "delete"); closeTaskBoxToolTip() }}>
                             <span className={`material-symbols-outlined ${darkMode ? "red-text" : null}`}>
                                 delete
                             </span>
@@ -458,17 +481,19 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 <input ref={refTaskName} id={`taskNameInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit(e) : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e.target.value); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
                                 :
                                 <p className={`task-name font-jakarta-strong m-0 ${task.completed ? darkMode ? "line-out faint-text-dark" : "line-out faint-text" : null}`}>{task.taskName}
-                                    <span onClick={(e) => { e.stopPropagation(e); editTaskName() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
+                                    {!mobileWidth &&
+                                        <span onClick={(e) => { e.stopPropagation(e); editTaskName() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
+                                    }
                                 </p>
                             }
                         </div>
                         <div id={`simpleIconsTray-${index}`} className="simple-icons-tray flx-r gap-2 just-sb">
                             {!mobileWidth && task.category && task.category !== "None" && !group &&
-                            <div className="group-detail-holder">
-                                <div className={`group-detail group-detail${userCategories.categories[task.category].color ? "-" + userCategories.categories[task.category].color : ""}`}>
-                                    <p className="m-auto">{task.category}</p>
+                                <div className="group-detail-holder">
+                                    <div className={`group-detail group-detail${userCategories.categories[task.category].color ? "-" + userCategories.categories[task.category].color : ""}`}>
+                                        <p className="m-auto">{task.category}</p>
+                                    </div>
                                 </div>
-                            </div>
                             }
                             <div onClick={(e) => { e.stopPropagation(e); quickUpdate.toggleMyDay(task.id) }} className="myDay-detail">
                                 <span className={`material-symbols-outlined pointer ${task.myDay ? "yellow-text" : darkMode ? "darkgray-text" : "faintish-text"}`}>
@@ -493,7 +518,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                                 {durationIconText}
                                             </span>
                                             :
-                                            <p className="faint-text m-auto small">n/a</p>
+                                            <p className={`${darkMode ? "faint-text-dark" : "faint-text"} m-auto small`}>n/a</p>
                                         }
                                     </div>
                                     <div onClick={(e) => { e.stopPropagation() }} className="progress-detail">
@@ -514,9 +539,11 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 </>
                             }
                         </div>
-                        <span ref={refMenu} onClick={(e) => { e.stopPropagation(); toggleTaskBoxToolTip(index) }} className="material-symbols-outlined o-50 pointer">
+                        {/* toggle task options btn */}
+                        <span onClick={(e) => { e.stopPropagation(); toggleTaskBoxToolTip(index) }} className="material-symbols-outlined o-50 pointer">
                             more_vert
                         </span>
+                        {/* end toggle task options btn */}
 
                     </div>
 
@@ -534,7 +561,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                                 <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onKeyDown={(e) => e.key === "Enter" ? completeStepEdit() : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e.target.value); resizeStepInput(stepIndex) }} type="text" className="input-style2" value={step.desc} />
                                                 :
                                                 <p className={`m-0 my-h small ${step.completed ? darkMode ? "line-out faint-text-dark" : "line-out faint-text" : null}`}>{/*<strong>{step.number})</strong>*/} {step.desc}
-                                                    <span onClick={(e) => { e.stopPropagation(e); editSteps(stepIndex) }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
+                                                    {!mobileWidth &&
+                                                        <span onClick={(e) => { e.stopPropagation(e); editSteps(stepIndex) }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
+                                                    }
                                                 </p>
                                             }
                                         </div>
@@ -543,7 +572,9 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             {task.notes &&
                                 <div className="task-notes pt-2">
                                     <p className="m-0 small"><strong>Notes:</strong>
-                                        <span onClick={(e) => { e.stopPropagation(e); editNotes() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
+                                        {!mobileWidth &&
+                                            <span onClick={(e) => { e.stopPropagation(e); editNotes() }} className="material-symbols-outlined small onHover-show ml-2">edit</span>
+                                        }
                                     </p>
                                     {edit.notes ?
                                         <textarea ref={refNotes} onClick={(e) => e.stopPropagation(e)} onChange={(e) => quickUpdate.updateNotes(task.id, e.target.value)} id='notesInput' className='textarea-boxflex' value={task.notes}></textarea>
@@ -575,7 +606,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                         {durationIconText}
                                     </span>
                                     :
-                                    <p className="faint-text m-auto small">n/a</p>
+                                    <p className={`${darkMode ? "faint-text-dark" : "faint-text" } m-auto small`}>n/a</p>
                                 }
                             </div>
                             <div onClick={(e) => { e.stopPropagation() }} className="progress-detail">
@@ -591,14 +622,15 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                             <div onClick={(e) => { e.stopPropagation() }} className="location-detail position-relative">
                                 <div id={`location-popUp-${index}`} className="location-popUp hidden-o gap-2">
                                     {edit.location ?
-                                        <input ref={refLocation} id={`locationInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeLocationEdit(e) : null} onChange={(e) => { quickUpdate.updateLocation(task.id, e.target.value); resizeLocationInput() }} type="text" className="input-style4 font-jakarta" value={task.location ? task.location : ""} />
+                                        <input ref={refLocation} id={`locationInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeLocationEdit(e) : null} onChange={(e) => { quickUpdate.updateLocation(task.id, e.target.value); resizeLocationInput() }} type="text" className={`input-style4 font-jakarta dark-text ${mobileWidth && "small"}`} value={task.location ? task.location : ""} />
                                         :
-                                        <p className="m-0 font-jakarta ws-nowrap">{task.location ? task.location : ""}</p>
+                                        <p className={`m-0 font-jakarta ws-nowrap ${mobileWidth && "small"}`}>{task.location ? task.location : ""}</p>
                                     }
                                     <span onClick={() => editLocation()} className="material-symbols-outlined medium o-50 hoverOpaque pointer">
                                         edit
                                     </span>
                                 </div>
+                                <div id={`location-popUp-after-${index}`} className="location-popUp-after hidden-o"></div>
                                 <span onClick={() => toggleLocationPopUp()} className={`material-symbols-outlined m-auto ${task.location ? darkMode ? "white-text" : null : darkMode ? "darkgray-text" : "faint-text"}`}>
                                     location_on
                                 </span>
