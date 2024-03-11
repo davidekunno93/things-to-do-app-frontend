@@ -98,6 +98,7 @@ const Navbar = () => {
                 console.log(error)
             })
         }
+        setDarkMode(false)
         goToAuth()
     }
 

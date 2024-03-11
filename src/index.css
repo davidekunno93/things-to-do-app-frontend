@@ -107,7 +107,6 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
 }
-
 .flx-c-reverse {
   display: flex;
   flex-direction: column-reverse;
@@ -1142,7 +1141,7 @@ button:focus-visible {
   height: 100vh;
 }
 
-/* background shorthand */
+/* background color shorthand */
 .white-bg {
   background-color: white;
 }
@@ -5449,7 +5448,7 @@ selection:hover .sub-selection-dark {
   white-space: normal;
 }
 
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 600px) {
 
   .navbar-holder,
   .navbar-black,

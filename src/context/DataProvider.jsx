@@ -461,7 +461,7 @@ const DataProvider = (props) => {
         }
     }
     const handleResize = () => {
-        if (document.body.clientWidth < 375) {
+        if (document.body.clientWidth < 600) {
             setMobileWidth(true)
             // console.log('true')
         } else {
