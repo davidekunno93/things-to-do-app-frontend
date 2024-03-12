@@ -4,6 +4,7 @@ import { Fade } from 'react-awesome-reveal'
 const ToolTip = ({ open, toolTipFor, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
     const [activeIndex, setActiveIndex] = useState(0)
     const toolTips = {
         'create task': {

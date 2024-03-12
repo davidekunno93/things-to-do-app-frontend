@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -10,8 +10,18 @@ import Authentication from './views/Authentication'
 import { DataContext } from './context/DataProvider'
 
 function App() {
-  const [count, setCount] = useState(0)
   const { darkMode } = useContext(DataContext);
+  const { setMobileAgent } = useContext(DataContext);
+
+  const isMobile = () => {
+    return /Android|iPhone/i.test(navigator.userAgent)
+  }
+  useEffect(() => {
+    // console.log(isMobile())
+    if(isMobile) {
+      setMobileAgent(true);
+    }
+  }, [])
 
   return (
     <>

@@ -13,8 +13,8 @@ const ConfirmationModal = ({ open, completedTasks, selectedForDump, dumpSelected
                 <div className="overlay">
                     <Fade className='m-auto' duration={200} triggerOnce>
                         <Slide direction='up' duration={200} triggerOnce>
-                            <div className={`confirmation-modal${darkMode ? "-dark" : ""}`}>
-                                <div className={`box-title${darkMode ? "-dark" : ""}`}>Dump {selectedForDump.length} {selectedForDump.length === 1 ? "task" : "tasks" }?</div>
+                            <div className={`confirmation-modal${darkMode ? "-dark" : ""} ${mobileWidth && "vw94"}`}>
+                                <div className={`box-title${darkMode ? "-dark" : ""} ${mobileWidth && "box-title-mobile"}`}>Dump {selectedForDump.length} {selectedForDump.length === 1 ? "task" : "tasks" }?</div>
                                 <hr className='w-100' />
                                 <div className={`flx-r ${mobileWidth ? "gap-4" : "gap-8"} m-auto`}>
                                     <button onClick={() => { dumpSelectedTasks(); onClose() }} className={`btn-primary${darkMode ? "-dark" : ""} wide`}>Yes</button>

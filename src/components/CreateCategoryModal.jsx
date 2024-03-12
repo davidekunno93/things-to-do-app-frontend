@@ -281,7 +281,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
     }
     return (
         <div className="overlay">
-            <div className={`create-category-modal${darkMode ? "-dark" : ""}`}>
+            <div className={`create-category-modal${darkMode ? "-dark" : ""} ${mobileWidth && "create-category-modal-mobile"}`}>
                 <p onClick={() => printNewCategory()} className={`m-0 box-title${darkMode ? "-dark" : ""}`}>Create New Category</p>
                 <hr className='w-100' />
 
@@ -347,7 +347,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
                         }
                         <div className="selectedImg-div ml-3 flx">
                             {selectedIcon &&
-                                <img src={selectedIcon} alt="" className={`${mobileWidth ? "catIcon" : "img-small"}`} />
+                                <img src={selectedIcon} alt="" className={`${mobileWidth ? "catIcon-mobile" : "img-small"}`} />
                             }
                         </div>
                         {selectedIcon &&
@@ -371,7 +371,7 @@ const CreateCategoryModal = ({ open, onClose }) => {
                         {icons.map((icon, index) => {
                             let tagString = icon.iconTags.join("")
                             let filteredIn = searchQuery ? tagString.includes(searchQuery) : true
-                            return filteredIn ? <img key={index} onClick={() => { updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl) }} src={icon.iconUrl} alt="" className="catIcon img-small" />
+                            return filteredIn ? <img key={index} onClick={() => { updateCategoryIcon(icon.iconUrl); setSelectedIcon(icon.iconUrl) }} src={icon.iconUrl} alt="" className={`${mobileWidth ? "catIcon-mobile" : "catIcon img-small"}`} />
                                 : null
                         })}
 

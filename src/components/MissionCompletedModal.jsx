@@ -5,6 +5,7 @@ import { DataContext } from '../context/DataProvider';
 const MissionCompletedModal = ({ open, currentMission, setCurrentMission, closeMissionReminder, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
 
 
     const nextMission = () => {
@@ -20,12 +21,12 @@ const MissionCompletedModal = ({ open, currentMission, setCurrentMission, closeM
             <Fade duration={200} delay={300} triggerOnce>
                 <div className="overlay">
                     <Slide direction='up' duration={400} className='flx w-100' triggerOnce>
-                        <div className="mission-completed-modal font-jakarta">
-                            <div className="box-title">Mission Complete!</div>
+                        <div className={`mission-completed-modal font-jakarta ${mobileWidth && "w-95"}`}>
+                            <div className={`box-title ${mobileWidth && "box-title-mobile"}`}>Mission Complete!</div>
                             <hr className='w-100' />
                             <div className="content h-100 flx-c just-ce">
 
-                                <img src="https://i.imgur.com/icGepnL.jpg" alt="" className="img-blown-up h-center" />
+                                <img src="https://i.imgur.com/icGepnL.jpg" alt="" className={`img-blown-up h-center ${mobileWidth && "img-blown-up-mobile"}`} />
                                 {currentMission === 1 &&
                                     <p className="m-0 center-text"><u>Well Done!</u> Click the <strong>mission button</strong> <span className="material-symbols-outlined v-align">rocket</span> to see your next mission.</p>
                                 }

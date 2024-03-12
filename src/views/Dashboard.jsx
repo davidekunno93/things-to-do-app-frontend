@@ -1246,7 +1246,7 @@ const Dashboard = () => {
             <FeedbackModal open={feedbackModalOpen} deactivateFeedbackAlert={() => setFeedbackAlert(false)} onClose={() => setFeedbackModalOpen(false)} />
             {currentMission > 0 && missionsOn &&
                 <>
-                    <div id='missionReminderBox black-text' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"}`}>
+                    <div id='missionReminderBox black-text' className={`missionReminderBox font-jakarta ${missionReminderOpen ? "" : "hidden-o"} ${mobileWidth && "missionReminderBox-mobile"}`}>
                         <div className="align-all-items gap-2">
                             <p className="box-title m-0">Current Mission</p>
                             {currentMission === 1 &&
@@ -1282,7 +1282,7 @@ const Dashboard = () => {
                     {/* end mission reminder */}
                     {/* mission reminder button */}
                     <button onClick={() => toggleMissionReminder()} className="missionReminderButton" style={{ transform: `translateY(${mobileWidth ? "-80px" : "0px"})`, zIndex: `${mobileWidth ? "10" : "100000"}` }}>
-                        <span className="material-symbols-outlined lift">
+                        <span className={`material-symbols-outlined ${!mobileWidth && "lift"}`}>
                             rocket_launch
                         </span>
                     </button>
@@ -1388,7 +1388,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
-                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
+                                                    <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"} ${mobileWidth && "tip-text-small"}`}>Coming soon:</strong> The point offering system is coming soon. Completed tasks will be able to be <i>dumped</i> in <i>Completed Tasks</i> and traded in for offering points!</p>
                                                 </div>
                                             </>
                                         }
@@ -1403,7 +1403,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
-                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> In order to incentive users to add an end date/deadline to their tasks, you'll get an extra offering point for completing and dumping these!</p>
+                                                    <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> In order to incentive users to add an end date/deadline to their tasks, you'll get an extra offering point for completing and dumping these!</p>
                                                 </div>
                                             </>
                                         }
@@ -1418,7 +1418,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
-                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Priority tasks will earn you 1 extra offering point when you dump them. Unless of course they're overdue then they're worth even less than a non-priority task.</p>
+                                                    <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Priority tasks will earn you 1 extra offering point when you dump them. Unless of course they're overdue then they're worth even less than a non-priority task.</p>
                                                 </div>
                                             </>
                                         }
@@ -1433,7 +1433,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
-                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> We don't have to tell you to try and complete tasks before they're overdue because you know that already. But did you know overdue tasks earn you less points when you dump them?</p>
+                                                    <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> We don't have to tell you to try and complete tasks before they're overdue because you know that already. But did you know overdue tasks earn you less points when you dump them?</p>
                                                 </div>
                                             </>
                                         }
@@ -1455,7 +1455,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
-                                                    <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> After completing tasks, select tasks and click the <strong>Dump Selected Tasks</strong> button to trade them in for points!</p>
+                                                    <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> After completing tasks, select tasks and click the <strong>Dump Selected Tasks</strong> button to trade them in for points!</p>
                                                 </div>
                                             </>
                                         }
@@ -1472,9 +1472,9 @@ const Dashboard = () => {
 
                                                 <div className={`horizontally-compress-the-tip ${mobileWidth && "pr-2"}`}>
                                                     {!mobileWidth ?
-                                                        <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these details on the fly.</p>
+                                                        <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these details on the fly.</p>
                                                         :
-                                                        <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Tap to the right of the task title, step description, or notes heading to edit the item and change these deatils on the fly.</p>
+                                                        <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Tap to the right of the task title, step description, or notes heading to edit the item and change these deatils on the fly.</p>
                                                     }
                                                 </div>
                                             </>
@@ -1652,7 +1652,7 @@ const Dashboard = () => {
                                                 </div>
                                             </div>
 
-                                            <p className="tip-text"><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Dumped tasks are automatically <strong>deleted after 30 days</strong> from the time they are dumped.</p>
+                                            <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Dumped tasks are automatically <strong>deleted after 30 days</strong> from the time they are dumped.</p>
                                         </div>
 
 

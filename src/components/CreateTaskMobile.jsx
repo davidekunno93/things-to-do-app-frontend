@@ -497,7 +497,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                 <div className="overlay">
                     <Slide direction='up' duration={200} className='w-100 flx' triggerOnce>
                         <div id='create-task-mobile' className={`create-task-mobile${darkMode ? "-dark" : ""}`}>
-                            <div className="box-title">Create New Task</div>
+                            <div className="box-title-mobile">Create New Task</div>
                             <hr className='w-100' />
 
                             <div className="carousel-window">
@@ -520,8 +520,8 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                             <div className="taskCategory taskMyDay flx-r gap-2">
                                                 <div className="flx-c flx-1">
                                                     <label>Category</label>
-                                                    <div onClick={() => toggleCategoryMenu()} className={`categorySelections${darkMode ? "-dark" : ""}`}>
-                                                        <div id='categoryMenu' className="menu hidden-o">
+                                                    <div onClick={() => toggleCategoryMenu()} className={`categorySelections${darkMode ? "-dark" : ""}`} style={{ width: "100%" }}>
+                                                        <div id='categoryMenu' className="menu hidden-o" style={{ width: "200px" }}>
                                                             <div onClick={(e) => updateTaskCategory(e)} className="option"><p className="m-0 gray-text">None</p></div>
                                                             {userCategories ? userCategories.categoryOrder.map((categoryName, index) => {
                                                                 let category = userCategories.categories[categoryName]
@@ -543,13 +543,13 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                 </div>
                                                 <div className="flx-c flx-1">
                                                     <label>My Day</label>
-                                                    <button id='myDayText' onClick={() => toggleMyDay()} className={`btn-tertiary${darkMode ? "-dark" : ""} small gray-text`}>Add to My Day</button>
+                                                    <button id='myDayText' onClick={() => toggleMyDay()} className={`btn-tertiary${darkMode ? "-dark" : ""} btn-tertiary-mobile small gray-text`}>Add to My Day</button>
                                                 </div>
                                             </div>
 
                                             <div className="taskNotes flx-c">
                                                 <label>Notes</label>
-                                                <textarea onChange={(e) => updateTaskNotes(e)} name="" id="task-notes" cols="30" rows="10" className={`textarea-box${darkMode ? "-dark" : ""}`} placeholder='Describe your task...'></textarea>
+                                                <textarea onChange={(e) => updateTaskNotes(e)} name="" id="task-notes" cols="30" rows="10" className={`textarea-box${darkMode ? "-dark" : ""} textarea-box-mobile`} placeholder='Describe your task...'></textarea>
                                             </div>
 
                                             <div className="taskDate advancedSettings flx-c">
@@ -557,12 +557,12 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                 <div className="taskDate flx-r gap-2">
                                                     <div className="flx-c flx-1">
                                                         <label>Date</label>
-                                                        <div className="date-input-div position-relative">
-                                                            <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className={`date-input-box${darkMode ? "-dark" : ""}`} />
+                                                        <div className="date-input-div position-relative flx-c">
+                                                            <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className={`date-input-box${darkMode ? "-dark" : ""} date-input-box-mobile`} />
                                                             <span className="material-symbols-outlined overlay-icon2">
                                                                 event
                                                             </span>
-                                                            {/* <div className="date-input-box"></div> */}
+                                                            
                                                         </div>
                                                     </div>
                                                     <div className="flx-c flx-1">
@@ -675,7 +675,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                     {stepsList.map((step, index) => {
                                                         return <div key={index} className="step-div">
                                                             <div className="overlay-icon2">{step.number})</div>
-                                                            <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className={`step-input-box${darkMode ? "-dark" : ""}`} autoComplete='off' />
+                                                            <input onKeyDown={(e) => e.key === "Enter" ? updateStepsList("add") : null} id={`stepInput-${index}`} onChange={(e) => updateStep(e, index)} type='input' className={`step-input-box${darkMode ? "-dark" : ""} step-input-box-mobile`} autoComplete='off' />
                                                             <div className="closeBtn4 ml-1">
                                                                 <span onClick={() => updateStepsList("remove", index)} className="material-symbols-outlined">
                                                                     close

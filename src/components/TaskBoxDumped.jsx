@@ -517,12 +517,12 @@ const TaskBoxDumped = ({ task, index, quickTaskUpdates, openQuickUpdateModal, op
                             </div>
 
                             <div onClick={(e) => { e.stopPropagation(); toggleLocationPopUp() }} className="location-detail position-relative">
-                                <div id={`location-popUp-${index}`} className="location-popUp hidden-o gap-2">
+                                <div id={`location-popUp-${index}`} className={`location-popUp ${mobileWidth && "location-popUp-mobile"} hidden-o gap-2`}>
 
                                     <p className={`m-0 font-jakarta ws-nowrap ${mobileWidth && "small"}`}>{task.location ? task.location : ""}</p>
 
                                 </div>
-                                <div id={`location-popUp-after-${index}`} className="location-popUp-after hidden-o"></div>
+                                <div id={`location-popUp-after-${index}`} className={`location-popUp-after ${mobileWidth && "location-popUp-after-mobile"} hidden-o`}></div>
                                 <span className={`material-symbols-outlined m-auto ${task.location ? darkMode ? "white-text" : null : darkMode ? "darkgray-text" : "faint-text"}`}>
                                     location_on
                                 </span>

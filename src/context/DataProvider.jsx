@@ -279,7 +279,7 @@ const DataProvider = (props) => {
         let priorityCompletedArr = []
         // count # of tasks with end dates that are earlier than today - overdue
         let overdueArr = []
-        let overdueCompletedArr =[]
+        let overdueCompletedArr = []
         // count # of completed tasks
         let completedArr = []
         // count # of tasks with end dates equal to or later than today - upcoming
@@ -445,6 +445,7 @@ const DataProvider = (props) => {
     }
 
     // mobile code
+    const [mobileAgent, setMobileAgent] = useState(false);
     const [mobileWidth, setMobileWidth] = useState(false);
     const [mobileNavbarOpen, setMobileNavbarOpen] = useState(false);
     const mobileShowNavbar = () => {
@@ -461,12 +462,16 @@ const DataProvider = (props) => {
         }
     }
     const handleResize = () => {
-        if (document.body.clientWidth < 600) {
+        if (document.body.clientWidth < 800) {
             setMobileWidth(true)
             // console.log('true')
         } else {
-            setMobileWidth(false)
-            // console.log('false')
+            if (!mobileAgent) {
+                setMobileWidth(false)
+                // console.log('false')
+            } else {
+                setMobileWidth(true)
+            }
         }
         // console.log(document.body.clientWidth)
     }
@@ -477,11 +482,16 @@ const DataProvider = (props) => {
             window.removeEventListener('resize', handleResize);
         };
     }, [])
+    useEffect(() => {
+        if (mobileAgent) {
+            setMobileWidth(true)
+        }
+    }, [mobileAgent])
 
     const [missionsOn, setMissionsOn] = useState(true);
 
     return (
-        <DataContext.Provider value={{ 'mobileWidth': mobileWidth, 'mobileNavbarOpen': mobileNavbarOpen, 'setMobileNavbarOpen': setMobileNavbarOpen, 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask': firstTask, 'setFirstTask': setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'group': group, 'setGroup': setGroup, 'createCategoryModalOpen': createCategoryModalOpen, 'setCreateCategoryModalOpen': setCreateCategoryModalOpen, 'setUserCategories': setUserCategories, 'showDumped': showDumped, 'setShowDumped': setShowDumped, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode': setDarkMode, 'levelUpModalOpen': levelUpModalOpen, 'setLevelUpModalOpen': setLevelUpModalOpen }}>
+        <DataContext.Provider value={{ 'mobileWidth': mobileWidth, 'setMobileAgent': setMobileAgent, 'mobileNavbarOpen': mobileNavbarOpen, 'setMobileNavbarOpen': setMobileNavbarOpen, 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask': firstTask, 'setFirstTask': setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'group': group, 'setGroup': setGroup, 'createCategoryModalOpen': createCategoryModalOpen, 'setCreateCategoryModalOpen': setCreateCategoryModalOpen, 'setUserCategories': setUserCategories, 'showDumped': showDumped, 'setShowDumped': setShowDumped, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode': setDarkMode, 'levelUpModalOpen': levelUpModalOpen, 'setLevelUpModalOpen': setLevelUpModalOpen }}>
             {props.children}
         </DataContext.Provider>
     )

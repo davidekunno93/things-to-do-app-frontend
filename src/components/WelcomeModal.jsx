@@ -24,27 +24,27 @@ const WelcomeModal = ({ open, setCurrentMission, onClose }) => {
             <Fade duration={200} delay={200} triggerOnce>
                 <div className="overlay">
                     <Slide direction='up' duration={400} delay={100} className='flx w-100' triggerOnce>
-                        <div className={`welcome-modal${darkMode ? "-dark" : ""} black-text`}>
-                            <div className="box-title">We're so glad you're here!</div>
+                        <div className={`welcome-modal${darkMode ? "-dark white-text" : ""} ${mobileWidth && "welcome-modal-mobile"} black-text`}>
+                            <div className={`box-title${darkMode ? "-dark" : ""} ${mobileWidth && "box-title-mobile"}`}>We're so glad you're here!</div>
                             <hr className='w-100' />
 
                             <div className="carousel-window h-100">
                                 <div className="inner" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
                                     <div className="welcome-item h-100">
                                         <div className="m-auto">
-                                            <img src="https://i.imgur.com/x8RwrxS.png" alt="" className="img-blown-up h-center mt-2" />
+                                            <img src="https://i.imgur.com/x8RwrxS.png" alt="" className={`img-blown-up h-center mt-2 ${mobileWidth && "img-blown-up-mobile"}`} />
                                             <p className="m-0 font-jakarta large center-text mt-2 bold600">Thank you for being a test user of the <i>Things To-Do</i> web application!</p>
                                         </div>
                                     </div>
                                     <div className="welcome-item h-100">
                                         <div className="m-auto">
-                                            <img src="https://i.imgur.com/sOm576g.png" alt="" className="img-blown-up h-center mt-2" />
+                                            <img src="https://i.imgur.com/sOm576g.png" alt="" className={`img-blown-up h-center mt-2 ${mobileWidth && "img-blown-up-mobile"}`} />
                                             <p className="m-0 font-jakarta large center-text mt-2 ws-normal">Feel free to explore, but first... you have <strong>3 missions</strong> to complete.</p>
                                         </div>
                                     </div>
                                     <div className="welcome-item h-100">
                                         <div className="m-auto">
-                                            <img src="https://i.imgur.com/rJWjBQh.png" alt="" className="img-blown-up h-center mt-2" />
+                                            <img src="https://i.imgur.com/rJWjBQh.png" alt="" className={`img-blown-up h-center mt-2 ${mobileWidth && "img-blown-up-mobile"}`} />
                                             <p className="m-0 font-jakarta large center-text mt-2">Start by hitting the <strong>mission button</strong> <img src="https://i.imgur.com/la8ZiXg.png" alt="" className="img-xsmall v-bott mx-1" /> at the <u>top of the dashboard</u>!</p>
                                         </div>
                                     </div>

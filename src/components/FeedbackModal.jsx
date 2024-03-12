@@ -53,11 +53,11 @@ const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
             <div id='overlayPlaceholder' className="overlay-placeholder">
                 <Fade duration={200} fraction={0} triggerOnce>
                     <div className="overlay">
-                        <div className="feedback-modal">
+                        <div className={`feedback-modal ${mobileWidth && "feedback-modal-mobile"}`}>
                             {!isLoading && !sentFeedback &&
                                 <div className="flx-c h-100">
                                     <div className="align-all-items just-ce">
-                                        <p className="m-0 box-title">Feedback is always appreciated</p>
+                                        <p className={`m-0 box-title ${mobileWidth && "box-title-mobile"}`}>Feedback is always appreciated</p>
                                         <img src="https://i.imgur.com/YIcdeNr.png" alt="" className="img-xsmall ml-2" />
                                     </div>
                                     <hr className='w-100'/>
@@ -87,7 +87,7 @@ const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
                             }
                             {!isLoading && sentFeedback &&
                                 <div className="flx-c align-c just-ce h-100">
-                                    <div className="flx-r x-large font-jakarta-strong">
+                                    <div className={`flx-r ${mobileWidth ? "large" : "x-large"} font-jakarta-strong`}>
                                         <Fade duration={100} cascade triggerOnce>
                                             <p className="m-0">T</p>
                                             <p className="m-0">h</p>
@@ -98,6 +98,7 @@ const FeedbackModal = ({ open, deactivateFeedbackAlert, onClose }) => {
                                             <p className="m-0">y</p>
                                             <p className="m-0">o</p>
                                             <p className="m-0">u</p>
+                            
                                             <p className="m-0">&nbsp;</p>
                                             <p className="m-0">f</p>
                                             <p className="m-0">o</p>

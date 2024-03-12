@@ -4,6 +4,7 @@ import { DataContext } from '../context/DataProvider';
 const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }) => {
     if (!open) return null
     const { darkMode } = useContext(DataContext);
+    const { mobileWidth } = useContext(DataContext);
     
     // time code
     const [selectedHour, setSelectedHour] = useState(null)
@@ -76,9 +77,9 @@ const TimePickerModal = ({ open, taskId, quickUpdate, endTime, goBack, onClose }
 
     return (
         <div className="overlay">
-            <div className={`timepicker-modal${darkMode ? "-dark" : ""}`}>
+            <div className={`timepicker-modal${darkMode ? "-dark" : ""} ${mobileWidth && "vw94"}`}>
                 <div className="box-top position-top">
-                    <p className={`m-0 box-title${darkMode ? "-dark" : ""}`}>Set Time of Task</p>
+                    <p className={`m-0 box-title${darkMode ? "-dark" : ""} ${mobileWidth && "box-title-mobile"}`}>Set Time of Task</p>
                     <hr className='w-100' />
                 </div>
                 <div className="time-input-div">

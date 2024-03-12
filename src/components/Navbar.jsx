@@ -105,10 +105,10 @@ const Navbar = () => {
     return (
         <>
             <MyProfile open={profileOpen} photoURL={user.photoURL ? user.photoURL : "https://i.imgur.com/MacUxKa.png"} onClose={() => setProfileOpen(false)} />
-            <div className={`navbar-holder${darkMode ? "-dark" : ""}`} style={{ transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : "0" }%)` }}>
+            <div className={`navbar-holder${darkMode ? "-dark" : ""}`} style={{ display: `${mobileWidth ? "fixed" : "block"}`, zIndex: `${mobileWidth ? 10 : ""}`, transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : "0" }%)` }}>
 
 
-                <div className={`native-nav navbar${darkMode ? "-dark" : "-black"}`} style={{ transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : showNavbar ? "0" : "101"}%)` }}>
+                <div className={`native-nav navbar${darkMode ? "-dark" : "-black"}`} style={{ display: `${mobileWidth ? "fixed" : "flex"}`, zIndex: `${mobileWidth ? 10 : ""}`, transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : showNavbar ? "0" : "101"}%)` }}>
 
 
                     <div className="nav-option-cold">

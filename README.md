@@ -71,6 +71,7 @@ Host backend (on render?)
 *******
 **MVP ONE**
 *******
+Add top navbar that allows search and filtering of tasks. Also it will contain hamburger menu for phone mode
 limit category dropdown list's height in task modals
 *create category gives new category next order index/del category reshuffles order indexes*
 edit category - name, color, icon
