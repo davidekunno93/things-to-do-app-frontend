@@ -18,8 +18,10 @@ function App() {
   }
   useEffect(() => {
     // console.log(isMobile())
-    if(isMobile) {
+    if (isMobile()) {
       setMobileAgent(true);
+      // console.log("inner isMobile: ", isMobile())
+      // console.log('setting mobile agent to true')
     }
   }, [])
 
