@@ -5457,9 +5457,12 @@ selection:hover .sub-selection-dark {
 
 .steps-indicator {
   height: 16px;
-  width: 150px;
+  width: 100px;
   background-color: #007ACC;
+  background-color: white;
   color: rgba(255, 255, 255, 0.75);
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 600;
   display: flex;
   border-radius: 0 0 8px 8px;
   position: absolute;
@@ -5471,9 +5474,11 @@ selection:hover .sub-selection-dark {
 
 .steps-indicator-dark {
   height: 16px;
-  width: 150px;
-  background-color: #C496FF;
-  color: rgba(0, 0, 0, 0.75);
+  width: 100px;
+  /* background-color: #C496FF; */
+  background-color: #323232;
+  /* color: rgba(0, 0, 0, 0.75); */
+  color: rgba(255, 255, 255, 0.5);
   display: flex;
   border-radius: 0 0 8px 8px;
   position: absolute;
@@ -5485,9 +5490,12 @@ selection:hover .sub-selection-dark {
 
 .notes-indicator {
   height: 16px;
-  width: 150px;
-  background-color: rgb(255, 180, 110);
+  width: 100px;
+  /* background-color: rgb(255, 180, 110); */
+  background-color: rgb(255, 146, 45);
+  background-color: rgb(255, 249, 238);
   color: rgba(255, 255, 255, 0.75);
+  color: rgba(0, 0, 0, 0.5);
   font-weight: 600;
   display: flex;
   border-radius: 0 0 8px 8px;
@@ -5500,10 +5508,12 @@ selection:hover .sub-selection-dark {
 
 .notes-indicator-dark {
   height: 16px;
-  width: 150px;
+  width: 100px;
   /* background-color: rgb(255, 123, 0); */
   background-color: #48d598;
-  color: rgba(0, 0, 0, 0.75);
+  background-color: #342b32;
+  /* color: rgba(0, 0, 0, 0.75); */
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 600;
   display: flex;
   border-radius: 0 0 8px 8px;
@@ -5530,8 +5540,11 @@ selection:hover .sub-selection-dark {
 }
 
 .stepsandnotes-indicator .steps {
-  background-color: #007ACC;
-  color: rgba(255, 255, 255, 0.75);
+  /* background-color: #007ACC; */
+  background-color: white;
+  /* color: rgba(255, 255, 255, 0.75); */
+  color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
   font-weight: 600;
   text-align: center;
   border-radius: 0 0 8px 8px;
@@ -5542,8 +5555,10 @@ selection:hover .sub-selection-dark {
 }
 
 .stepsandnotes-indicator .steps-dark {
-  background-color: #C496FF;
-  color: rgba(0, 0, 0, 0.75);
+  /* background-color: #C496FF; */
+  background-color: #323232;
+  /* color: rgba(0, 0, 0, 0.75); */
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 600;
   text-align: center;
   border-radius: 0 0 8px 8px;
@@ -5554,10 +5569,15 @@ selection:hover .sub-selection-dark {
 }
 
 .stepsandnotes-indicator .notes {
-  background-color: rgb(255, 123, 0);
+  /* background-color: rgb(255, 123, 0); */
+  /* background-color: rgb(255, 146, 45); */
+  /* background-color: rgb(255, 146, 45); */
   /* background-color: rgb(56, 198, 0);
   background-color: #48d598; */
-  color: rgba(255, 255, 255, 0.75);
+  background-color: rgb(255, 249, 238);
+  /* color: rgba(255, 255, 255, 0.75); */
+  color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
   font-weight: 600;
   text-align: center;
   border-radius: 0 0 8px 8px;
@@ -5568,8 +5588,11 @@ selection:hover .sub-selection-dark {
 }
 
 .stepsandnotes-indicator .notes-dark {
-  background-color: #48d598;
-  color: rgba(0, 0, 0, 0.75);
+  /* background-color: #48d598; */
+  /* background-color: #25302b; */
+  background-color: #342b32;
+  /* color: rgba(0, 0, 0, 0.75); */
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 600;
   text-align: center;
   border-radius: 0 0 8px 8px;

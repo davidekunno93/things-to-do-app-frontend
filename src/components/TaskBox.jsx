@@ -695,7 +695,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                 </div >
                 {task.steps.length > 0 && !task.notes &&
                 <div id={`taskFootNoteSteps-${index}`} className={`steps-indicator${darkMode ? "-dark" : ""}`}>
-                    <p className="x-small m-auto">Steps: <span className={`${darkMode ? "black-text" : "white-text"}`}>{task.steps.length}</span></p>
+                    <p className="x-small m-auto">Steps: <span className={`${darkMode ? "white-text" : "black-text"}`}>{task.steps.length}</span></p>
                 </div>
                 }
                 {!task.steps.length > 0 && task.notes &&
@@ -706,7 +706,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                 {task.steps.length > 0 && task.notes &&
                 <div id={`taskFootNoteStepsAndNotes-${index}`} className="stepsandnotes-indicator">
                     <div className={`steps${darkMode ? "-dark" : ""} flx-1`}>
-                        <p className="x-small m-auto">Steps: <span className={`${darkMode ? "black-text" : "white-text"}`}>{task.steps.length}</span></p>
+                        <p className="x-small m-auto">Steps: <span className={`${darkMode ? "white-text" : "black-text"}`}>{task.steps.length}</span></p>
                     </div>
                     <div className={`notes${darkMode ? "-dark" : ""} flx-1`}>
                         <p className="x-small m-auto">Notes</p>
