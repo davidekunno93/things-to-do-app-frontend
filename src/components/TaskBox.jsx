@@ -513,7 +513,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                 </span>
 
                                 {edit.taskName ?
-                                    <input ref={refTaskName} id={`taskNameInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit(e) : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e.target.value); resizeTaskNameInput() }} type='input' value={task.taskName} className='input-style font-jakarta-strong' required></input>
+                                    <input ref={refTaskName} id={`taskNameInput-${index}`} onKeyDown={(e) => e.key === "Enter" ? completeTaskNameEdit(e) : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateTaskName(task.id, e.target.value); resizeTaskNameInput() }} type='input' value={task.taskName} className={`input-style font-jakarta-strong ${darkMode && "white-text"}`} autoComplete='off' required></input>
                                     :
                                     <p className={`task-name font-jakarta-strong m-0 ${task.completed ? darkMode ? "line-out faint-text-dark" : "line-out faint-text" : null}`}>{task.taskName}
                                         {!mobileWidth &&
@@ -593,7 +593,7 @@ const TaskBox = ({ task, index, quickTaskUpdates, openQuickUpdateModal, openEdit
                                             </span>
                                             <div className="step-text-line">
                                                 {stepIndex === forEdit ?
-                                                    <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onKeyDown={(e) => e.key === "Enter" ? completeStepEdit() : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e.target.value); resizeStepInput(stepIndex) }} type="text" className="input-style2" value={step.desc} />
+                                                    <input ref={refStep} id={`stepInput-${index}-${stepIndex}`} onKeyDown={(e) => e.key === "Enter" ? completeStepEdit() : null} onClick={(e) => e.stopPropagation(e)} onChange={(e) => { quickUpdate.updateStep(task.id, stepIndex, e.target.value); resizeStepInput(stepIndex) }} type="text" className={`input-style2 ${darkMode && "white-text"}`} autoComplete='off' value={step.desc} />
                                                     :
                                                     <p className={`m-0 my-h small ${step.completed ? darkMode ? "line-out faint-text-dark" : "line-out faint-text" : null}`}>{/*<strong>{step.number})</strong>*/} {step.desc}
                                                         {!mobileWidth &&

@@ -105,7 +105,7 @@ const Navbar = () => {
     return (
         <>
             <MyProfile open={profileOpen} photoURL={user.photoURL ? user.photoURL : "https://i.imgur.com/MacUxKa.png"} onClose={() => setProfileOpen(false)} />
-            <div className={`navbar-holder${darkMode ? "-dark" : ""}`} style={{ display: `${mobileWidth ? "fixed" : "block"}`, zIndex: `${mobileWidth ? 10 : ""}`, transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : "0" }%)` }}>
+            <div className={`navbar-holder${darkMode ? "-dark" : ""}`} style={{ display: `${mobileWidth ? "fixed" : "block"}`, zIndex: `${mobileWidth ? 10 : ""}`, transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : "0"}%)` }}>
 
 
                 <div className={`native-nav navbar${darkMode ? "-dark" : "-black"}`} style={{ display: `${mobileWidth ? "fixed" : "flex"}`, zIndex: `${mobileWidth ? 10 : ""}`, transform: `translateX(-${mobileWidth ? mobileNavbarOpen ? "0" : "101" : showNavbar ? "0" : "101"}%)` }}>
@@ -113,7 +113,7 @@ const Navbar = () => {
 
                     <div className="nav-option-cold">
                         <img src="https://i.imgur.com/AHGu5J5.png" alt="" className="nav-logo" />
-                        <div onClick={() => {toggleTheme(); setMobileNavbarOpen(false) }} className="toggle-theme">
+                        <div onClick={() => { toggleTheme(); setMobileNavbarOpen(false) }} className="toggle-theme">
                             <div className={`button${darkMode ? "-dark" : ""}`} style={{ left: darkMode ? '12px' : '0px', right: darkMode ? '0px' : '12px' }}>
                                 <img src={darkMode ? "https://i.imgur.com/Ya1NVA5.png" : "https://i.imgur.com/oZuiPMP.png"} alt="" className="toggle-button-img" />
                             </div>
@@ -132,7 +132,7 @@ const Navbar = () => {
                     {/* deep navbar */}
                     <div className={`navbar-deepmenu${darkMode ? "-dark" : ""}`} style={{ height: deepMenuOpen ? 180 : 0 }}>
                         <div id='deepMenuContents' className="contents hidden-o-from-right">
-                            
+
 
                             <div onClick={() => setProfileOpen(true)} className="option">
                                 <div className="align-all-items">
@@ -164,7 +164,7 @@ const Navbar = () => {
                                     <p className="m-0">Sign Out</p>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     {/* end deep navbar */}
@@ -260,9 +260,14 @@ const Navbar = () => {
                         }
 
                     </div>
+                    {userCategories.categoryOrder.length > 4 &&
+                        <span className="material-symbols-outlined center-text">
+                            keyboard_double_arrow_down
+                        </span>
+                    }
                     {/* end user categories */}
 
-                    <div onClick={() => {setCreateCategoryModalOpen(true); setMobileNavbarOpen(false) }} className="nav-option-bottom">
+                    <div onClick={() => { setCreateCategoryModalOpen(true); setMobileNavbarOpen(false) }} className="nav-option-bottom">
                         <span className="material-symbols-outlined">
                             add
                         </span>

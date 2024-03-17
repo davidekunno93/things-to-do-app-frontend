@@ -68,10 +68,12 @@ const Dashboard = () => {
         }
     }
     useEffect(() => {
-        if (mobileNavbarOpen) {
-            openHamburgerMenu()
-        } else {
-            closeHamburgerMenu()
+        if (mobileWidth) {
+            if (mobileNavbarOpen) {
+                openHamburgerMenu()
+            } else {
+                closeHamburgerMenu()
+            }
         }
     }, [mobileNavbarOpen])
     const taskObj = {
@@ -1292,7 +1294,7 @@ const Dashboard = () => {
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Note: Page Rendered to the right to make space for navbar (230px margin left) */}
             {mobileWidth &&
-                <button onClick={() => setCreateTaskMobileOpen(true)} className="mobile-add-task-btn">
+                <button onClick={() => setCreateTaskMobileOpen(true)} className={`mobile-add-task-btn${darkMode ? "-dark" : ""}`}>
                     <span className="material-symbols-outlined lift">
                         add
                     </span>
@@ -1371,11 +1373,13 @@ const Dashboard = () => {
                                 <div className="flx-c w-100">
 
                                     <div className={`sub-title-section${darkMode ? "-dark" : ""} sticky-top page-container96-byPadding`}>
-                                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
-                                            <span className='line-1'></span>
-                                            <span className='line-2'></span>
-                                            <span className='line-3'></span>
-                                        </div>
+                                        {mobileWidth &&
+                                            <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
+                                                <span className='line-1'></span>
+                                                <span className='line-2'></span>
+                                                <span className='line-3'></span>
+                                            </div>
+                                        }
 
                                         {selectedCategory === "myDay" &&
                                             <>
@@ -1474,7 +1478,7 @@ const Dashboard = () => {
                                                     {!mobileWidth ?
                                                         <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Hover your cursor to the right of the task title, step description, or notes heading to show the hidden edit icon. Click the edit icon to change these details on the fly.</p>
                                                         :
-                                                        <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Tap to the right of the task title, step description, or notes heading to edit the item and change these deatils on the fly.</p>
+                                                        <p className={`tip-text  ${mobileWidth && "tip-text-small"}`}><strong className={`${darkMode ? "mediumgray-text" : "black-text"}`}>Tip:</strong> Use the 3 vertical dots to open the taskbar popup. From there you can edit all of your task settings.</p>
                                                     }
                                                 </div>
                                             </>
@@ -1496,7 +1500,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className="align-all-items gap-2">
-                                                    <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className={`img-iconh${mobileWidth && "-smaller mt-2"} mr-2`} />
+                                                    <img src={userCategories.categories[selectedCategory].iconUrl} alt="" className={`img-iconh${mobileWidth ? "-smaller mt-2" : ""} mr-2`} />
                                                     <p className={`m-0 ${mobileWidth ? "x-large mt-2" : "xx-large"} ${darkMode ? "white-text" : "dark-text"}`}>{userCategories.categories[selectedCategory].categoryName}</p>
                                                     <span onClick={() => toggleCategoryPopUp()} className="material-symbols-outlined x-large ml-2 mt-1h o-50 pointer">
                                                         more_vert
@@ -1546,9 +1550,15 @@ const Dashboard = () => {
                                             }
                                             {!mobileWidth &&
                                                 <div className="rightHandSide flx-r just-sb">
-                                                    <div className="category">
-                                                        <p className="m-0">Category</p>
-                                                    </div>
+                                                    {!userCategories.categoryOrder.includes(selectedCategory) ?
+                                                        <div className="category">
+                                                            <p className="m-0">Category</p>
+                                                        </div>
+                                                        :
+                                                        <div className="category">
+                                                            {/* <p className="m-0">Empty Space</p> */}
+                                                        </div>
+                                                    }
                                                     <div className="myDay">
                                                         <p className="m-0">My Day</p>
                                                     </div>
@@ -1628,12 +1638,13 @@ const Dashboard = () => {
                                 <div className="flx-c w-100">
 
                                     <div className={`sub-title-section${darkMode ? "-dark" : ""} sticky-top page-container96-byPadding`}>
-
-                                        <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu2' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
-                                            <span className='line-1'></span>
-                                            <span className='line-2'></span>
-                                            <span className='line-3'></span>
-                                        </div>
+                                        {mobileWidth &&
+                                            <div ref={refHamburger} onClick={() => toggleHamburgerMenu()} id='hamburgerMenu2' className={`hamburger-menu${darkMode ? "-dark" : ""}`}>
+                                                <span className='line-1'></span>
+                                                <span className='line-2'></span>
+                                                <span className='line-3'></span>
+                                            </div>
+                                        }
 
 
                                         <div className="w-100">
