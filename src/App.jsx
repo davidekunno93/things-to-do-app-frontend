@@ -28,7 +28,6 @@ function App() {
   return (
     <>
       <div className={`${darkMode ? "body-background-dark" : "body-background"}`}>
-
         <Navbar />
 
         <Routes>

@@ -488,7 +488,7 @@ const DataProvider = (props) => {
         }
     }, [mobileAgent])
 
-    const [missionsOn, setMissionsOn] = useState(true);
+    const [missionsOn, setMissionsOn] = useState(false);
 
     return (
         <DataContext.Provider value={{ 'mobileWidth': mobileWidth, 'setMobileAgent': setMobileAgent, 'mobileNavbarOpen': mobileNavbarOpen, 'setMobileNavbarOpen': setMobileNavbarOpen, 'showNavbar': showNavbar, 'setShowNavbar': setShowNavbar, 'user': user, 'setUser': setUser, 'users': users, 'tasks': tasks, 'setTasks': setTasks, 'firstTask': firstTask, 'setFirstTask': setFirstTask, 'categories': categories, 'setCategories': setCategories, 'selectedCategory': selectedCategory, 'setSelectedCategory': setSelectedCategory, 'userCategories': userCategories, 'group': group, 'setGroup': setGroup, 'createCategoryModalOpen': createCategoryModalOpen, 'setCreateCategoryModalOpen': setCreateCategoryModalOpen, 'setUserCategories': setUserCategories, 'showDumped': showDumped, 'setShowDumped': setShowDumped, 'advancedSettingsOn': advancedSettingsOn, 'setAdvancedSettingsOn': setAdvancedSettingsOn, 'missionsOn': missionsOn, 'setMissionsOn': setMissionsOn, 'databaseOn': databaseOn, 'setDatabaseOn': setDatabaseOn, 'darkMode': darkMode, 'setDarkMode': setDarkMode, 'levelUpModalOpen': levelUpModalOpen, 'setLevelUpModalOpen': setLevelUpModalOpen }}>

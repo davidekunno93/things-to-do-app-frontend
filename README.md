@@ -34,6 +34,7 @@ Currently, two official plugins are available:
 <!-- **Theme settings - Dark mode toggle** -->
 <!-- open create category from task modals -->
 <!-- only show priority popup when create task not when log in - cut off by carousel window (title section + tasks need to go in carousel window) -->
+bottom of dashboard Things-To-Do Copyright
 **Deep navbar will have my profile, my friends, achievements (change username, password, photoURL), account settings, Sign out**
 <!-- **create dumped key and arr for dumped tasks* - *dump folder that you can restore tasks from-remove myDay, remove progress, add completed date, add points earned** -->
 <!-- *create level key* -->

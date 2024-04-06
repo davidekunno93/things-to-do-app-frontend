@@ -1294,7 +1294,7 @@ const Dashboard = () => {
             {/* <CreateCategoryModal open={createCategoryModalOpen} onClose={() => setCreateCategoryModalOpen(false)} /> */}
             {/* Note: Page Rendered to the right to make space for navbar (230px margin left) */}
             {mobileWidth &&
-                <button onClick={() => setCreateTaskMobileOpen(true)} className={`mobile-add-task-btn${darkMode ? "-dark" : ""}`}>
+                <button onClick={() => {setCreateTaskMobileOpen(true); setAdvancedSettingsOn(false)}} className={`mobile-add-task-btn${darkMode ? "-dark" : ""}`}>
                     <span className="material-symbols-outlined lift">
                         add
                     </span>
