@@ -633,7 +633,7 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
                                                     <div className="flx-c flx-1">
                                                         <label>Date</label>
                                                         <div className="date-input-div position-relative">
-                                                            <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' className={`date-input-box${darkMode ? "-dark" : ""} date-input-box-mobile`} />
+                                                            <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' onKeyDown={'return false'} className={`date-input-box${darkMode ? "-dark" : ""} date-input-box-mobile`} />
                                                             <span className="material-symbols-outlined overlay-icon2">
                                                                 event
                                                             </span>
