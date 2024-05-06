@@ -558,7 +558,7 @@ const CreateTaskMobile = ({ open, tasks, category, setTasks, onClose }) => {
                                                     <div className="flx-c flx-1">
                                                         <label>Date</label>
                                                         <div className="date-input-div position-relative flx-c">
-                                                            <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' onKeyDown={'return false'} onFocus={blur()} className={`date-input-box${darkMode ? "-dark" : ""} date-input-box-mobile`} />
+                                                            <ReactDatePicker onChange={(date) => { setSelectedDate(date); updateTaskEndDate(date) }} selected={selectedDate} value={selectedDate} placeholderText='mm/dd/yyyy' onKeyDown={e => e.preventDefault()} className={`date-input-box${darkMode ? "-dark" : ""} date-input-box-mobile`} />
                                                             <span className="material-symbols-outlined overlay-icon2">
                                                                 event
                                                             </span>
