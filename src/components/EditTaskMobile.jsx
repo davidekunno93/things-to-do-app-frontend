@@ -471,7 +471,7 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
 
     // load task details
     const loadTaskTitle = () => {
-        const taskTitleInput = document.getElementById('taskTitleInput')
+        const taskTitleInput = document.getElementById('taskTitleInputMobile')
         taskTitleInput.value = task.taskName
     }
     const loadMyDay = () => {
@@ -583,7 +583,7 @@ const EditTaskMobile = ({ open, task, updateTask, onClose }) => {
                                             <div className="taskTitle taskPriorirty">
                                                 <label>Task Title</label><span className="red-text">*</span>
                                                 <div className="flx-r">
-                                                    <input id='taskTitleInput' onChange={(e) => updateTaskName(e)} type="text" className={`input-box${darkMode ? "-dark" : ""} w-82`} placeholder='What do you need to do?' autoComplete='off' />
+                                                    <input id='taskTitleInputMobile' onChange={(e) => updateTaskName(e)} type="text" className={`input-box${darkMode ? "-dark" : ""} w-82`} placeholder='What do you need to do?' autoComplete='off' />
                                                     <div id='priorityBtn' onClick={() => updateTaskPriority()} className={`select-btn${darkMode ? "-dark" : ""} position-right noPriority`}>
                                                         <span className="material-symbols-outlined m-auto">
                                                             exclamation
